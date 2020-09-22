@@ -248,9 +248,9 @@ You should see:
 ----
 Login successful.
 
-You have one project on this server: "{{ USER_ID }}-project"
+You have one project on this server: "{{ GUID }}-project"
 
-Using project "{{ USER_ID }}-project".
+Using project "{{ GUID }}-project".
 Welcome! See 'oc help' to get started.
 ----
 
@@ -276,7 +276,7 @@ When the script completes, the app is deployed to OpenShift. You can see it in t
 
 image::ocplogin.png[login,600]
 
-Once logged in, click on the name of your project (`{{ USER_ID }}-project`):
+Once logged in, click on the name of your project (`{{ GUID }}-project`):
 
 image::ocpproj.png[project,600]
 

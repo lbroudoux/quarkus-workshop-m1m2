@@ -93,7 +93,7 @@ quarkus.swagger-ui.always-include=true
 ----
 ====
 
-Since our app is still running, click on the `web-{{USER_ID}}` link on the right to open the app's landing page in your browser:
+Since our app is still running, click on the `web-{{GUID}}` link on the right to open the app's landing page in your browser:
 
 image::weblink.png[swagger,700]
 

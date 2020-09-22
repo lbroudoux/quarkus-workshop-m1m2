@@ -536,7 +536,7 @@ You should get up to 2 records returned (since we passed `length=2` in the query
 
 == Deploy to OpenShift
 
-Our production environment needs a "real" database so let's deploy a Postgres database to OpenShift. Back in the {{ CONSOLE_URL }}/topology/ns/{{ USER_ID }}-project[Topology View^], click **+Add** on the left, on the _Database_ box on the project overview:
+Our production environment needs a "real" database so let's deploy a Postgres database to OpenShift. Back in the {{ CONSOLE_URL }}/topology/ns/{{ GUID }}-project[Topology View^], click **+Add** on the left, on the _Database_ box on the project overview:
 
 image::db.png[db, 700]
 
@@ -546,7 +546,7 @@ image::db-postgres.png[db, 700]
 
 Click on *Instantiate Template* and fill in the following fields, leaving the others as their default values:
 
-* **Namespace** (the first one): Select `{{ USER_ID }}-project`
+* **Namespace** (the first one): Select `{{ GUID }}-project`
 * **Namespace** (the _second_ one): `openshift`
 * **Database Service Name**: `postgres-database`
 * **PostgreSQL Connection Username**: `sa`
@@ -567,7 +567,7 @@ oc label dc/postgres-database app.kubernetes.io/part-of=people --overwrite && \
 oc annotate dc/people app.openshift.io/connects-to=postgres-database --overwrite
 ----
 
-This will deploy the database to our new project. Click on the {{ CONSOLE_URL }}/topology/ns/{{ USER_ID }}-project[Topology View^] to see it:
+This will deploy the database to our new project. Click on the {{ CONSOLE_URL }}/topology/ns/{{ GUID }}-project[Topology View^] to see it:
 
 image::database-deployment.png[inventory_db_deployments, 700]
 
@@ -639,7 +639,7 @@ oc label dc/postgres-database app.kubernetes.io/part-of=people --overwrite && \
 oc annotate dc/people app.openshift.io/connects-to=postgres-database --overwrite
 ----
 
-Back on the {{ CONSOLE_URL }}/topology/ns/{{ USER_ID }}-project[Topology View^], make sure it's done deploying (dark blue circle):
+Back on the {{ CONSOLE_URL }}/topology/ns/{{ GUID }}-project[Topology View^], make sure it's done deploying (dark blue circle):
 
 [NOTE]
 ====
@@ -659,7 +659,7 @@ We can access using `curl` once again to find everyone born in or before the yea
 curl -s $(oc get route people -o=go-template --template={% raw %}'{{ .spec.host }}'{% endraw %})/person/birth/before/2000 | jq
 ----
 
-Now access the http://people-{{USER_ID}}-project.{{ROUTE_SUBDOMAIN}}/datatable.html[graphical person browser powered by the DataTables library^]. It should look like:
+Now access the http://people-{{GUID}}-project.{{ROUTE_SUBDOMAIN}}/datatable.html[graphical person browser powered by the DataTables library^]. It should look like:
 
 image::datatable.png[datatable,800]
 

@@ -41,7 +41,7 @@ image::names.png[names,800]
 
 The Strimzi operator installs and manages Kafka clusters on Kubernetes. It's been pre-installed for you, so all you have to do is create a Kafka cluster inside your namespace.
 
-First, on the {{ CONSOLE_URL }}/topology/ns/{{ USER_ID }}-project[Topology View^], click **+Add** and, then _From Catalog_:
+First, on the {{ CONSOLE_URL }}/topology/ns/{{ GUID }}-project[Topology View^], click **+Add** and, then _From Catalog_:
 
 image::fromcat.png[names,800]
 
@@ -74,7 +74,7 @@ image::topiccreate.png[topiccreate,800]
 
 This will cause the Operator to provision a new Topic in the Kafka cluster.
 
-Back on the {{ CONSOLE_URL }}/topology/ns/{{ USER_ID }}-project[Topology View^], make sure all the Kafka and Zookeeper pods are up and running (with dark blue circles):
+Back on the {{ CONSOLE_URL }}/topology/ns/{{ GUID }}-project[Topology View^], make sure all the Kafka and Zookeeper pods are up and running (with dark blue circles):
 
 image::kafkaup.png[topiccreate,800]
 
@@ -284,7 +284,7 @@ The build should take a minute or two to complete.
 
 == Test
 
-Our application should be up and running in a few seconds after the build completes and generating names. To see if it's working, access the http://people-{{USER_ID}}-project.{{ROUTE_SUBDOMAIN}}/names.html[graphical name cloud powered by Quarkus, MicroProfile and Kafka^]. You should see a cloud of names updating every 5 seconds (it may take a few seconds for it to start!):
+Our application should be up and running in a few seconds after the build completes and generating names. To see if it's working, access the http://people-{{GUID}}-project.{{ROUTE_SUBDOMAIN}}/names.html[graphical name cloud powered by Quarkus, MicroProfile and Kafka^]. You should see a cloud of names updating every 5 seconds (it may take a few seconds for it to start!):
 
 [NOTE]
 ====

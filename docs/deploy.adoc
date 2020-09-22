@@ -33,9 +33,9 @@ You should see:
 ----
 Login successful.
 
-You have one project on this server: "{{ USER_ID }}-project"
+You have one project on this server: "{{ GUID }}-project"
 
-Using project "{{ USER_ID }}-project".
+Using project "{{ GUID }}-project".
 Welcome! See 'oc help' to get started.
 ----
 
@@ -56,7 +56,7 @@ are a top level concept to help you organize your deployments and teams of devel
 namespace allows a community of users (or a user) to organize and manage
 their content in isolation from other communities. OpenShift _projects_ provide additional functionality for managing Kubernetes namespaces.
 
-For this scenario, a project has been created for you called `{{ USER_ID }}-project`. You will use this project to deploy your developed project in the next step.
+For this scenario, a project has been created for you called `{{ GUID }}-project`. You will use this project to deploy your developed project in the next step.
 
 == Deploy to OpenShift
 
@@ -132,7 +132,7 @@ So now our app is deployed to OpenShift. You can also see it in the {{ CONSOLE_U
 
 image::ocplogin.png[login,600]
 
-Once logged in, click on the name of your project (`{{ USER_ID }}-project`):
+Once logged in, click on the name of your project (`{{ GUID }}-project`):
 
 image::ocpproj.png[project,600]
 

@@ -9,13 +9,13 @@ Quarkus is a Kubernetes Native Java stack tailored for GraalVM & OpenJDK HotSpot
 
 Throughout this lab you'll discover how Quarkus can make your development of cloud native apps faster and more productive.
 
-== First Step: Set Your Username!
+== First Step: Set Your Username and GUID!
 
-Look in the box at the top of your screen. Is your username set already? If so it will look like this:
+Look in the box at the top of your screen. Is your username and guid assigned to you set already? If so it will look like this:
 
 image::alreadyset.png[Set User ID above, 700]
 
-If your username is properly set, then you can move on. **If not, in the above box, enter the user ID you were assigned** like this:
+If your username and guid is properly set, then you can move on. **If not, in the above box, enter the user ID and GUID you were assigned** like this:
 
 image::setuser.png[Set User ID above, 700]
 
