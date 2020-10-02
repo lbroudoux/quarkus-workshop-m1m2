@@ -1,6 +1,6 @@
 ---
 id: quarkus-lab
-name: Spring to Quarkus Modernization Hands-on Lab (Version 2020-09-10)
+name: Spring to Quarkus Modernization Hands-on Lab (Version 2020-10-10)
 
 vars:
   ROUTE_SUBDOMAIN:
@@ -15,7 +15,9 @@ vars:
 
 modules:
   activate:
+  - springenv
   - springweb
+  - springdi
   - springdata
   - springconfig
   - springcloud

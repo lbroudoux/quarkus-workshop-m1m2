@@ -31,8 +31,12 @@ modules:
     name: Tracing Quarkus Apps
   security:
     name: Securing Quarkus APIs 
+  springenv:
+    name: Your Workshop Environment
   springweb:
     name: Spring Web to Quarkus Qute
+  springdi:
+    name: Spring DI to Quarkus CDI
   springdata:
     name: Spring JPA to Quarkus Hibernate ORM with Panache
   springconfig:
