@@ -1,9 +1,23 @@
-= Spring Web
+= Spring Web to Quarkus Qute
 :experimental:
+
+https://github.com/spring-projects/spring-framework[Spring^] is one of the most widely used Java frameworks for building applications. For the Java platform, The Spring Framework provides a comprehensive programming and configuration model for modern Java-based enterprise applications with dependency injection, events, resources, data transactions, web applications based on MVC(Model-view-controller) pattern, and more. It basically aims to simplify enterprise application development for Java developers. 
+
+While the Spring framework focuses more on providing enterprise features to developers, https://github.com/spring-projects/spring-boot[Spring Boot^] aims to shorten the code length and provide Spring developers an easier way to develop standalone microservices with an embedded runtime(i.e. Tomcat, Jetty, or Undertow), opinionated starter dependencies, externalized configuration, and more. However, it's *not* the most suitable framework when it comes to writing cloud-native microservices, designing serverless applications for event-driven architecture that are deployed to cloud infrastructure such as https://www.redhat.com/en/topics/containers/what-is-kubernetes[Kubernetes^], https://www.redhat.com/en/technologies/cloud-computing/openshift[Red Hat OpenShift Container Platform^], and take advantage of the underlying platform to do amazing things. In this workshop, we will walk you through how *Spring developers* are able to refactor *Spring* applications to Kubernetes-native microservices with *Quarkus* for dealing with these challenges. 
 
 === What is Spring PetClinic Project?
 
-PetClinic demonstrates the use of a Spring Boot with Spring MVC and Spring Data. The PetClinic has an old and varied history dating right back to the beginning of the Spring Framework. It started life as a demonstration of nearly all the common things that you could do with Spring, back when it was possible to conceive of such a demonstration. These days it is a very small slice of what you could achieve, but the community has a soft spot for it, so it's nice to see it still going after all this time, so we hope you enjoy it too.
+https://github.com/spring-projects/spring-petclinic[Spring PetClinic^] is the most popular sample application that demonstrates all the common features of traditional enterprise Java application using a Spring Boot with Spring MVC and Spring Data. The PetClinic showcases how the users who work in the clinic manage their work in terms of view and manage information regarding the veterinarians, the clients, and their pets with the following use case:
+
+ * View a list of veterinarians and their specialties
+ * View information pertaining to a pet owner
+ * Update the information pertaining to a pet owner
+ * Add a new pet owner to the system
+ * View information pertaining to a pet
+ * Update the information pertaining to a pet
+ * Add a new pet to the system
+ * View information pertaining to a pet's visitation history
+ * Add information pertaining to a visit to the pet's visitation history
 
 image::spring-petclinic-landing.png[spring, 900]
 
@@ -28,7 +42,7 @@ If you’ve already completed other labs today then you'll be familiar with the 
 
 You will be using Red Hat CodeReady Workspaces, an online IDE based on https://www.eclipse.org/che/[Eclipe Che^]. *Changes to files are auto-saved every few seconds*, so you don’t need to explicitly save changes.
 
-To get started, {{ ECLIPSE_CHE_URL }}[access the CodeReady Workspaces instance^] and log in using the username and password you’ve been assigned (e.g. `{{ USER_ID }}/{{ CHE_USER_PASSWORD }}`):
+To get started, {{ CHE_URL }}[access the CodeReady Workspaces instance^] and log in using the username and password you’ve been assigned (e.g. `{{ USER_ID }}/{{ CHE_USER_PASSWORD }}`):
 
 image::che-login.png[cdw, 700]
 
@@ -98,3 +112,32 @@ Let's run the Spring Petclinic application. in a CodeReady Terminal:
 ----
 mvn spring-boot:run -f $CHE_PROJECTS_ROOT/quarkus-workshop-labs/spring-petclinic
 ----
+
+[NOTE]
+====
+The first time you build the app, new dependencies may be downloaded via maven. This should only happen once, after that things will go even faster.
+====
+
+You should see:
+
+[source,none]
+----
+2020-10-05 16:49:19.365  INFO 68190 --- [  restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8081 (http)
+2020-10-05 16:49:19.375  INFO 68190 --- [  restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-10-05 16:49:19.375  INFO 68190 --- [  restartedMain] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.36]
+
+....
+
+2020-10-05 16:49:21.715  INFO 68190 --- [  restartedMain] DeferredRepositoryInitializationListener : Spring Data repositories initialized!
+2020-10-05 16:49:21.726  INFO 68190 --- [  restartedMain] o.s.s.petclinic.PetClinicApplication     : Started PetClinicApplication in 4.259 seconds (JVM running for 4.676)
+----
+
+The Spring Boot application should be running with _8081_ port because you will initialize _8080_ port to run a Quarkus application later.
+
+CodeReady will also detect that the Quarkus app opens port `5005` (for debugging) and `8080` (for web requests). *Do not open port 5005*, but when prompted, *open the port `8080`*, which opens a small web browser in CodeReady:
+
+image::open-port.png[port, 700]
+
+You should see the default Quarkus welcome page (you may need to click the _reload_ icon):
+
+image::welcome-quarkus.png[port, 900]
