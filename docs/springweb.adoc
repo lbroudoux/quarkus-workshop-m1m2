@@ -84,16 +84,9 @@ https://github.com/RedHat-Middleware-Workshops/quarkus-workshop-labs
 
 image::crw-clone-repo.png[crw,900]
 
-The project is imported into your workspace and is visible in the project explorer:
-
-image::crw-clone-explorer.png[crw,900]
-
-[NOTE]
-====
 The Terminal window in CodeReady Workspaces. You can open a terminal window for any of the containers running in your Developer workspace. For the rest of these labs, anytime you need to run a command in a terminal, you can use the **>_ New Terminal** command on the right:
 
 image::cmd-terminal.png[codeready-workspace-terminal, 700]
-====
 
 ==== IMPORTANT: Check out proper Git branch
 
@@ -103,6 +96,10 @@ To make sure you're using the right version of the project files, run this comma
 ----
 cd $CHE_PROJECTS_ROOT/quarkus-workshop-labs && git checkout rhtr2020
 ----
+
+The project is imported into your workspace and is visible in the project explorer:
+
+image::crw-clone-explorer-spring.png[crw,900]
 
 ## Running the Spring Petclinic
 
@@ -134,10 +131,18 @@ You should see:
 
 The Spring Boot application should be running with _8081_ port because you will initialize _8080_ port to run a Quarkus application later.
 
-CodeReady will also detect that the Quarkus app opens port `5005` (for debugging) and `8080` (for web requests). *Do not open port 5005*, but when prompted, *open the port `8080`*, which opens a small web browser in CodeReady:
+CodeReady will also detect that the Quarkus app opens port `8081` for web requests. When prompted, *open the port `8081`*, which opens a small web browser in CodeReady:
 
-image::open-port.png[port, 700]
+image::open-port-spring.png[port, 700]
 
-You should see the default Quarkus welcome page (you may need to click the _reload_ icon):
+Then click on `Open Link` to redirect to the external URL of the Spring Boot application:
 
-image::welcome-quarkus.png[port, 900]
+image::open-link-spring.png[port, 700]
+
+You should see the Spring Petclinic welcome page (you may need to click the _reload_ icon):
+
+image::welcome-spring-petclinic.png[port, 900]
+
+You can also click on the URL link at the upper right to open the same default page in a separate browser tab:
+
+image::crw-open-spring-page.png[page, 800]
