@@ -16,6 +16,7 @@ vars:
 modules:
   activate:
   - springenv
+  - springpetclinic
   - springweb
   - springdi
   - springdata
