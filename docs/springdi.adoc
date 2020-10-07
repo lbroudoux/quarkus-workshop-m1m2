@@ -1,3 +1,7 @@
 = Spring DI to Quarkus CDI
 :experimental:
 
+
+
+Spring IoC container caching which spares us unnecessary set up time between test execution.
+Dependency Injection of test fixture instances, meaning that we don't need to perform application context lookups. See the use of @Autowired on the clinic instance variable, which uses autowiring by type. As an alternative, we could annotate clinic with JSR 250's @Resource to achieve dependency injection by name. (see: @ContextConfiguration, DependencyInjectionTestExecutionListener)
