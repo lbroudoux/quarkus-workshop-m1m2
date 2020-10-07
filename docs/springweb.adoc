@@ -3,7 +3,7 @@
 
 *Qute* is a templating engine designed specifically to meet the Quarkus needs. The usage of reflection is minimized to reduce the size of native images. The API combines both the imperative and non-blocking reactive style of coding. In the development mode, all files located in *src/main/resources/templates* are watched for changes and modifications are immediately visible. In this lab, you will learn how to easily render templates from the *Spring MVC* web application to the *Quarkus* using Qute Templating engine.
 
-=== What is Quarkus?
+== What is Quarkus?
 
 image::logo.png[quarkus-logo, 900]
 
@@ -13,7 +13,7 @@ Quarkus is a Kubernetes Native Java stack tailored for GraalVM & OpenJDK HotSpot
 
 Throughout this lab you'll discover how Quarkus can make your development of cloud native apps faster and more productive.
 
-=== Running the Application in Live Coding Mode
+== Running the Application in Live Coding Mode
 
 **Live Coding** (also referred to as _dev mode_) allows us to run the app and make changes on the fly. Quarkus will automatically re-compile and reload the app when changes are made. This is a powerful and efficient style of developing that you will use throughout the lab.
 
@@ -63,9 +63,9 @@ Click on the URL link at the upper right to open the same default page in a sepa
 
 image::crw-open-page.png[page, 800]
 
-Leave this page because you will develop new logical views and implemented the use cases like the Spring Petclinic application in the next labs.
+`Leave this page` because you will develop new logical views and implemented the use cases like the Spring Petclinic application in the next labs.
 
-=== Create Qute Templates to refactor Spring Web
+== Create Qute Templates to refactor Spring Web
 
 Quarkus aims to provide a support for a full https://quarkus.io/extensions/[extension ecosystem^], to make it easy to discover and consume 3rd party extensions, as well as providing easier version management. In this step, you will use a `Qute Templating` extension to refactor Spring Web applications but also need a `RESTEasy Qute` extension to integrate your JAX-RS application with Qute templating engine.
 
@@ -110,7 +110,7 @@ Now let’s inject the *compiled* welcome template in the resource class. Open a
 
 If there is no *@ResourcePath* qualifier provided, the field name is used to locate the template. In this particular case, we’re injecting a template with path *templates/welcome.html*.
 
-*Template.data()* returns a new template instance that can be customized before the actual rendering is triggered. In this case, we put the name value under the key *active*. The data map is accessible during rendering. Note that we don’t trigger the rendering because this is done automatically by a special _ContainerResponseFilter_ implementation.
+*Template.data()* returns a new template instance that can be customized before the actual rendering is triggered. In this case, we put the name value under the key *active* which is used for the menu highlighting. The data map is accessible during rendering. Note that we don’t trigger the rendering because this is done automatically by a special _ContainerResponseFilter_ implementation.
 
 Add the following code under the `// TODO: Add TemplateInstance` comment:
 
@@ -138,9 +138,258 @@ Wow, how cool is that? Supersonic Subatomic live reload! And we’re just gettin
 We just created one template to render the new welcome page resource so you should see *404 - Resource Not Found* when you click on the other menus except for _Home_. 
 ====
 
-To distinguish 2 Petclinic application easily, you see *Red Hat Runtimes* and *Quarkus* logos on the welcome page. For example, when you mouseover the _Quarkus logo_ on the left top of the page, you should see it changes a dark blue Quarkus logo:
+To distinguish 2 Petclinic application easily, you see different *Red Hat Runtimes* logo and *Quarkus* logo on the each welcome page. For example, when you mouseover the _Quarkus logo_ on the left top of the page, you should see it changes a dark blue Quarkus logo:
 
 image::quarkus-petclinic-home-change.png[quarkus-petclinic, 900]
 
-=== Add the Owners Template and Contents
+== Add More Templates and Contents for Owners, Vets, Errors Menus
 
+Create an owners template to refactor *Find Owners* presentaion layer as you see in the Spring Petclinic:
+
+image::spring-find-owners.png[quarkus-petclinic, 900]
+
+Open an empty `welcome.html` in `src/main/resources/templates`, and add the following code:
+
+[source,html,role="copypaste"]
+----
+{#include header/}
+
+{#if owners == NULL || owners.size == 0} // <1>
+
+    <h2>Find Owners</h2>
+
+    <form name="owner" action="find" method="GET" class="form-horizontal" id="search-owner-form">
+    <div class="form-group">
+        <div class="control-group" id="lastNameGroup">
+        <label class="col-sm-2 control-label">Last name </label>
+        <div class="col-sm-10">
+            {#if owners.size == 0} // <2>
+                <input class="form-control" name="lastName" id="lastName" value="{lastName}" size="30" maxlength="80"/>
+                <span class="help-inline"><div><p>has not been found</p></div></span>
+            {#else}
+                <input class="form-control" name="lastName" id="lastName" size="30" maxlength="80"/> 
+            {/if}
+        </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+        <button type="submit" class="btn btn-default">Find Owner</button>
+        </div>
+    </div>
+    </form>
+    <br />
+    <a href="getOwner" class="btn btn-default" >Add Owner</a>
+
+{#else if owners.size > 1}
+    {#include ownersList/} // <3>
+{#else}
+    {#include ownerDetails/} // <4>
+{/if}
+
+{#include footer/}
+----
+
+<1> This template will be used to render the initial _Find Owners_ page as well as the return page with _no result_.
+<2> It shows that there's no result with a certain owner's _last name_ you input.
+<3> Include an owner list template that you will create in the next lab.
+<4> Include an owner's detailed information template that you will create in the next lab.
+
+[NOTE]
+====
+Quarkus Qute Templating Engine can't be integrated with the https://www.thymeleaf.org/[Thymeleaf^] library that Springp Petclinic uses for now. Instead, we need to create static contents such as _CSS, JavaScript, Image, and Fonts_. You can find more details here:
+
+image::quarkus-static-contents.png[quarkus-petclinic, 700]
+====
+
+Open an empty `OwnersResource.java` class file, and add the following code:
+
+[source,java,role="copypaste"]
+----
+package org.acme.rest;
+
+import java.net.URI;
+import java.util.Arrays;
+
+import javax.inject.Inject;
+import javax.transaction.Transactional;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.POST;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
+import io.quarkus.qute.Template;
+import io.quarkus.qute.TemplateInstance;
+
+// import org.acme.model.Owner;
+// import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
+// import org.acme.model.OwnerForm;
+// import org.acme.service.OwnersService;
+
+import org.jboss.resteasy.annotations.jaxrs.QueryParam;
+
+@Path("/")
+public class OwnersResource {
+
+    // TODO: Inject CDI Bean
+
+    @Inject
+    Template owners;
+
+    // TODO: Inject editOwner template
+
+    @GET
+    @Produces(MediaType.TEXT_HTML)
+    @Path("owners")
+    public TemplateInstance findOwners(@QueryParam("id") Long id) {
+        return owners.data("active", "owners")
+                    .data("owners", id);
+    }
+
+    // TODO: Add to search an exiting owner by last name
+
+    // TODO: Add to Post transaction for adding a new owner
+
+    // TODO: Add to retrieve an exiting owner
+
+    // TODO: Add to Post transaction for editing an exiting owner
+
+}
+----
+
+Go back to the _Quarkus Petclinic_ page in your browser, click on the `FIND OWNERS` menu then you should see the following rendered page:
+
+image::quarkus-petclinic-owners.png[quarkus-petclinic, 900]
+
+[NOTE]
+====
+Don't try to search owners with the last name or add an owner yet. We'll refactor the functions using _Quarkus CDI_ and _Hibernate ORM with Panache_ in the next labs.
+====
+
+Great job! Let's finish refactoring 2 more top menu pages. Open an empty `vets.html` in `src/main/resources/templates`, and add the following code:
+
+[source,html,role="copypaste"]
+----
+{#include header/}
+
+<h2>Veterinarians</h2>
+
+<table id="vets" class="table table-striped">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Specialties</th>
+    </tr>
+    </thead>
+    <tbody>
+        <!-- TODO: Add a for loop to list vets -->
+
+    </tbody>
+</table>
+</div></div>
+
+{#include footer/}
+----
+
+Open an empty `OwnersResource.java` class file, and add the following code:
+
+[source,java,role="copypaste"]
+----
+package org.acme.rest;
+
+import javax.inject.Inject;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
+import io.quarkus.qute.Template;
+import io.quarkus.qute.TemplateInstance;
+
+// import org.acme.service.VetsService;
+
+@Path("vets")
+public class VetsResource {
+
+    // TODO: Inject CDI Bean
+
+    @Inject
+    Template vets;
+
+    @GET
+    @Produces(MediaType.TEXT_HTML)
+    public TemplateInstance get() {
+        return vets.data("active", "vets")
+                .data("vets", null); // <1>
+    }
+}
+----
+
+<1> We will add a dataset using Hibernate ORM and Panache extensions in the next lab.
+
+Go back to the _Quarkus Petclinic_ page in your browser, click on the `VETERINARIAN` menu then you should see the following rendered page:
+
+image::quarkus-petclinic-vets.png[quarkus-petclinic, 900]
+
+Open an empty `oups.html` in `src/main/resources/templates`, and add the following code:
+
+[source,html,role="copypaste"]
+----
+{#include header/}
+
+<body>
+    <img class="img-responsive" src="images/pets.png"/>
+    <h2>Something happened...</h2>
+    <p>{message}</p> // <1>
+</body>
+
+{#include footer/}
+----
+
+<1> {message} is a value expression that is evaluated when the template is rendered.
+
+Open an empty `OupsResource.java` class file, and add the following code:
+
+[source,java,role="copypaste"]
+----
+package org.acme.rest;
+
+import javax.inject.Inject;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
+import io.quarkus.qute.Template;
+import io.quarkus.qute.TemplateInstance;
+
+@Path("oups")
+public class OupsResource {
+
+    @Inject
+    Template oups;
+
+    @GET
+    @Produces(MediaType.TEXT_HTML)
+    public TemplateInstance get() {
+        return oups.data("active", "oups")
+                .data("message", "Expected: controller used to showcase what " + "happens when an exception is thrown");
+    }
+    
+}
+----
+
+Go back to the _Quarkus Petclinic_ page in your browser, click on the `ERROR` menu then you should see the following rendered page:
+
+image::quarkus-petclinic-oups.png[quarkus-petclinic, 900]
+
+== Congratulations!
+
+You've learned how to refactor _Spring Web_ to _Quarkus_ using *Qute Templating Engine*. Note that Qute technology is still considered experimental and you can find more https://quarkus.io/guides/qute-reference[Qute Reference Guide^] on how to use syntax, build blocks, integration, etc.
+
+Let's go back to the *welcome page* in the `Quarkus Petclinic` application. It provides the top menus to display a list of all vets, find an owner, or view documentation just like _Spring Petclinic_:
+
+image::quarkus-petclinic-views.gif[spring, 900]
