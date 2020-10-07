@@ -34,9 +34,9 @@ To get started, {{ CHE_URL }}[access the CodeReady Workspaces instance^] and log
 
 image::che-login.png[cdw, 700]
 
-Once you log in, you’ll be placed on your personal dashboard. Click on the name of the pre-created workspace on the left, as shown below (the name will be different depending on your assigned number). You can also click on the name of the workspace in the center, and then click on the green {{ USER_ID}}-namespace that says _Open_ on the top right hand side of the screen.
+Once you log in, you’ll be placed on your personal dashboard. Click on the name of the pre-created workspace on the left, as shown below (the name will be different depending on your assigned number). You can also click on the name of the workspace in the center, and then click on the green *{{ USER_ID}}-namespace* that says _Open_ on the top right hand side of the screen.
 
-image::che-landing.png[cdw, 700]
+image::che-landing-spring.png[cdw, 700]
 
 After a minute or two, you’ll be placed in the workspace:
 
@@ -107,13 +107,13 @@ You should see:
 
 [source,none]
 ----
-2020-10-06 02:25:22.380  INFO 326 --- [  restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8081 (http) with context path ''
-2020-10-06 02:25:22.381  INFO 326 --- [  restartedMain] DeferredRepositoryInitializationListener : Triggering deferred initialization of Spring Data repositories…
-2020-10-06 02:25:22.677  INFO 326 --- [  restartedMain] DeferredRepositoryInitializationListener : Spring Data repositories initialized!
-2020-10-06 02:25:22.691  INFO 326 --- [  restartedMain] o.s.s.petclinic.PetClinicApplication     : Started PetClinicApplication in 3.918 seconds (JVM running for 4.28)
-2020-10-06 02:29:20.797  INFO 326 --- [nio-8081-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
-2020-10-06 02:29:20.797  INFO 326 --- [nio-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
-2020-10-06 02:29:20.804  INFO 326 --- [nio-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 7 ms
+INFO 326 --- [  restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8081 (http) with context path ''
+INFO 326 --- [  restartedMain] DeferredRepositoryInitializationListener : Triggering deferred initialization of Spring Data repositories…
+INFO 326 --- [  restartedMain] DeferredRepositoryInitializationListener : Spring Data repositories initialized!
+INFO 326 --- [  restartedMain] o.s.s.petclinic.PetClinicApplication     : Started PetClinicApplication in 3.918 seconds (JVM running for 4.28)
+INFO 326 --- [nio-8081-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+INFO 326 --- [nio-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+INFO 326 --- [nio-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 7 ms
 ----
 
 The Spring Boot application should be running with _8081_ port because you will initialize _8080_ port to run a Quarkus application later.
@@ -130,6 +130,8 @@ You should see the Spring Petclinic welcome page (you may need to click the _rel
 
 image::welcome-spring-petclinic.png[port, 900]
 
-You can also click on the URL link at the upper right to open the same default page in a separate browser tab:
+Click on the URL link at the upper right to open the same default page in a separate browser tab:
 
 image::crw-open-spring-page.png[page, 800]
+
+Leave this page because you will go through logical views and implemented the use cases of Spring Petclinic application in the next labs.

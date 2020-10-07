@@ -1,6 +1,8 @@
 = Spring Web to Quarkus Qute
 :experimental:
 
+*Qute* is a templating engine designed specifically to meet the Quarkus needs. The usage of reflection is minimized to reduce the size of native images. The API combines both the imperative and non-blocking reactive style of coding. In the development mode, all files located in *src/main/resources/templates* are watched for changes and modifications are immediately visible. In this lab, you will learn how to easily render templates from the *Spring MVC* web application to the *Quarkus* using Qute Templating engine.
+
 === What is Quarkus?
 
 image::logo.png[quarkus-logo, 900]
@@ -11,32 +13,134 @@ Quarkus is a Kubernetes Native Java stack tailored for GraalVM & OpenJDK HotSpot
 
 Throughout this lab you'll discover how Quarkus can make your development of cloud native apps faster and more productive.
 
-=== Add Qute extentions to Quarkus PetClinic Project
+=== Running the Application in Live Coding Mode
 
-*Qute* is a templating engine designed specifically to meet the Quarkus needs. The usage of reflection is minimized to reduce the size of native images. The API combines both the imperative and non-blocking reactive style of coding. In the development mode, all files located in *src/main/resources/templates* are watched for changes and modifications are immediately visible. In this lab, you will learn how to easily render templates from the *Spring MVC* web application to the *Quarkus* using Qute Templating engine.
+**Live Coding** (also referred to as _dev mode_) allows us to run the app and make changes on the fly. Quarkus will automatically re-compile and reload the app when changes are made. This is a powerful and efficient style of developing that you will use throughout the lab.
 
-Quarkus aims to provide a support for a full https://quarkus.io/extensions/[extension ecosystem^], to make it easy to discover and consume 3rd party extensions, as well as providing easier version management. So let's add *Qute extentions* here. Open a new terminal in CodeReady Workspaces, run the following command to add the _quarkus-qute_ and _quarkus-qute-resteasy_ extensions to your project:
+Open a new terminal in CodeReady Workspaces then run the following `mvn` (Maven) commands to run the Quarkus petclinic application:
 
 [source,sh,role="copypaste"]
 ----
-mvn -q quarkus:add-extension -Dextensions="quarkus-qute, quarkus-resteasy-qute" -f $CHE_PROJECTS_ROOT/quarkus-workshop-labs/quarkus-petclinic
+mvn quarkus:dev -f $CHE_PROJECTS_ROOT/quarkus-workshop-labs/quarkus-petclinic
 ----
 
-You should see
-[source,console]
+Leave this terminal window open throughout the lab! You will complete the entire lab without shutting down Quarkus Live Coding mode, so be careful not to close the tab (if you do, you re-run it). This is very useful for quick expermentation.
+
+[NOTE]
+====
+The first time you build the app, new dependencies may be downloaded via maven. This should only happen once, after that things will go even faster
+====
+
+[NOTE]
+====
+You may see WARNINGs like `Unrecognized configuration key` or `Duplicate entry`. These are configuration values that will take effect later on and can be safely ignored for now.
+====
+
+You should see:
+
+[source,none]
 ----
-✅ Extension io.quarkus:quarkus-resteasy-qute has been installed
-✅ Extension io.quarkus:quarkus-qute has been installed
+__  ____  __  _____   ___  __ ____  ______ 
+ --/ __ \/ / / / _ | / _ \/ //_/ / / / __/ 
+ -/ /_/ / /_/ / __ |/ , _/ ,< / /_/ /\ \   
+--\___\_\____/_/ |_/_/|_/_/|_|\____/___/   
+2020-10-06 21:48:06,052 INFO  [io.quarkus] (Quarkus Main Thread) quarkus-petclinic 1.0.0-SNAPSHOT on JVM (powered by Quarkus x.x.x) started in 0.878s. Listening on: http://0.0.0.0:8080
+2020-10-06 21:48:06,054 INFO  [io.quarkus] (Quarkus Main Thread) Profile dev activated. Live Coding activated.
+2020-10-06 21:48:06,054 INFO  [io.quarkus] (Quarkus Main Thread) Installed features: [cdi, qute, resteasy-qute]
 ----
 
-Let's go through how the Spring Petclinic application works. 
+Note the amazingly fast startup time! The app is now running "locally" (within the Che container in which the workspace is also running). `localhost` refers to the Kubernetes pod, not "your" laptop (so therefore opening localhost:8080 in your browser will not do anything).
 
-image::spring-petclinic-landing.png[spring, 900]
+CodeReady will also detect that the Quarkus app opens port `5005` (for debugging) and `8080` (for web requests). *Do not open port 5005*, but when prompted, *open the port `8080`*, which opens a small web browser in CodeReady:
 
+image::open-port.png[port, 700]
 
-== Login to OpenShift
+You should see the default Quarkus welcome page (you may need to click the _reload_ icon):
 
-Although your Eclipse Che workspace is running on the Kubernetes cluster, it's running with a default restricted _Service Account_ that prevents you from creating most resource types. So we'll log in with your workshop user. Click on **Login to OpenShift**, and enter your given credentials:
+image::welcome-quarkus-spring.png[port, 900]
 
-* Username: **`{{ USER_ID }}`**
-* Password: **`{{ OPENSHIFT_USER_PASSWORD }}`**
+Click on the URL link at the upper right to open the same default page in a separate browser tab:
+
+image::crw-open-page.png[page, 800]
+
+Leave this page because you will develop new logical views and implemented the use cases like the Spring Petclinic application in the next labs.
+
+=== Create Qute Templates to refactor Spring Web
+
+Quarkus aims to provide a support for a full https://quarkus.io/extensions/[extension ecosystem^], to make it easy to discover and consume 3rd party extensions, as well as providing easier version management. In this step, you will use a `Qute Templating` extension to refactor Spring Web applications but also need a `RESTEasy Qute` extension to integrate your JAX-RS application with Qute templating engine.
+
+Open a `pom.xml` of _quarkus_petclinic_ in projects explorer then you should see that _quarkus-qute_ and _quarkus-qute-resteasy_ extensions are already added to your project:
+
+image::qute-extensions.png[port, 700]
+
+You can also find the _Installed features: [cdi, qute, resteasy-qute]_ in the above Quarkus runtime logs.
+
+Let's go back to the *welcome page* in Spring Petclinic application. It provides the top menus to display a list of all vets, find an owner, or view documentation. For example, when you click on Spring logo, the page will go back to the welcome page:
+
+image::spring-petclinic-views.gif[spring, 900]
+
+we'll start with a very simple template to create the welcome page. Open an empty `welcome.html` in `src/main/resources/templates`. By default, all files located in the src/main/resources/templates directory and its subdirectories are registered as templates. Templates are validated during startup and watched for changes in the development mode. 
+
+Copy the below code into the file:
+
+[source,html,role="copypaste"]
+----
+{#include header/} // <1>
+
+<h2>Welcome</h2>
+<div class="row">
+    <div class="col-md-12">
+      <img class="img-responsive" src="images/pets.png"/>
+    </div>
+</div>
+
+{#include footer/} // <2>
+----
+
+<1> Include a template with id header to specify menu navigation. See more details in _src/main/resources/templates/header.html_.
+<2> Include a template with id footer to refer common Javascripts and a common logo image. See more details in _src/main/resources/templates/footer.html_.
+
+Now let’s inject the *compiled* welcome template in the resource class. Open an empty `WelcomeResource.java` class file, and add the following code under the `// TODO: Inject template` comment:
+
+[source,java,role="copypaste"]
+----
+    @Inject
+    Template welcome;
+----
+
+If there is no *@ResourcePath* qualifier provided, the field name is used to locate the template. In this particular case, we’re injecting a template with path *templates/welcome.html*.
+
+*Template.data()* returns a new template instance that can be customized before the actual rendering is triggered. In this case, we put the name value under the key *active*. The data map is accessible during rendering. Note that we don’t trigger the rendering because this is done automatically by a special _ContainerResponseFilter_ implementation.
+
+Add the following code under the `// TODO: Add TemplateInstance` comment:
+
+[source,java,role="copypaste"]
+----
+    @GET
+    @Produces(MediaType.TEXT_HTML)
+    public TemplateInstance get() {
+        return welcome.data("active", "home");
+    }
+----
+
+Delete the exiting default landing page to render a new welcome page:
+
+image::delete-index.png[quarkus-logo, 700]
+
+Now, let’s exercise the live reload capabilities of Quarkus. Go back to the Quarkus welcome page in your browser then `reload` the page. It should now show the following new welcome page that you saw in the Spring Petclinic welcome page:
+
+image::quarkus-petclinic-home.png[quarkus-petclinic, 900]
+
+Wow, how cool is that? Supersonic Subatomic live reload! And we’re just getting started. Leave the app running so we can continue to add new templates on the fly in the next section.
+
+[NOTE]
+====
+We just created one template to render the new welcome page resource so you should see *404 - Resource Not Found* when you click on the other menus except for _Home_. 
+====
+
+To distinguish 2 Petclinic application easily, you see *Red Hat Runtimes* and *Quarkus* logos on the welcome page. For example, when you mouseover the _Quarkus logo_ on the left top of the page, you should see it changes a dark blue Quarkus logo:
+
+image::quarkus-petclinic-home-change.png[quarkus-petclinic, 900]
+
+=== Add the Owners Template and Contents
+
