@@ -3,6 +3,10 @@
 
 *Qute* is a templating engine designed specifically to meet the Quarkus needs. The usage of reflection is minimized to reduce the size of native images. The API combines both the imperative and non-blocking reactive style of coding. In the development mode, all files located in *src/main/resources/templates* are watched for changes and modifications are immediately visible. In this lab, you will learn how to easily render templates from the *Spring MVC* web application to the *Quarkus* using Qute Templating engine.
 
+Let’s take a look at what the Spring Web structure looks like. You should see lots of static contents(i.e. _HTML, CSS, Images, Javascripts_) and controller Java classes for rendering the Model-View-Controller web presentation layer:
+
+image::spring-web-structure.png[quarkus, 600]
+
 == What is Quarkus?
 
 image::logo.png[quarkus-logo, 900]
@@ -388,7 +392,7 @@ image::quarkus-petclinic-oups.png[quarkus-petclinic, 900]
 
 == Congratulations!
 
-You've learned how to refactor _Spring Web_ to _Quarkus_ using *Qute Templating Engine*. Note that Qute technology is still considered experimental and you can find more https://quarkus.io/guides/qute-reference[Qute Reference Guide^] on how to use syntax, build blocks, integration, etc.
+You've learned how to simply refactor _Spring Web_ to _Quarkus_ using *Qute Templating Engine*. Note that Qute technology is still considered experimental and you can find more https://quarkus.io/guides/qute-reference[Qute Reference Guide^] on how to use syntax, build blocks, integration, etc.
 
 Let's go back to the *welcome page* in the `Quarkus Petclinic` application. It provides the top menus to display a list of all vets, find an owner, or view documentation just like _Spring Petclinic_:
 

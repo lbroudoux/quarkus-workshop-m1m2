@@ -1,4 +1,4 @@
-= Spring Data
+= 5Spring JPA to Quarkus Hibernate ORM with Panache
 :experimental:
 
 To be filled

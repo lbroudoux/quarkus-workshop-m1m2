@@ -1,4 +1,4 @@
-= Spring Web to Quarkus Qute
+= Getting Started with Spring PetClinic
 :experimental:
 
 https://github.com/spring-projects/spring-framework[Spring^] is one of the most widely used Java frameworks for building applications. For the Java platform, The Spring Framework provides a comprehensive programming and configuration model for modern Java-based enterprise applications with dependency injection, events, resources, data transactions, web applications based on MVC(Model-view-controller) pattern, and more. It basically aims to simplify enterprise application development for Java developers. 
