@@ -10,7 +10,7 @@ Spring framework provides a *Dependency Injection(DI)* container that enables yo
 
 Multiple Dependency Injections are already used in the Spring Petclinic application through constructors, setters or fields. For example, Open a `PetTypeFormatter` java class file in `src/main/java/org/springframework/samples?petclinic/owner` then you shoud see:
 
-[source,java, none]
+[source,java]
 ----
 @Component // <1>
 public class PetTypeFormatter implements Formatter<PetType> {
@@ -134,12 +134,11 @@ Edit the `VetsService` class to inject the VetsService just like *@Autowired* in
 ----
     @Inject
     VetsService service;
-}
 ----
 
 Replace `null` variable with `service.getAll()` in *TemplateInstance get()* method to invoke _VetsService_. It should look like:
 
-[source,java,none]
+[source,java]
 ----
     @GET
     @Produces(MediaType.TEXT_HTML)
