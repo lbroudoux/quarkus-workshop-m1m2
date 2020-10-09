@@ -40,7 +40,7 @@ modules:
   springdi:
     name: Spring DI to Quarkus CDI
   springdata:
-    name: Spring JPA to Quarkus Hibernate ORM with Panache
+    name: Spring Data JPA to Quarkus Hibernate ORM with Panache
   springconfig:
     name: Spring Config to Quarkus Config
   springcloud:

@@ -8,7 +8,7 @@ Spring framework provides a *Dependency Injection(DI)* container that enables yo
  * Better modularity of a program
  * Easier in testing a program by isolating a component or mocking its dependencies
 
-Multiple Dependency Injections are already used in the Spring Petclinic application through constructors, setters or fields. For example, Open a `PetTypeFormatter` java class file in `src/main/java/org/springframework/samples?petclinic/owner` then you shoud see:
+Multiple Dependency Injections are already used in the Spring Petclinic application through constructors, setters or fields. For example, Open a `PetTypeFormatter` class file in `src/main/java/org/springframework/samples/petclinic/owner` then you shoud see:
 
 [source,java]
 ----

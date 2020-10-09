@@ -1,24 +1,56 @@
-= 5Spring JPA to Quarkus Hibernate ORM with Panache
+= Spring Data JPA to Quarkus Hibernate ORM with Panache
 :experimental:
 
-HSQL Setup
-Create a new directory containing a copy of the entire contents of the directory petclinic/db/hsqldb. The file petclinic.script is the data file that will be used by the server. It has been initialized with some sample data. Start a server on the standard port by executing server.sh(Unix) or server.bat (Windows) or alternatively edit the file to select a port of your choosing. A useful database manager can be started by executing manager.sh (Unix) or manager.bat (Windows). When the application opens, connect to the "HSQL Database Engine Server" using the default parameters. This tool can also be used to manage other databases. To use a different port, it will be necessary to change the PetClinic Database Setup. It may also be necessary to consult the HSQL documentation for instructions on how to change the port the server uses.
+*Spring Data JPA* enables Java developers to implement JPA-based repositories but also quickly to build applications with data access technology. Implementing the data access layer of an application has been a hassle for quite some time. To perform simple queries, pagination and auditing, you need to write boilerplate code. Spring Data JPA aims to improve the implementation of the data access layer by creating repository interfaces and custom finder methods. 
 
-MYSQL Setup (optional)
-Add the PetClinic database to a running MySQL server by following the explicit instructions found in db/mysql/petclinic_db_setup_mysql.txt. PetClinic expects by default to be able to access the server via the standard port 3306. To use a different port, it will be necessary to change the PetClinic Database Setup.
+For example, let's take a look at the `OwnerRepository` class in `src/main/java/org/springframework/samples/petclinic/owner` of Spring Petclinic application. This   repository class showcases how to execute JPA queries and and save an object to the data store:
 
-PetClinic Database Setup
-To use a Java EE server supplied connection-pooled data source with Tomcat, it will be necessary to use and possibly edit the appropriate context definition file for the petclinic webapp. To use it, deploy a copy of the appropriate context definition file in Tomcat's webapps directory and restart the server. Consult the Tomcat log files if something goes wrong when starting either Tomcat or the PetClinic application. The context files are named petclinic_tomcat_*.xml, where * is either "hsqldb" or "mysql". There is a context file supplied for each database in its respective directory. There is also a context file db/petclinic_tomcat_all.xml that will provide a JNDI connection-pooled DataSource for all supported databases. Should you use this file, you must of course make sure that all the database servers are running when you restart Tomcat.
+[source,java]
+----
+public interface OwnerRepository extends Repository<Owner, Integer> {
 
- * vets displays all vets and their specialties.
- * findOwners is used to find owners by last name.
- * findOwnersRedirect redirects to findOwner.
- * selectOwner allows user to select from a list of multiple owners with the same last name.
- * owner displays a owner's data and a list of the owner's pets and their data.
- * ownerRedirect redirects to owner.
- * owner supports AddOwnerForm and EditOwnerForm
- * pet supports AddPetForm and web.EditPetForm
- * visit supports AddVisitForm
- * dataAccessFailure displays a stacktrace
+	/**
+	 * Retrieve {@link Owner}s from the data store by last name, returning all owners
+	 * whose last name <i>starts</i> with the given name.
+	 * @param lastName Value to search for
+	 * @return a Collection of matching {@link Owner}s (or an empty Collection if none
+	 * found)
+	 */
+	@Query("SELECT DISTINCT owner FROM Owner owner left join fetch owner.pets WHERE owner.lastName LIKE :lastName%")
+	@Transactional(readOnly = true)
+	Collection<Owner> findByLastName(@Param("lastName") String lastName);
 
-ddd
+	/**
+	 * Retrieve an {@link Owner} from the data store by id.
+	 * @param id the id to search for
+	 * @return the {@link Owner} if found
+	 */
+	@Query("SELECT owner FROM Owner owner left join fetch owner.pets WHERE owner.id =:id")
+	@Transactional(readOnly = true)
+	Owner findById(@Param("id") Integer id);
+
+	/**
+	 * Save an {@link Owner} to the data store, either inserting or updating it.
+	 * @param owner the {@link Owner} to save
+	 */
+	void save(Owner owner);
+
+}
+----
+
+Here are more use cases how the presentation layer maps to the persistence layer using Spring Data JPA in Spring Petclinic application:
+
+ * Vets displays all vets and their specialties
+ * FindOwners is used to find owners by last name
+ * FindOwnersRedirect redirects to findOwner
+ * SelectOwner allows user to select from a list of multiple owners with the same last name
+ * Owner displays a owner's data and a list of the owner's pets and their data
+ * OwnerRedirect redirects to owner
+ * Owner supports AddOwnerForm and EditOwnerForm
+ * Pet supports AddPetForm and EditPetForm
+ * Visit supports AddVisitForm
+
+Spring Petclinic application also supports 3 types of database such as *H2*, *HSQL*, and *MYSQL* below. In the previous lab, we used the _H2 in-memory database_ to store business data(i.e. vets, pets, owners):
+
+image::spring-db-structure.png[quarkus, 400]
+

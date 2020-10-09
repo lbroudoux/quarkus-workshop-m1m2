@@ -201,7 +201,7 @@ Open an empty `welcome.html` in `src/main/resources/templates`, and add the foll
 
 [NOTE]
 ====
-Quarkus Qute Templating Engine can't be integrated with the https://www.thymeleaf.org/[Thymeleaf^] library that Springp Petclinic uses for now. Instead, we need to create static contents such as _CSS, JavaScript, Image, and Fonts_. You can find more details here:
+Quarkus Qute Templating Engine can't be integrated with the https://www.thymeleaf.org/[Thymeleaf^] library that Spring Petclinic uses for now. Instead, we need to create static contents such as _CSS, JavaScript, Image, and Fonts_. You can find more details here:
 
 image::quarkus-static-contents.png[quarkus-petclinic, 700]
 ====
