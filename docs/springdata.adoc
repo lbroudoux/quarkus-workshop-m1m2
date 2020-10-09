@@ -75,21 +75,21 @@ That’s all there is to it: with Panache, Hibernate ORM has never looked so tri
 
 == Setting up and configuring Hibernate ORM with Panache
 
-We'll add Quarkus extensions to the Quarkus Petclinic application for using _Panache_ that simplifies access to data via Hibernate ORM for local development. RESTEasy has rich support for the `multipart/*` and `multipart/form-data` mime types. The multipart mime format is used to pass lists of content bodies. Multiple content bodies are embedded in one message. We'll also use this _multipart/form-data_ in the Quarkus Petclinic application.
+We'll add Quarkus extensions to the Quarkus Petclinic application for using _Panache_ that simplifies access to data via Hibernate ORM for local development. 
 
-Run the following commands to add the extensions using CodeReady Workspaces Terminal:
+Open a new CodeReady Workspaces Terminal and run the following commands to add the extensions:
 
-[source,java,role="copypaste"]
+[source,console,role="copypaste"]
 ----
-mvn -q quarkus:add-extension -Dextensions="hibernate-orm-panache, jdbc-h2, multipart-provider" -f $CHE_PROJECTS_ROOT/quarkus-workshop-labs
+mvn -q quarkus:add-extension -Dextensions="hibernate-orm-panache, jdbc-h2" -f $CHE_PROJECTS_ROOT/quarkus-workshop-labs/quarkus-petclinic
 ----
 
 You should see:
 
 [source,console]
 ----
-✅ Adding extension io.quarkus:quarkus-hibernate-orm-panache
-✅ Adding extension io.quarkus:quarkus-jdbc-h2
+✅ Extension io.quarkus:quarkus-hibernate-orm-panache has been installed
+✅ Extension io.quarkus:quarkus-jdbc-h2 has been installed
 ----
 
 Quarkus supports the notion of _configuration profiles_. These allows you to have multiple configurations in the same file and select between then via a _profile name_.
@@ -100,7 +100,7 @@ By default Quarkus has three profiles, although it is possible to use as many as
 * `test` - Activated when running tests
 * `prod` - The default profile when not running in development or test mode
 
-Let’s add the following variables to set the database connection details(JDBC url, database credentials) in `src/main/resources/application.properties`:
+Add the following variables to set the database connection details(JDBC url, database credentials) in `src/main/resources/application.properties`:
 
 [source,properties,role="copypaste"]
 ----
@@ -113,3 +113,195 @@ Let’s add the following variables to set the database connection details(JDBC 
 %dev.quarkus.hibernate-orm.database.generation=drop-and-create
 %dev.quarkus.hibernate-orm.log.sql=false
 ----
+
+== Create Vet Entity
+
+With our extension installed, we can now define our entity using Panache.
+
+We’ll first need to edit `Vet.java` class file in `src/main/java/org/acme/model`, and add the following code under the `// TODO: Add Entity and Cacheable annotation` comment:
+
+[source,java,role="copypaste"]
+----
+@Entity(name="vets") // <1>
+@Cacheable // <2>
+----
+
+<1> Specify the table name(_vets_) in the database that is referred by the entity object(_Vet_).
+<2> When an entity is annotated with _@Cacheable_, all its field values are cached except for collections and relations to other entities. This means the entity can be loaded quicker without querying the database for frequently-accessed, but rarely-changing data.
+
+
+Extend `PanacheEntity` in your `Vet` entity. It should look like:
+
+[source,java]
+----
+public class Vet extends PanacheEntity {
+
+....
+
+}
+----
+
+Add the following code under the `// TODO: Add Column and NotEmpty annotation for firstName` comment:
+
+[source,java,role="copypaste"]
+----
+	@Column(name = "first_name")
+	@NotEmpty
+----
+
+Add the following code under the `// TODO: Add Column and NotEmpty annotation for lastName` comment:
+
+[source,java,role="copypaste"]
+----
+	@Column(name = "last_name")
+	@NotEmpty
+----
+
+Map a bidirectional many-to-many association as same as Spring Petclinic appliation. Add the following code under the `// TODO: Add the list of Specialty` comment:
+
+[source,java,role="copypaste"]
+----
+	@ManyToMany
+	@JoinTable(
+		name = "vet_Specialties",
+		joinColumns = @JoinColumn(name = "vet_id"),
+  		inverseJoinColumns = @JoinColumn(name = "specialty_id"))
+    public List<Specialty> specialties;
+----
+
+Remove or comment the testing code that we added in the previous lab. Because we'll access the data layer directly but nore more need to have the dumb getters and setters:
+
+[source,java]
+----
+    // public String getFirstName() {
+    //     return this.firstName;
+    // }
+    // public void setFirstName(String firstName) {
+    //     this.firstName = firstName;
+    // }
+    // public String getLastName() {
+    //     return this.lastName;
+    // }
+    // public void setLasttName(String lastName) {
+    //     this.lastName = lastName;
+    // }
+    // public static List<Vet> listAll(){
+    //     Vet vet = new Vet();
+    //     vet.setFirstName("Daniel");
+    //     vet.setLasttName("Oh");
+    //     List vets = new ArrayList<Vet>();
+    //     vets.add(vet);
+    //     return vets;
+    // }
+----
+
+Don't forget to import required packages. Add the following code under the `// TODO: Import packages` comment:
+
+[source,java,role="copypaste"]
+----
+import javax.persistence.Cacheable;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.validation.constraints.NotEmpty;
+
+import io.quarkus.hibernate.orm.panache.PanacheEntity;
+----
+
+Create a new entity, _Specialty_. Open an empty `Specialty.java` class file in `src/main/java/org/acme/model`, and add the following code:
+
+[source,java,role="copypaste"]
+----
+package org.acme.model;
+
+import java.util.List;
+
+import javax.persistence.Cacheable;
+import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
+
+import io.quarkus.hibernate.orm.panache.PanacheEntity;
+
+@Entity(name="specialties")
+@Cacheable
+public class Specialty extends PanacheEntity {
+  
+    public String name;
+
+    @ManyToMany(mappedBy = "specialties")
+    public List<Vet> vets;
+
+}
+----
+
+Edit the presentation layer to show the actual data. Open the `vets.html` in `src/main/resources/templates`, and add the following code under the `<!-- TODO: Add a for loop to list specialty -->`:
+
+[source,html,role="copypaste"]
+----
+                    {#for specialty in vet.specialties}
+                        {specialty.name} 
+                    {/for}
+----
+
+Don't forget to remove the dummy code, `none` in the HTML.
+
+Create a relation entity between _Specialty_ and _Vet_. Open an empty `VetSpecialty.java` class file in `src/main/java/org/acme/model`, and add the following code:
+
+[source,java,role="copypaste"]
+----
+package org.acme.model;
+
+import javax.persistence.Cacheable;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+
+import io.quarkus.hibernate.orm.panache.PanacheEntity;
+
+@Entity(name="vet_specialties")
+@Cacheable
+public class VetSpecialty extends PanacheEntity {
+
+    @Column(name = "vet_id")
+    public Long vetId;
+
+    @Column(name = "specialty_id")
+	public Long specialtyId;
+    
+}
+----
+
+Let’s add vets data to the database so we can test things out. Open up the `src/main/resources/import.sql` file and copy the following SQL statements to *import.sql*:
+
+[source,sql,role="copypaste"]
+----
+INSERT INTO vets VALUES (1, 'James', 'Carter');
+INSERT INTO vets VALUES (2, 'Helen', 'Leary');
+INSERT INTO vets VALUES (3, 'Linda', 'Douglas');
+INSERT INTO vets VALUES (4, 'Rafael', 'Ortega');
+INSERT INTO vets VALUES (5, 'Henry', 'Stevens');
+INSERT INTO vets VALUES (6, 'Sharon', 'Jenkins');
+
+INSERT INTO specialties VALUES (1, 'radiology');
+INSERT INTO specialties VALUES (2, 'surgery');
+INSERT INTO specialties VALUES (3, 'dentistry');
+
+INSERT INTO vet_specialties (id, vet_id, specialty_id) VALUES (nextval('hibernate_sequence'), 2, 1);
+INSERT INTO vet_specialties (id, vet_id, specialty_id) VALUES (nextval('hibernate_sequence'), 3, 2);
+INSERT INTO vet_specialties (id, vet_id, specialty_id) VALUES (nextval('hibernate_sequence'), 3, 3);
+INSERT INTO vet_specialties (id, vet_id, specialty_id) VALUES (nextval('hibernate_sequence'), 4, 2);
+INSERT INTO vet_specialties (id, vet_id, specialty_id) VALUES (nextval('hibernate_sequence'), 5, 1);
+----
+
+We don't need to create schema(i.e. vets, specialties) in database as we had to do in Spring Petclinic application as below:
+
+image::spring-schema.png[spring-schema.png, 900]
+
+Go back to the _Quarkus Petclinic_ page in your browser, click on the `VETERINARIAN` menu then you should see the following rendered page:
+
+image::quarkus-vets-data.png[spring-schema.png, 900]
+
+Now, we’ve succeeded to refactor _Spring_ Petclinic to _Quarkus_ Clinic application:
+
+image::quarkus-spring-vets-data.png[spring-schema.png, 900]

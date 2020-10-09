@@ -8,7 +8,7 @@ Spring framework provides a *Dependency Injection(DI)* container that enables yo
 * Better modularity of a program
 * Easier in testing a program by isolating a component or mocking its dependencies
 
-Multiple Dependency Injections are already used in the Spring Petclinic application through constructors, setters or fields. For example, Open a `PetTypeFormatter` class file in `src/main/java/org/springframework/samples/petclinic/owner` then you shoud see:
+Multiple Dependency Injections are already used in the Spring Petclinic application through constructors, setters or fields. For example, Open a `PetTypeFormatter.java` class file in `src/main/java/org/springframework/samples/petclinic/owner` then you shoud see:
 
 [source,java]
 ----
@@ -50,7 +50,7 @@ In this lab, we'll refactor the *Spring DI* to *Quarkus CDI* that is the basic p
 
 The first step is to define the model(POJO) bean for store Vet object. We'll add identical attributes to the _Vet_ java class in Spring Petclic.
 
-Open an empty `Vet.java` class file in `src/main/java/org/acme/rest`, and add the following code:
+Open an empty `Vet.java` class file in `src/main/java/org/acme/model`, and add the following code:
 
 [source,java,role="copypaste"]
 ----
@@ -67,7 +67,7 @@ public class Vet {
     // TODO: Add Column and NotEmpty annotation for firstName
 	public String firstName;
 
-    // TODO: Add Column and NotEmpty annotation for firstName
+    // TODO: Add Column and NotEmpty annotation for lastName
     public String lastName;
     
     // TODO: Add the list of Specialty
