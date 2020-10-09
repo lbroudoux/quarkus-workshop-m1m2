@@ -54,3 +54,8 @@ Spring Petclinic application also supports 3 types of database such as *H2*, *HS
 
 image::spring-db-structure.png[quarkus, 400]
 
+In this lab, we'll learn how simply refactor *Spring Data JPA* to *Quarkus Hibernate ORM with Panache*. Because _Hibernate ORM_ is the de facto JPA implementation and offers you the full breadth of an Object Relational Mapper. It makes complex mappings possible, but it does not make simple and common mappings trivial. _Hibernate ORM with Panache_ focuses on making your entities trivial and fun to write in _Quarkus_.
+
+== Setting up and configuring Hibernate ORM with Panache
+
+We'll add Quarkus extensions to the Inventory application for using Panache (a simplified way to access data via Hibernate ORM), a database with Postgres (in production) and H2 (in-memory database for testing). We’ll also add the ability to add health probes (which we’ll use later on) using the MicroProfile Health extension. Run the following commands to add the extensions using CodeReady Terminal:
