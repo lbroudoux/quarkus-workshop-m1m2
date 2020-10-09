@@ -1,4 +1,24 @@
 = 5Spring JPA to Quarkus Hibernate ORM with Panache
 :experimental:
 
-To be filled
+HSQL Setup
+Create a new directory containing a copy of the entire contents of the directory petclinic/db/hsqldb. The file petclinic.script is the data file that will be used by the server. It has been initialized with some sample data. Start a server on the standard port by executing server.sh(Unix) or server.bat (Windows) or alternatively edit the file to select a port of your choosing. A useful database manager can be started by executing manager.sh (Unix) or manager.bat (Windows). When the application opens, connect to the "HSQL Database Engine Server" using the default parameters. This tool can also be used to manage other databases. To use a different port, it will be necessary to change the PetClinic Database Setup. It may also be necessary to consult the HSQL documentation for instructions on how to change the port the server uses.
+
+MYSQL Setup (optional)
+Add the PetClinic database to a running MySQL server by following the explicit instructions found in db/mysql/petclinic_db_setup_mysql.txt. PetClinic expects by default to be able to access the server via the standard port 3306. To use a different port, it will be necessary to change the PetClinic Database Setup.
+
+PetClinic Database Setup
+To use a Java EE server supplied connection-pooled data source with Tomcat, it will be necessary to use and possibly edit the appropriate context definition file for the petclinic webapp. To use it, deploy a copy of the appropriate context definition file in Tomcat's webapps directory and restart the server. Consult the Tomcat log files if something goes wrong when starting either Tomcat or the PetClinic application. The context files are named petclinic_tomcat_*.xml, where * is either "hsqldb" or "mysql". There is a context file supplied for each database in its respective directory. There is also a context file db/petclinic_tomcat_all.xml that will provide a JNDI connection-pooled DataSource for all supported databases. Should you use this file, you must of course make sure that all the database servers are running when you restart Tomcat.
+
+ * vets displays all vets and their specialties.
+ * findOwners is used to find owners by last name.
+ * findOwnersRedirect redirects to findOwner.
+ * selectOwner allows user to select from a list of multiple owners with the same last name.
+ * owner displays a owner's data and a list of the owner's pets and their data.
+ * ownerRedirect redirects to owner.
+ * owner supports AddOwnerForm and EditOwnerForm
+ * pet supports AddPetForm and web.EditPetForm
+ * visit supports AddVisitForm
+ * dataAccessFailure displays a stacktrace
+
+ddd
