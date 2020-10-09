@@ -3,10 +3,10 @@
 
 Spring framework provides a *Dependency Injection(DI)* container that enables you to inject required objects into other objects. Dependency injection is a pattern to implement IoC(Inversion of Control), where the control being inverted is the setting of the object's dependencies with the following advantages:
 
- * Decoupling the execution of a task from its implementation
- * Making it easier to switch between different implementations
- * Better modularity of a program
- * Easier in testing a program by isolating a component or mocking its dependencies
+* Decoupling the execution of a task from its implementation
+* Making it easier to switch between different implementations
+* Better modularity of a program
+* Easier in testing a program by isolating a component or mocking its dependencies
 
 Multiple Dependency Injections are already used in the Spring Petclinic application through constructors, setters or fields. For example, Open a `PetTypeFormatter` class file in `src/main/java/org/springframework/samples/petclinic/owner` then you shoud see:
 
@@ -130,7 +130,7 @@ public class VetsService {
 
 <1> This is a scope annotation. It tells the container which context to associate the bean instance with. In this particular case, a single bean instance is created for the application and used by all other beans that inject *VetsService*.
 
-Edit the `VetsResource` class to inject the VetsService(CDI bean). Add the following code under the `// TODO: Inject CDI Bean` comment:
+Edit the `VetsResource.java` class to inject the VetsService(CDI bean). Add the following code under the `// TODO: Inject CDI Bean` comment:
 
 [source,java,role="copypaste"]
 ----
@@ -153,6 +153,13 @@ Replace `null` variable with `service.getAll()` in *TemplateInstance get()* meth
     }
 ----
 
+Also, don’t forget to add the import statement by un-commenting the import statement for *VetsResource* near the top
+
+[source,java]
+----
+import org.acme.service.VetsService;
+----
+ 
 Edit the presentation layer to list dummy data(Vet). Open the `vets.html` in `src/main/resources/templates`, and add the following code under `<!-- TODO: Add a for loop to list vets -->` the comment:
 
 [source,html,role="copypaste"]

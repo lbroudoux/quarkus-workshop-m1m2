@@ -140,6 +140,13 @@ Wow, how cool is that? Supersonic Subatomic live reload! And we’re just gettin
 [NOTE]
 ====
 We just created one template to render the new welcome page resource so you should see *404 - Resource Not Found* when you click on the other menus except for _Home_. 
+
+You might see the following error in CodeReady Workspace Terminal. It happened before the new initial page(welcome.html) was rendered and it won't happen again.
+
+[source,console]
+----
+Failed to copy resources: java.nio.file.NoSuchFileException: /projects/quarkus-workshop-labs/quarkus-petclinic/target/classes/META-INF/resources/index.html
+----
 ====
 
 To distinguish 2 Petclinic application easily, you see different *Red Hat Runtimes* logo and *Quarkus* logo on the each welcome page. For example, when you mouseover the _Quarkus logo_ on the left top of the page, you should see it changes a dark blue Quarkus logo:
@@ -152,7 +159,7 @@ Create an owners template to refactor *Find Owners* presentaion layer as you see
 
 image::spring-find-owners.png[quarkus-petclinic, 900]
 
-Open an empty `welcome.html` in `src/main/resources/templates`, and add the following code:
+Open an empty `owners.html` in `src/main/resources/templates`, and add the following code:
 
 [source,html,role="copypaste"]
 ----
@@ -298,7 +305,7 @@ Great job! Let's finish refactoring 2 more top menu pages. Open an empty `vets.h
 {#include footer/}
 ----
 
-Open an empty `OwnersResource.java` class file in `src/main/java/org/acme/rest`, and add the following code:
+Open an empty `VetsResource.java` class file in `src/main/java/org/acme/rest`, and add the following code:
 
 [source,java,role="copypaste"]
 ----
