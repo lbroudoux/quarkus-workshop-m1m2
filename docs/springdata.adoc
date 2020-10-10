@@ -114,7 +114,7 @@ Add the following variables to set the database connection details(JDBC url, dat
 %dev.quarkus.hibernate-orm.log.sql=false
 ----
 
-== Create Vet Entity
+== Refactor Vets Persistence Layer
 
 With our extension installed, we can now define our entity using Panache.
 
@@ -161,11 +161,11 @@ Map a bidirectional many-to-many association as same as Spring Petclinic appliat
 
 [source,java,role="copypaste"]
 ----
-	@ManyToMany
-	@JoinTable(
-		name = "vet_Specialties",
-		joinColumns = @JoinColumn(name = "vet_id"),
-  		inverseJoinColumns = @JoinColumn(name = "specialty_id"))
+    @ManyToMany
+    @JoinTable(
+        name = "vet_Specialties",
+        joinColumns = @JoinColumn(name = "vet_id"),
+        inverseJoinColumns = @JoinColumn(name = "specialty_id"))
     public List<Specialty> specialties;
 ----
 
@@ -305,3 +305,371 @@ image::quarkus-vets-data.png[spring-schema.png, 900]
 Now, we’ve succeeded to refactor _Spring_ Petclinic to _Quarkus_ Clinic application:
 
 image::quarkus-spring-vets-data.png[spring-schema.png, 900]
+
+*Great job!* Let's refactor the other business layers using Hibernate ORM with Panache and CDI extensions.
+
+== Refactor Owers, Pets and Visits Persistence Layer
+
+Let's go back to the *welcome page* in Spring Petclinic application. In `FIND OWNERS` menu, we can have 3 different user expirences to search owners as below:
+
+* List all owners without search keyword
+* List more than 2 owners by searching last name(i.e. _Davis_)
+* Show detail information of one owner and related Pet, Visit by searching last name(i.e. _Franklin_)
+
+image::spring-find-owners.gif[spring-schema.png, 900]
+
+These use cases are implemented by multiple _Entity_, _Controller_, and _Repository_ classes in *src/main/java/org/springframework/samples/petclinic/owner* of Spring Petclinic application:
+
+image::spring-owners-structure.png[spring-schema.png, 400]
+
+Now, we'll refactor an *Owner* entity to implement the above use cases. Open an empty `Owner.java` class file in `src/main/java/org/acme/model`, and add the following code:
+
+[source,java,role="copypaste"]
+----
+package org.acme.model;
+
+import java.util.List;
+
+import javax.persistence.Cacheable;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.NotEmpty;
+
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
+
+@Entity(name="owners")
+@Cacheable
+public class Owner extends PanacheEntityBase { // <1>
+
+    @Id // <2>
+    @SequenceGenerator(
+            name = "ownersSequence",
+            sequenceName = "owners_id_seq",
+            allocationSize = 1,
+            initialValue = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ownersSequence")
+    public Long id;
+
+    @Column(name = "first_name")
+	@NotEmpty
+	public String firstName;
+
+	@Column(name = "last_name")
+	@NotEmpty
+	public String lastName;
+    
+    public String address;
+    public String city;
+
+    @NotEmpty
+	@Digits(fraction = 0, integer = 10)
+    public String telephone;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "owner")
+    public List<Pet> pets;
+    
+    public Long getId(){
+        return id;
+    }
+
+}
+----
+
+<1> Specify your own ID strategy by extending *PanacheEntityBase* instead of *PanacheEntity*. 
+<2> Declare whatever ID you want as a public field.
+
+Create a CDI bean to retrieve the _Owner_ object. Open an empty `OwnersService.java` class file in `src/main/java/org/acme/service`, and add the following code:
+
+[source,java,role="copypaste"]
+----
+package org.acme.service;
+
+import java.util.List;
+
+import javax.enterprise.context.ApplicationScoped;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
+import org.acme.model.Owner;
+
+import io.quarkus.panache.common.Sort;
+
+@ApplicationScoped
+@Produces(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.APPLICATION_JSON)
+public class OwnersService {
+   
+    public List<Owner> findByLastName(String lastName) {
+        if (lastName != null && !lastName.isEmpty()) {
+            return Owner.find("LOWER(lastName) LIKE LOWER(?1) ", // <1>
+                Sort.by("firstName"), "%" + lastName + "%").list();
+        } else {
+            return Owner.listAll(); // <2>
+        }        
+    } 
+
+    public Owner findById(Long id) { // <3>
+        return Owner.findById(id.longValue());
+    }
+
+}
+----
+
+<1> Simplify your query conditions such as *Like* and *Sort*.
+<2> Static method to list all data by default so you don't need to implement a full query like _@Query("SELECT DISTINCT owner FROM Owner owner left join fetch owner.pets WHERE owner.lastName LIKE :lastName%")_ in Spring Petclinic application.
+<3> Static method to search by ID by default so you don't need to implement a full query like _@Query("SELECT owner FROM Owner owner left join fetch owner.pets WHERE owner.id =:id")_ in Spring Petclinic application.
+
+Edit the `OwnersResource.java` class to inject the OwnersService(CDI bean). Add the following code under the `// TODO: Inject CDI Bean` comment:
+
+[source,java,role="copypaste"]
+----
+    @Inject
+    OwnersService service;
+----
+
+Inject a new template(editOwner) to render the Owner detail information. Add the following code under the `// TODO: Inject editOwner template` comment:
+
+[source,java,role="copypaste"]
+----
+    @Inject
+    Template editOwner;
+----
+
+Update the `findOwners.java `class to invoke *findById(id)* service. `Replace` the entire following `findOwners` method with the following code:
+
+[source,java,role="copypaste"]
+----
+    @GET
+    @Produces(MediaType.TEXT_HTML)
+    @Path("owners")
+    public TemplateInstance findOwners(@QueryParam("id") Long id) {
+        return owners.data("active", "owners")
+                    .data("owners", ((id == null) ? id : Arrays.asList(service.findById(id))));
+    }
+----
+
+Add the following code under the `// TODO: Add to search an exiting owner by last name` comment:
+
+[source,java,role="copypaste"]
+----
+    @GET
+    @Produces(MediaType.TEXT_HTML)
+    @Path("find")
+    public TemplateInstance findByLastName(@QueryParam("lastName") String lastName) {
+        return owners.data("active", "owners")
+                    .data("lastName", lastName)
+                    .data("owners", service.findByLastName(lastName));
+
+    }
+----
+
+Add the following code under the `// TODO: Add to retrieve an exiting owner` comment:
+
+[source,java,role="copypaste"]
+----
+    @GET
+    @Produces(MediaType.TEXT_HTML)
+    @Path("getOwner")
+    public TemplateInstance editOwner(@QueryParam("ownerId") Long ownerId) {
+        
+        return editOwner.data("active", "owners")
+                        .data("owner", ((ownerId == null) ? "new" : service.findById(ownerId)));
+    }
+----
+
+Also, don’t forget to add the import statement by un-commenting the import statement for *OwnersResource* near the top:
+
+[source,java]
+----
+import org.acme.model.Owner;
+import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
+import org.acme.model.OwnerForm;
+import org.acme.service.OwnersService;
+----
+
+Next, we'll refactor the presentation layer to show listAll, findByLastName, and detail view. Open an empty `ownersList.html` in `src/main/resources/templates`, and add the following code:
+
+[source,html,role="copypaste"]
+----
+<h2>Owners</h2>
+
+<table id="owners" class="table table-striped">
+    <thead>
+    <tr>
+        <th style="width: 150px;">Name</th>
+        <th style="width: 200px;">Address</th>
+        <th>City</th>
+        <th style="width: 120px">Telephone</th>
+        <th>Pets</th>
+    </tr>
+    </thead>
+    <tbody>
+        {#for owner in owners} 
+            <tr>
+                <td>
+                    <a href="/owners?id={owner.id}">{owner.firstName} {owner.lastName}</a>
+                </td>
+                <td>{owner.address}</td>
+                <td>{owner.city}</td>
+                <td>{owner.telephone}</td>
+                <td>{#for pet in owner.pets}{pet.name} {/for}</td>
+            </tr>
+        {/for}
+    </tbody>
+</table>
+----
+
+Open an empty `ownerDetails.html` in `src/main/resources/templates`, and add the following code:
+
+[source,html,role="copypaste"]
+----
+<h2>Owner Information</h2>
+
+<table class="table table-striped">
+    <tr>
+      <th>Name</th>
+      <td><b>{owners.get(0).firstName} {owners.get(0).lastName}</b></td>
+    </tr>
+    <tr>
+      <th>Address</th>
+      <td>{owners.get(0).address}</td>
+    </tr>
+    <tr>
+      <th>City</th>
+      <td>{owners.get(0).city}</td>
+    </tr>
+    <tr>
+      <th>Telephone</th>
+      <td>{owners.get(0).telephone}</td>
+    </tr>
+</table>
+
+<a href="getOwner?ownerId={owners.get(0).id}" class="btn btn-default">Edit Owner</a>
+<a href="getPet?ownerId={owners.get(0).id}" class="btn btn-default">Add New Pet</a>
+
+<br />
+<br />
+<br />
+
+<h2>Pets and Visits</h2>
+
+<table class="table table-striped">
+    {#for pet in owners.get(0).pets} 
+      <tr>
+        <td valign="top">
+          <dl class="dl-horizontal">
+            <dt>Name</dt>
+            <dd>{pet.name}</dd>
+            <dt>Birth Date</dt>
+            <dd>{pet.birthDate}</dd>
+            <dt>Type</dt>
+            <dd>{pet.type.name}</dd>
+          </dl>
+        </td>
+        <td valign="top">
+          <table class="table-condensed">
+            <thead>
+              <tr>
+                <th>Visit Date</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            {#if pet.visits != null}
+              {#for visit in pet.visits} 
+                <tr>
+                  <td>{visit.date}</td>
+                  <td>{visit.description}</td>
+                </tr>
+              {/for}
+            {/if}
+            <tr>
+              <td><a href="/getPet?ownerId={owners.get(0).id}&petId={pet.id}">Edit Pet</a></td>
+              <td><a href="/getVisit?ownerId={owners.get(0).id}&petId={pet.id}">Add Visit</a></td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    {/for}
+</table>
+----
+
+Let’s add _owners, pets, visits, types_ data to the database so we can test things out. Open up the `src/main/resources/import.sql` file and `append` the following SQL statements to existing *import.sql*:
+
+[source,sql,role="copypaste"]
+----
+INSERT INTO types VALUES (1, 'cat');
+INSERT INTO types VALUES (2, 'dog');
+INSERT INTO types VALUES (3, 'lizard');
+INSERT INTO types VALUES (4, 'snake');
+INSERT INTO types VALUES (5, 'bird');
+INSERT INTO types VALUES (6, 'hamster');
+
+INSERT INTO owners (id, first_name, last_name, address, city, telephone) VALUES (nextval('owners_id_seq'), 'George', 'Franklin', '110 W. Liberty St.', 'Madison', '6085551023');
+INSERT INTO owners (id, first_name, last_name, address, city, telephone) VALUES (nextval('owners_id_seq'), 'Betty', 'Davis', '638 Cardinal Ave.', 'Sun Prairie', '6085551749');
+INSERT INTO owners (id, first_name, last_name, address, city, telephone) VALUES (nextval('owners_id_seq'), 'Eduardo', 'Rodriquez', '2693 Commerce St.', 'McFarland', '6085558763');
+INSERT INTO owners (id, first_name, last_name, address, city, telephone) VALUES (nextval('owners_id_seq'), 'Harold', 'Davis', '563 Friendly St.', 'Windsor', '6085553198');
+INSERT INTO owners (id, first_name, last_name, address, city, telephone) VALUES (nextval('owners_id_seq'), 'Peter', 'McTavish', '2387 S. Fair Way', 'Madison', '6085552765');
+INSERT INTO owners (id, first_name, last_name, address, city, telephone) VALUES (nextval('owners_id_seq'), 'Jean', 'Coleman', '105 N. Lake St.', 'Monona', '6085552654');
+INSERT INTO owners (id, first_name, last_name, address, city, telephone) VALUES (nextval('owners_id_seq'), 'Jeff', 'Black', '1450 Oak Blvd.', 'Monona', '6085555387');
+INSERT INTO owners (id, first_name, last_name, address, city, telephone) VALUES (nextval('owners_id_seq'), 'Maria', 'Escobito', '345 Maple St.', 'Madison', '6085557683');
+INSERT INTO owners (id, first_name, last_name, address, city, telephone) VALUES (nextval('owners_id_seq'), 'David', 'Schroeder', '2749 Blackhawk Trail', 'Madison', '6085559435');
+INSERT INTO owners (id, first_name, last_name, address, city, telephone) VALUES (nextval('owners_id_seq'), 'Carlos', 'Estaban', '2335 Independence La.', 'Waunakee', '6085555487');
+
+INSERT INTO pets (id, name, birth_date, type_id, owner_id) VALUES (nextval('pets_id_seq'), 'Leo', '2010-09-07', 1, 1);
+INSERT INTO pets (id, name, birth_date, type_id, owner_id) VALUES (nextval('pets_id_seq'), 'Basil', '2012-08-06', 6, 2);
+INSERT INTO pets (id, name, birth_date, type_id, owner_id) VALUES (nextval('pets_id_seq'), 'Rosy', '2011-04-17', 2, 3);
+INSERT INTO pets (id, name, birth_date, type_id, owner_id) VALUES (nextval('pets_id_seq'), 'Jewel', '2010-03-07', 2, 3);
+INSERT INTO pets (id, name, birth_date, type_id, owner_id) VALUES (nextval('pets_id_seq'), 'Iggy', '2010-11-30', 3, 4);
+INSERT INTO pets (id, name, birth_date, type_id, owner_id) VALUES (nextval('pets_id_seq'), 'George', '2010-01-20', 4, 5);
+INSERT INTO pets (id, name, birth_date, type_id, owner_id) VALUES (nextval('pets_id_seq'), 'Samantha', '2012-09-04', 1, 6);
+INSERT INTO pets (id, name, birth_date, type_id, owner_id) VALUES (nextval('pets_id_seq'), 'Max', '2012-09-04', 1, 6);
+INSERT INTO pets (id, name, birth_date, type_id, owner_id) VALUES (nextval('pets_id_seq'), 'Lucky', '2011-08-06', 5, 7);
+INSERT INTO pets (id, name, birth_date, type_id, owner_id) VALUES (nextval('pets_id_seq'), 'Mulligan', '2007-02-24', 2, 8);
+INSERT INTO pets (id, name, birth_date, type_id, owner_id) VALUES (nextval('pets_id_seq'), 'Freddy', '2010-03-09', 5, 9);
+INSERT INTO pets (id, name, birth_date, type_id, owner_id) VALUES (nextval('pets_id_seq'), 'Lucky', '2010-06-24', 2, 10);
+INSERT INTO pets (id, name, birth_date, type_id, owner_id) VALUES (nextval('pets_id_seq'), 'Sly', '2012-06-08', 1, 10);
+
+INSERT INTO visits (id, pet_id, visit_date, description) VALUES (1, 7, '2013-01-01', 'rabies shot');
+INSERT INTO visits (id, pet_id, visit_date, description) VALUES (2, 8, '2013-01-02', 'rabies shot');
+INSERT INTO visits (id, pet_id, visit_date, description) VALUES (3, 8, '2013-01-03', 'neutered');
+INSERT INTO visits (id, pet_id, visit_date, description) VALUES (4, 7, '2013-01-04', 'spayed');
+----
+
+Go back to the _Quarkus Petclinic_ page in your browser, click on the `FIND OWNERS` menu then click on `Find Owner` button without typing the last name in:
+
+image::quarkus-petclinic-listall.png[spring-schema.png, 900]
+
+You should see the following *all owners* as same as you saw in the Spring Petclinic application:
+
+image::quarkus-petclinic-listall-result.png[spring-schema.png, 900]
+
+Let's try to search by the last name. Go back to the previous page or click on the `FIND OWNERS` menu. Type `Davis` in the last name input box:
+
+image::quarkus-petclinic-findByLastname.png[spring-schema.png, 900]
+
+You should see *2 owners* as same as you saw in the Spring Petclinic application:
+
+image::quarkus-petclinic-findByLastname-result.png[spring-schema.png, 900]
+
+Search by the last name once again. Go back to the previous page or click on the `FIND OWNERS` menu. Type `Franklin` in the last name input box:
+
+image::quarkus-petclinic-findByLastname2.png[spring-schema.png, 900]
+
+You should see the *owner's detail* page as same as you saw in the Spring Petclinic application:
+
+image::quarkus-petclinic-findByLastname-result2.png[spring-schema.png, 900]
+
+
+== Refactor Pets and Visits Persistence Layer
+
+== Congratulations!
+
+You've learned how to simply refactor *Spring Data JPA* to *Quarkus Hibernate ORM with Panache* and *Quarkus CDI*.

@@ -101,7 +101,7 @@ public class Vet {
 We'll remove getter, setter, listAll methods when we refactor this _POJO_ bean class to _Entity_ bean class using Quarkus Hibernate with Panache in the next lab.
 ====
 
-Create a CDI bean to retrieve the _vet_ objects. Open an empty `VetsService.java` class file in `src/main/java/org/acme/service`, and add the following code:
+Create a CDI bean to retrieve the _Vet_ object. Open an empty `VetsService.java` class file in `src/main/java/org/acme/service`, and add the following code:
 
 [source,java,role="copypaste"]
 ----
@@ -153,7 +153,7 @@ Replace `null` variable with `service.getAll()` in *TemplateInstance get()* meth
     }
 ----
 
-Also, don’t forget to add the import statement by un-commenting the import statement for *VetsResource* near the top
+Also, don’t forget to add the import statement by un-commenting the import statement for *VetsResource* near the top:
 
 [source,java]
 ----
