@@ -667,8 +667,9 @@ You should see the *owner's detail* page as same as you saw in the Spring Petcli
 
 image::quarkus-petclinic-findByLastname-result2.png[spring-schema.png, 900]
 
+== Refactor More Use Cases(Edit & Add)
 
-== Refactor Pets and Visits Persistence Layer
+
 
 == Congratulations!
 
