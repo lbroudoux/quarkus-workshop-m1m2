@@ -145,16 +145,16 @@ Add the following code under the `// TODO: Add Column and NotEmpty annotation fo
 
 [source,java,role="copypaste"]
 ----
-	@Column(name = "first_name")
-	@NotEmpty
+    @Column(name = "first_name")
+    @NotEmpty
 ----
 
 Add the following code under the `// TODO: Add Column and NotEmpty annotation for lastName` comment:
 
 [source,java,role="copypaste"]
 ----
-	@Column(name = "last_name")
-	@NotEmpty
+    @Column(name = "last_name")
+    @NotEmpty
 ----
 
 Map a bidirectional many-to-many association as same as Spring Petclinic appliation. Add the following code under the `// TODO: Add the list of Specialty` comment:
@@ -385,6 +385,150 @@ public class Owner extends PanacheEntityBase { // <1>
 <1> Specify your own ID strategy by extending *PanacheEntityBase* instead of *PanacheEntity*. 
 <2> Declare whatever ID you want as a public field.
 
+Refactor an *Pet* entity to implement the above use cases. Open an empty `Pet.java` class file in `src/main/java/org/acme/model`, and add the following code:
+
+[source,java]
+----
+package org.acme.model;
+
+import java.time.LocalDate;
+import java.util.List;
+
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
+
+import javax.persistence.Cacheable;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+
+@Entity(name="pets")
+@Cacheable
+public class Pet extends PanacheEntityBase { // <1>
+  
+	@Id
+    @SequenceGenerator(
+            name = "petsSequence",
+            sequenceName = "pets_id_seq",
+            allocationSize = 1,
+            initialValue = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "petsSequence")
+	public Long id;
+	
+	public String name;
+	
+    @Column(name = "birth_date")
+	public LocalDate birthDate;
+
+	@ManyToOne
+	@JoinColumn(name = "type_id")
+	public PetType type;
+
+	public Object getPetType() {
+		return this.type;
+	}
+
+	public void setPetType(PetType type) {
+		this.type = type;
+	}
+
+	@ManyToOne // <1>
+	@JoinColumn(name = "owner_id")
+	public Owner owner;
+
+	public Owner getOwner() {
+		return this.owner;
+	}
+
+	public void setOwner(Owner owner) {
+		this.owner = owner;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "pet") // <2>
+	public List<Visit> visits;
+	
+	public Long getId(){
+        return id;
+    }
+    
+}
+----
+
+<1> *ManyToOne* annotation is associated with the _Owner_ class variable.
+<2> *OneToMany* annotation is used to define the property in _Visit_ class that will be used to map the mappedBy variable. 
+
+Refactor an *PetType* entity to implement the above use cases. Open an empty `PetType.java` class file in `src/main/java/org/acme/model`, and add the following code:
+
+[source,java]
+----
+package org.acme.model;
+
+import javax.persistence.Cacheable;
+import javax.persistence.Entity;
+
+import io.quarkus.hibernate.orm.panache.PanacheEntity;
+
+@Entity(name = "types")
+@Cacheable
+public class PetType extends PanacheEntity {
+  
+    public String name;
+
+    public static PetType findByName(String name) {
+        return find("name", name).firstResult();
+    }
+    
+}
+----
+
+Refactor an *Visit* entity to implement the above use cases. Open an empty `Visit.java` class file in `src/main/java/org/acme/model`, and add the following code:
+
+[source,java]
+----
+package org.acme.model;
+
+import java.time.LocalDate;
+
+import javax.persistence.Cacheable;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotEmpty;
+
+import io.quarkus.hibernate.orm.panache.PanacheEntity;
+
+@Entity(name="visits")
+@Cacheable
+public class Visit extends PanacheEntity {
+  
+	@ManyToOne
+	@JoinColumn(name = "pet_id")
+	public Pet pet;
+
+    @Column(name = "visit_date")
+	public LocalDate date;
+
+	@NotEmpty
+	public String description;
+
+	public Pet getPet() {
+		return this.pet;
+	}
+
+	public void setPet(Pet pet) {
+		this.pet = pet;
+	}
+	
+}
+----
+
 Create a CDI bean to retrieve the _Owner_ object. Open an empty `OwnersService.java` class file in `src/main/java/org/acme/service`, and add the following code:
 
 [source,java,role="copypaste"]
@@ -443,7 +587,7 @@ Inject a new template(editOwner) to render the Owner detail information. Add the
     Template editOwner;
 ----
 
-Update the `findOwners.java `class to invoke *findById(id)* service. `Replace` the entire following `findOwners` method with the following code:
+Update the `findOwners.java` class to invoke *findById(id)* service. `Replace` the entire following `findOwners` method with the following code:
 
 [source,java,role="copypaste"]
 ----
@@ -490,8 +634,6 @@ Also, don’t forget to add the import statement by un-commenting the import sta
 [source,java]
 ----
 import org.acme.model.Owner;
-import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
-import org.acme.model.OwnerForm;
 import org.acme.service.OwnersService;
 ----
 
@@ -669,7 +811,7 @@ image::quarkus-petclinic-findByLastname-result2.png[spring-schema.png, 900]
 
 == Refactor More Use Cases(Edit & Add)
 
-
+Spring Petclinic application allows us to have more CRUD Edit owner information
 
 == Congratulations!
 
