@@ -22,5 +22,5 @@ modules:
   - springdata
   - springconfig
   - springcloud
-  - springmessaging
+  # - springmessaging
   - springserverless
