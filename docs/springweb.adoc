@@ -153,7 +153,7 @@ To distinguish 2 Petclinic application easily, you see different *Red Hat Runtim
 
 image::quarkus-petclinic-home-change.png[quarkus-petclinic, 900]
 
-== Add More Templates and Contents for Owners, Vets, Error Presentation Layer
+== Add More Templates to Owners, Vets, Error Presentation Layer
 
 Create an owners template to refactor *Find Owners* presentaion layer as you see in the Spring Petclinic:
 
