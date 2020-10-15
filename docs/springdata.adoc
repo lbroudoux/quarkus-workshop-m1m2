@@ -387,7 +387,7 @@ public class Owner extends PanacheEntityBase { // <1>
 
 Refactor an *Pet* entity to implement the above use cases. Open an empty `Pet.java` class file in `src/main/java/org/acme/model`, and add the following code:
 
-[source,java]
+[source,java,role="copypaste"]
 ----
 package org.acme.model;
 
@@ -465,7 +465,7 @@ public class Pet extends PanacheEntityBase {
 
 Refactor an *PetType* entity to implement the above use cases. Open an empty `PetType.java` class file in `src/main/java/org/acme/model`, and add the following code:
 
-[source,java]
+[source,java,role="copypaste"]
 ----
 package org.acme.model;
 
@@ -489,7 +489,7 @@ public class PetType extends PanacheEntity {
 
 Refactor an *Visit* entity to implement the above use cases. Open an empty `Visit.java` class file in `src/main/java/org/acme/model`, and add the following code:
 
-[source,java]
+[source,java,role="copypaste"]
 ----
 package org.acme.model;
 
@@ -633,7 +633,6 @@ Also, don’t forget to add the import statement by un-commenting the import sta
 
 [source,java]
 ----
-import org.acme.model.Owner;
 import org.acme.service.OwnersService;
 ----
 
@@ -860,10 +859,11 @@ Add the following code under the `// TODO: Add to Post transaction for editing a
     }
 ----
 
-Don't forget to import required packages:
+Also, don’t forget to add the import statement by un-commenting the import statement for *OwnersResource* near the top:
 
-[source,java,role="copypaste"]
+[source,java]
 ----
+import org.acme.model.Owner;
 import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
 import org.acme.model.OwnerForm;
 ----
@@ -1174,7 +1174,7 @@ image::quarkus-jean-detail.png[quarkus-petclinic.png, 900]
 
 Click on `Add new Pet` and input the following information:
 
-* Name: `Max`
+* Name: `Cooper`
 * Birth Date: `2020-01-01`
 * Type: `dog`
 
@@ -1182,7 +1182,7 @@ Click on `Add Pet`
 
 image::quarkus-new-pet-detail.png[quarkus-petclinic.png, 900]
 
-You should see the new pet(i.e. `Max`) in the list:
+You should see the new pet(i.e. `Cooper`) in the list:
 
 image::quarkus-new-pet-result.png[quarkus-petclinic.png, 900]
 
@@ -1318,7 +1318,7 @@ public class VisitForm {
 Visit presentation layer are already refactored using Quarkus Qute templates. Find more details in _src/main/resources/templates/visit.html_.
 ====
 
-Go back to the previous owner(i.e. `Jean Coleman`) information page in your browser, click on `Add Visit` for *Max*:
+Go back to the previous owner(i.e. `Jean Coleman`) information page in your browser, click on `Add Visit` for *Cooper*:
 
 image::quarkus-add-visit.png[quarkus-petclinic.png, 900]
 
@@ -1329,7 +1329,7 @@ Input the follwing visit information to make a reservation to see the Vet:
 
 image::quarkus-add-visit-detail.png[quarkus-petclinic.png, 900]
 
-Click on `Add Visit` then you should see the new visit inforamtion of `Max` in the list:
+Click on `Add Visit` then you should see the new visit inforamtion of `Cooper` in the list:
 
 image::quarkus-add-visit-result.png[quarkus-petclinic.png, 900]
 
