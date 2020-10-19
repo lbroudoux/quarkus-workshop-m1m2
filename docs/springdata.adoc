@@ -3,7 +3,13 @@
 
 *Spring Data JPA* enables Java developers to implement JPA-based repositories but also quickly to build applications with data access technology. Implementing the data access layer of an application has been a hassle for quite some time. To perform simple queries, pagination and auditing, you need to write boilerplate code. Spring Data JPA aims to improve the implementation of the data access layer by creating repository interfaces and custom finder methods. 
 
-For example, let's take a look at the `OwnerRepository` class in `src/main/java/org/springframework/samples/petclinic/owner` of Spring Petclinic application. This   repository class showcases how to execute JPA queries and and save an object to the data store:
+== Goals of this lab
+
+The goal is to refactor *Spring JPA* application to *Quarkus Hibernate ORM with Panache* for the Data layers. After this lab, you should end up with something like:
+
+image::spring2quarkus-data-diagram.png[quarkus, 900]
+
+Let's take a look at the `OwnerRepository` class in `src/main/java/org/springframework/samples/petclinic/owner` of Spring Petclinic application. This   repository class showcases how to execute JPA queries and and save an object to the data store:
 
 [source,java]
 ----

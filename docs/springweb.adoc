@@ -1,7 +1,13 @@
 = Spring Web to Quarkus Qute
 :experimental:
 
-*Qute* is a templating engine designed specifically to meet the Quarkus needs. The usage of reflection is minimized to reduce the size of native images. The API combines both the imperative and non-blocking reactive style of coding. In the development mode, all files located in *src/main/resources/templates* are watched for changes and modifications are immediately visible. In this lab, you will learn how to easily render templates from the *Spring Web* application to the *Quarkus* using *Qute Templating engine*.
+*Qute* is a templating engine designed specifically to meet the Quarkus needs. The usage of reflection is minimized to reduce the size of native images. The API combines both the imperative and non-blocking reactive style of coding. In the development mode, all files located in *src/main/resources/templates* are watched for changes and modifications are immediately visible.
+
+== Goals of this lab
+
+The goal is to refactor *Spring Web* application to *Quarkus* using *Qute Templating engine* for rendering presentation layers. After this lab, you should end up with something like:
+
+image::spring2quarkus-qute-diagram.png[quarkus, 900]
 
 Let’s take a look at what the Spring Web structure looks like. You should see lots of static contents(i.e. _HTML, CSS, Images, Javascripts_) and controller Java classes for rendering the *Model-View-Controller* web presentation layer in Spring Petclinic project:
 

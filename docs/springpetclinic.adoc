@@ -19,6 +19,10 @@ https://github.com/spring-projects/spring-petclinic[Spring PetClinic^] is the mo
  * View information pertaining to a pet's visitation history
  * Add information pertaining to a visit to the pet's visitation history
 
+The conceptual software layers of the Spring Petclinic application look like:
+
+image::spring-petclinic-diagram.png[spring, 700]
+
 == Getting Ready for the labs
 
 [NOTE]
