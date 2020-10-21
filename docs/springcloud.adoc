@@ -1,4 +1,105 @@
-= Spring Cloud
-:experimental:
+= Strangling the Spring Monolith with Quarkus
 
-To be filled
+In this section of the lab, you will strangle the monolith with Quarkus. 
+
+Currently the Pet Clinic application is developed as a monolith. All of the application functionality is in a single app. Here is a high-level architecture diagram of the application.
+
+image::images/microservices/monolith-architecture.png[width="300"]
+
+Let's refactor the application architecture to leverage microservices. The service related modules are replaced by microservices. Also, each microservice has a database that only contains information for its related entity. Based on this approach, we have three microservices as shown in the diagram below. Each microservice has its own database.
+
+image::images/microservices/microservices-architecture.png[width="600"]
+
+The `vets-service` manages the data for vets. The service exposes a method for retrieving a list of vets and their associated specialites.
+
+The `visits-service` manages the data for pet visits. This service exposes methods to perform CRUD operations for pet visits.
+
+The `customers-service` manages the data for owners and pets. It is a composition of the original modules for owners and pets. This service is a composition since there is a tight-relationship between owners and pets. This approach makes it easy to handle the database relationships.
+
+In the essense of time, you will only develop one of the microservice in this lab. You will develop the `vets-service`. We will provide the remaining microservices for you (`visits-service` and `customers-service`).
+
+You will also update the petclinic web application to leverage the new `vets-service`.
+
+== vets-service
+
+In this section, you will develop the `vets-service`. 
+
+The vets-service exposes the following endpoint:
+[cols="1,1,2", options="header"]
+|===
+| HTTP Method | Endpoint | Description
+| GET | /vets | Retrieves a list of vets and their associated specialties
+|===
+
+The vets-service has the following architecture:
+
+image::images/microservices/vets-service-architecture.png[width="300"]
+
+You will first develop the service and then refactor the web application to use the service.
+
+=== Review code for vets-service
+To help with development, there is a basic starter project for the vets-service.
+
+. Open the project for `vets-service`
+
+. Review the starter code for vets service View the following packages
+.. Model: `org.acme.model`
+.. Service: `org.acme.service`
+.. Resource: `org.acme.rest`
+
+. View the application configuration files in the directory: `src/main/resources`
+.. `application.properties`
+.. `import.sql`
++
+====
+NOTE: The `import.sql` file loads SQL statements when Hibernate ORM starts. This script can contain any SQL DML statements. Make sure to terminate each statement with a semicolon. This is useful to have a data set ready for your tests or demos.
+====
+
+== Add Resource method to Retrieve Vets
+
+Now let's add the resource method to retrieve the vets from the database. Developing REST APIs with Quarkus is similar to using Spring Boot. Quarkus uses JAX-RS from the Microprofile spec. 
+
+Here's a list of common annotations used for REST development.
+
+[options="header"]
+|===
+| Spring Annotation | JAX-RS Annotation
+| @RequestMapping | @Path
+| @GetMapping | @GET 
+| @PostMapping | @POST 
+| @PutMapping | @PUT 
+| @DeleteMapping | @DELETE
+| @PathVariable | @PathParam
+| @RequestParam | @QueryParam
+|===
+
+
+. Open the file: VetsResource.java
+** Make note of the base path for the resource. The resource endpoint is :`/vets` 
++
+----
+@Path("/vets")
+---- 
+
+** Make note of the @Produces annotation. The endpoints for this resource will produce JSON content.
++
+----
+@Produces(MediaType.APPLICATION_JSON)
+----
+
+. Add the following code to inject the VetsService
++
+----
+    @Inject
+    VetsService service;
+---- 
+
+. Add the method to retrieve the vets
+----
+    @GET
+    public List<Vet> get() {
+        LOG.debug("Inside get() method");
+        return service.getAll();
+    }
+----
+
