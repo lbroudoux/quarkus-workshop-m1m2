@@ -989,7 +989,7 @@ Next, we'll refactor the presentation layer to edit or add an owner. Open an emp
 
 <1> Use multipart/form-data mime types to pass lists of content bodies. 
 
-Lastly, we need to use `update` to only update the schema. Open an `application.properties` in `src/main/resources/` then replace the following configuration:
+Lastly, we need to use the `update` policy for only updating the schema in the database. Open an `application.properties` in `src/main/resources/` then replace the following configuration:
 
 [source,properties,role="copypaste"]
 ----
