@@ -40,6 +40,8 @@ You will first develop the service and then refactor the web application to use 
 === Review code for vets-service
 To help with development, there is a basic starter project for the vets-service.
 
+. Checkout code from the following branch: @TODO-DARBY
+
 . Open the project for `vets-service`
 
 . Review the starter code for vets service View the following packages
