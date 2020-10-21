@@ -51,8 +51,9 @@ To help with development, there is a basic starter project for the vets-service.
 .. `application.properties`
 .. `import.sql`
 +
+[NOTE]
 ====
-NOTE: The `import.sql` file loads SQL statements when Hibernate ORM starts. This script can contain any SQL DML statements. Make sure to terminate each statement with a semicolon. This is useful to have a data set ready for your tests or demos.
+The `import.sql` file loads SQL statements when Hibernate ORM starts. This script can contain any SQL DML statements. Make sure to terminate each statement with a semicolon. This is useful to have a data set ready for your tests or demos.
 ====
 
 == Add Resource method to Retrieve Vets
@@ -103,6 +104,8 @@ Here's a list of common annotations used for REST development.
     }
 ----
 
+=== Run the vets-service
+
 . Open a new Terminal window.
 
 . Run the service with the following command:
@@ -144,3 +147,87 @@ curl http://localhost:7070/vets
 ----
 
 You have successfully created the REST endpoint for the vets-service :-)
+
+== Refactor Web App to use vets-service
+
+Now that you have the microservice developed for the `vets-service`, you'll refactor the web app to use the service.
+
+The web app will need to make HTTP calls to the the vets-service. The web app could manually make the calls, however this approach requires a lot of boiler-plate code and it is error prone.
+
+As an alternative, you can use the MicroProfile Rest Client. The MicroProfile REST Client makes it easy to interact with REST APIs with very little effort.
+
+The MicroProfile Rest Client provides a type-safe approach to invoke RESTful services over HTTP. Using the MicroProfile REST Client is as simple as creating an interface using the proper JAX-RS and MicroProfile annotations.
+
+=== Add Maven Dependencies
+
+. Move to `quarkus-petclinic` project
+
+. Open the file: pom.xml
+
+. Add the following dependencies:
++
+----
+<dependency>
+    <groupId>io.quarkus</groupId>
+    <artifactId>quarkus-rest-client</artifactId>
+</dependency>
+
+<dependency>
+    <groupId>io.quarkus</groupId>
+    <artifactId>quarkus-resteasy-jackson</artifactId>
+</dependency>
+----
+* `quarkus-rest-client` provides a Quarkus wrapper for the Microprofile Rest Client implementation
+
+* `quarkus-resteasy-jackson` handles automatic serialization/deserialization of Java obects to/from JSON. Quarkus also supports JSON-B as a separate dependency.
+
+=== Develop MicroProfile Rest Client for `vets-service`
+
+Using the MicroProfile REST Client is as simple as creating an interface using the proper JAX-RS and MicroProfile annotations.
+
+1. Create a new package: `org.acme.rest.client`
+
+2. In this package, create a new interface: `VetsRestClient`
+
+3. Add the following code:
++
+----
+package org.acme.rest.client;
+
+import java.util.List;
+
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
+import org.acme.model.Vet;
+import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
+
+@Path("/vets")
+@RegisterRestClient
+public interface VetsRestClient {
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Vet> getAll();
+
+}
+----
+
+* The `getAll` method gives our code the ability to retrieve a list of vets from the `vets-service`. The client will handle all the networking and marshalling leaving our code clean of such technical details.
+
+* The purpose of the annotations in the code above is the following:
+
+** `@RegisterRestClient` allows Quarkus to know that this interface is meant to be available for CDI injection as a REST Client
+
+** `@Path` and `@GET` are the standard JAX-RS annotations used to define how to access the service
+
+** `@Produces` defines the expected content-type
++
+[NOTE]
+====
+While `@Consumes` and `@Produces` are optional as auto-negotiation is supported, it is heavily recommended to annotate your endpoints with them to define precisely the expected content-types.
+
+It will allow to narrow down the number of JAX-RS providers (which can be seen as converters) included in the native executable.
+====
