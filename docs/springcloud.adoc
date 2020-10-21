@@ -158,6 +158,8 @@ As an alternative, you can use the MicroProfile Rest Client. The MicroProfile RE
 
 The MicroProfile Rest Client provides a type-safe approach to invoke RESTful services over HTTP. Using the MicroProfile REST Client is as simple as creating an interface using the proper JAX-RS and MicroProfile annotations.
 
+Regarding Spring Cloud migration, *MicroProfile Rest Client* is similar to *Spring Cloud Feign*.
+
 === Add Maven Dependencies
 
 . Move to `quarkus-petclinic` project
@@ -238,7 +240,7 @@ In order to determine the base URL to which REST calls will be made, the REST Cl
 
 . Make sure you are still in the `quarkus-petclinic` project
 
-. Open the file: s`rc/main/resources/application.properties`
+. Open the file: `src/main/resources/application.properties`
 
 . Add the following configuration:
 +
@@ -256,3 +258,149 @@ In order to determine the base URL to which REST calls will be made, the REST Cl
 It is important that `org.acme.rest.client.VetsRestClient` must match the fully qualified name of the `VetsRestClient` interface we created in the previous section.
 ====
 
+=== Update VetsResource
+
+Now you'll modify the VetResource in your web app. Instead of communicating with the VetsService, instead you will use the VetsRestClient.
+
+. Make sure you are still in the `quarkus-petclinic` project
+
+. Move to the package: `org.acme.rest`
+
+. Open the file: `VetsResource.java`
+
+. Add the following code:
++
+----
+    @Inject
+    @RestClient
+    VetsRestClient vetsRestClient;
+----
+
+. Update the get() method with the following code:
++
+----
+    @GET
+    @Produces(MediaType.TEXT_HTML)
+    public TemplateInstance get() {
+
+        LOG.debug("Calling vetsRestClient");
+        List<Vet> data = vetsRestClient.getAll();
+        LOG.debug("Received data from vetsRestClient: " + data);
+
+        return vets.data("active", "vets")
+                .data("vets", data);
+    }
+----
+* Notice that we retrieve the list of vets from the `vetsRestClient`. This data is then placed into the Qute template for later display. 
+
+. In `VetsResource.java`, you can delete all references to the `VetsService` class since we are no longer using it.
+
+. Delete the file: `VetsService.java` in the package `org.acme.service`
+
+. Make sure there are no compilation errors in your code.
+
+=== View the Pet Clinic web app
+
+. Open a web browser and view http://localhost:8080
+
+. Click the link for *Vets*.
++
+image::images/microservices/vets-navigation-link.png[]
+
+. You should see the following output.
++
+image::images/microservices/vets-list.png[]
+
+=== Monolith Cleanup Work
+
+Now that the `vets-service` is running as a separate Microservice, we can clean up some of the code in the Pet Clinic web app. In particular, we can clean up the following
+
+** Remove database entries from import.sql
+** Remove Panache support from Vet model objects
+
+==== Remove database entries from import.sql
+
+. Make sure you are still in the `quarkus-petclinic` project
+
+. Move to the directory: `src/main/resources`
+
+. Open the file: `import.sql`
+
+. Delete the following lines:
++
+----
+INSERT INTO vets VALUES (1, 'James', 'Carter');
+INSERT INTO vets VALUES (2, 'Helen', 'Leary');
+INSERT INTO vets VALUES (3, 'Linda', 'Douglas');
+INSERT INTO vets VALUES (4, 'Rafael', 'Ortega');
+INSERT INTO vets VALUES (5, 'Henry', 'Stevens');
+INSERT INTO vets VALUES (6, 'Sharon', 'Jenkins');
+
+INSERT INTO specialties VALUES (1, 'radiology');
+INSERT INTO specialties VALUES (2, 'surgery');
+INSERT INTO specialties VALUES (3, 'dentistry');
+
+INSERT INTO vet_specialties (id, vet_id, specialty_id) VALUES (nextval('hibernate_sequence'), 2, 1);
+INSERT INTO vet_specialties (id, vet_id, specialty_id) VALUES (nextval('hibernate_sequence'), 3, 2);
+INSERT INTO vet_specialties (id, vet_id, specialty_id) VALUES (nextval('hibernate_sequence'), 3, 3);
+INSERT INTO vet_specialties (id, vet_id, specialty_id) VALUES (nextval('hibernate_sequence'), 4, 2);
+INSERT INTO vet_specialties (id, vet_id, specialty_id) VALUES (nextval('hibernate_sequence'), 5, 1);
+----
+
+* This data is no longer required in the Pet Clinic web app because this data is now managed by the `vets-service`. The `vets-service` has a separate database for vet related data.
+
+==== Remove Panache support from Vet model objects
+
+At this point in the Pet Clinic web app, is a `client` to the `vets-service. As a result, the Vet model objects are simply data transfer objects (DTOs). Their is no longer requirement for the Pet Clinic web app to directly persist Vet model objects using Panache.
+
+You can remove the Panache support from the Vet models objects.
+
+. Make sure you are still in the `quarkus-petclinic` project
+
+. Move to the package: `org.acme.model`
+
+. Open the file: `Vet.java`
+
+. Replace the content with following code:
++
+----
+package org.acme.model;
+
+import java.util.List;
+
+public class Vet {
+
+	public long id;
+	
+	public String firstName;
+
+	public String lastName;
+
+    public List<Specialty> specialties;
+	
+}
+----
+
+. Open the file `Specialty.java`
+
+. Replace the content with following code:
++
+----
+package org.acme.model;
+
+import java.util.List;
+
+public class Specialty {
+  
+    public long id;
+    
+    public String name;
+
+    public List<Vet> vets;
+
+}
+----
+
+. Test your app and verify that it works as desired.
+
+Congratulations! You successfully retrieved a list of vets from the vets-service microservice. You also took the first major step of strangling the monolith application.
