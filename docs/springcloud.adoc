@@ -231,3 +231,28 @@ While `@Consumes` and `@Produces` are optional as auto-negotiation is supported,
 
 It will allow to narrow down the number of JAX-RS providers (which can be seen as converters) included in the native executable.
 ====
+
+=== Create the configuration
+
+In order to determine the base URL to which REST calls will be made, the REST Client uses configuration from `application.properties`. The name of the property needs to follow a certain convention for naming.
+
+. Make sure you are still in the `quarkus-petclinic` project
+
+. Open the file: s`rc/main/resources/application.properties`
+
+. Add the following configuration:
++
+----
+%dev.org.acme.rest.client.VetsRestClient/mp-rest/url=http://localhost:7070
+%dev.org.acme.rest.client.VetsRestClient/mp-rest/scope=javax.inject.Singleton
+----
+
+* The first line for configuration means that all requests performed using `org.acme.rest.client.VetsRestClient` will use http://localhost:7070 as the base URL. Using the configuration above, calling the `getAll()`` method of `VetsRestClient` would result in an HTTP GET request being made to http://localhost:7070/vets. This configuration is prefixed with `%dev` for the DEV profile.
+
+* The second line for configuration means that the default scope of `org.acme.rest.client.VetsRestClient` will be @Singleton. Supported scope values are @Singleton, @Dependent, @ApplicationScoped and @RequestScoped. The default scope is @Dependent. The default scope can also be defined on the interface.
+
+[NOTE]
+====
+It is important that `org.acme.rest.client.VetsRestClient` must match the fully qualified name of the `VetsRestClient` interface we created in the previous section.
+====
+
