@@ -874,7 +874,7 @@ import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
 import org.acme.model.OwnerForm;
 ----
 
-RESTEasy has rich support for the `multipart/*` and `multipart/form-data` mime types. The multipart mime format is used to pass lists of content bodies. Multiple content bodies are embedded in one message. We'll also use this _multipart/form-data_ in the Quarkus Petclinic application. *@FormParam* allows you to inject individual form parameters from the request body into method parameter values.
+RESTEasy has rich support for the _multipart/*_ and _multipart/form-data_ mime types. The multipart mime format is used to pass lists of content bodies. Multiple content bodies are embedded in one message. We'll also use this `multipart/form-data` in the Quarkus Petclinic application. *@FormParam* allows you to inject individual form parameters from the request body into method parameter values.
 
 Open an empty `OwnerForm.java` class file in `src/main/java/org/acme/model`, and add the following code:
 
