@@ -989,6 +989,13 @@ Next, we'll refactor the presentation layer to edit or add an owner. Open an emp
 
 <1> Use multipart/form-data mime types to pass lists of content bodies. 
 
+Lastly, we need to use `update` to only update the schema. Open an `application.properties` in `src/main/resources/` then replace the following configuration:
+
+[source,properties,role="copypaste"]
+----
+%dev.quarkus.hibernate-orm.database.generation=update
+----
+
 Go back to the _Quarkus Petclinic_ page in your browser, click on the `FIND OWNERS` menu then click on `Add Owner`:
 
 image::quarkus-new-owner.png[quarkus-petclinic.png, 900]
