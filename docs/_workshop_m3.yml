@@ -20,7 +20,7 @@ modules:
   - springweb
   - springdi
   - springdata
-  - springconfig
+  - springstrangle
   - springcloud
   # - springmessaging
   # - springserverless
