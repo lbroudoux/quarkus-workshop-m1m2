@@ -25,7 +25,7 @@ You will also update the petclinic web application to leverage the new `vets-ser
 In this section, you will develop the `vets-service`. 
 
 The vets-service exposes the following endpoint:
-[cols="1,1,2", options="header"]
+[cols="1,1,3", options="header"]
 |===
 | HTTP Method | Endpoint | Description
 | GET | /vets | Retrieves a list of vets and their associated specialties
@@ -77,7 +77,7 @@ Here's a list of common annotations used for REST development.
 |===
 
 
-. Open the file: VetsResource.java
+. Open the file: `VetsResource.java`
 ** Make note of the base path for the resource. The resource endpoint is :`/vets` 
 +
 ----
@@ -96,6 +96,11 @@ Here's a list of common annotations used for REST development.
     @Inject
     VetsService service;
 ---- 
+* Be sure add the following imports: 
++
+----
+import org.acme.service.VetsService;
+----
 
 . Add the method to retrieve the vets
 ----
@@ -104,6 +109,13 @@ Here's a list of common annotations used for REST development.
         LOG.debug("Inside get() method");
         return service.getAll();
     }
+----
+* Be sure add the following imports: 
++
+----
+import java.util.List;
+import javax.ws.rs.GET;
+import org.acme.model.Vet;
 ----
 
 === Run the vets-service
@@ -149,6 +161,101 @@ curl http://localhost:7070/vets
 ----
 
 You have successfully created the REST endpoint for the vets-service :-)
+
+== OpenAPI and Swagger UI
+Quarkus provides support for OpenAPI and Swagger UI. You can easily expose your API specification and allow the users to test it with the Swagger UI.
+
+In this section, you'll add OpenAPI support for the vets-service.
+
+image::images/microservices/swagger-start.png[width="400"]
+
+=== Adding Quarkus Smallrye OpenAPI extension
+
+Quarkus provides a smallrye-openapi extension compliant with the Eclipse MicroProfile OpenAPI specification in order to generate your API OpenAPI v3 specification.
+
+. Open the `pom.xml` file
+
+. Add the following dependency:
++
+----
+<dependency>
+    <groupId>io.quarkus</groupId>
+    <artifactId>quarkus-smallrye-openapi</artifactId>
+</dependency>
+----
+
+=== View APIs with Swagger UI
+
+When building APIs, developers want to test them quickly. Swagger UI is a great tool permitting to visualize and interact with your APIs. The UI is automatically generated from your OpenAPI specification.
+
+The Quarkus smallrye-openapi extension comes with a swagger-ui extension embedding a properly configured Swagger UI page.
+
+[NOTE]
+====
+By default, Swagger UI is only available when Quarkus is started in dev or test mode.
+
+If you want to make it available in production too, you can include the following configuration in your application.properties:
+
+`quarkus.swagger-ui.always-include=true`
+
+This is a build time property, it cannot be changed at runtime after your application is built.
+====
+
+. Open the file: `src/main/resources/application.properties`
+
+. Add the following configuration:
++
+----
+quarkus.swagger-ui.always-include=true
+----
+
+. Access the Swagger UI
+.. In a web browser, open http://localhost:7070/swagger-ui
++
+image::images/microservices/swagger-start.png[width="600"]
+
+. Select the endpoint: *GET /vets*
+
+. Click the buttons: *Try It Out* > *Execute*
+
+. You should see the following results.
+
+image::images/microservices/swagger-results.png[width="600"]
+
+=== Provide Global API information
+
+There are some MicroProfile OpenAPI annotations which describe global API information, such as the following:
+
+* API Title
+* API Description
+* Version
+* Contact Information
+* License
+
+All of this information (and more) can be configured in the application.properties. You also have the option to embed this in your Java code by using appropriate OpenAPI annotations.
+
+In this section, we will add this configuration to the application.properties file.
+
+. Open the file: src/main/resources/application.properties
+
+. Add the following configuration:
++
+----
+%dev.mp.openapi.extensions.smallrye.info.title=Vets API (development)
+%test.mp.openapi.extensions.smallrye.info.title=Vets API (test)
+mp.openapi.extensions.smallrye.info.title=Vets API
+mp.openapi.extensions.smallrye.info.version=1.0.1
+mp.openapi.extensions.smallrye.info.description=Provide endpoints for vets data.
+mp.openapi.extensions.smallrye.info.contact.email=techsupport@example.com
+mp.openapi.extensions.smallrye.info.contact.name=John TechSupport
+mp.openapi.extensions.smallrye.info.contact.url=http://exampleurl.com/contact
+mp.openapi.extensions.smallrye.info.license.name=Apache 2.0
+mp.openapi.extensions.smallrye.info.license.url=http://www.apache.org/licenses/LICENSE-2.0.html
+----
+
+. Reload your web browser. You should see the need updates.
+
+image::images/microservices/swagger-global-api-info.png[width="600"]
 
 == Refactor Web App to use vets-service
 
