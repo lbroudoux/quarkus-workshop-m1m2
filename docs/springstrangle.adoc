@@ -4,11 +4,11 @@ In this section of the lab, you will strangle the monolith with Quarkus.
 
 Currently the Pet Clinic application is developed as a monolith. All of the application functionality is in a single app. Here is a high-level architecture diagram of the application.
 
-image::images/microservices/monolith-architecture.png[width="300"]
+image::microservices/monolith-architecture.png[width="300"]
 
 Let's refactor the application architecture to leverage microservices. The service related modules are replaced by microservices. Also, each microservice has a database that only contains information for its related entity. Based on this approach, we have three microservices as shown in the diagram below. Each microservice has its own database.
 
-image::images/microservices/microservices-architecture.png[width="600"]
+image::microservices/microservices-architecture.png[width="600"]
 
 The `vets-service` manages the data for vets. The service exposes a method for retrieving a list of vets and their associated specialites.
 
@@ -33,7 +33,7 @@ The vets-service exposes the following endpoint:
 
 The vets-service has the following architecture:
 
-image::images/microservices/vets-service-architecture.png[width="300"]
+image::microservices/vets-service-architecture.png[width="300"]
 
 You will first develop the service and then refactor the web application to use the service.
 
@@ -167,7 +167,7 @@ Quarkus provides support for OpenAPI and Swagger UI. You can easily expose your 
 
 In this section, you'll add OpenAPI support for the vets-service.
 
-image::images/microservices/swagger-start.png[width="400"]
+image::microservices/swagger-start.png[width="400"]
 
 === Adding Quarkus Smallrye OpenAPI extension
 
@@ -212,7 +212,7 @@ quarkus.swagger-ui.always-include=true
 . Access the Swagger UI
 .. In a web browser, open http://localhost:7070/swagger-ui
 +
-image::images/microservices/swagger-start.png[width="600"]
+image::microservices/swagger-start.png[width="600"]
 
 . Select the endpoint: *GET /vets*
 
@@ -220,7 +220,7 @@ image::images/microservices/swagger-start.png[width="600"]
 
 . You should see the following results.
 
-image::images/microservices/swagger-results.png[width="600"]
+image::microservices/swagger-results.png[width="600"]
 
 === Provide Global API information
 
@@ -255,7 +255,7 @@ mp.openapi.extensions.smallrye.info.license.url=http://www.apache.org/licenses/L
 
 . Reload your web browser. You should see the need updates.
 
-image::images/microservices/swagger-global-api-info.png[width="600"]
+image::microservices/swagger-global-api-info.png[width="600"]
 
 == Refactor Web App to use vets-service
 
@@ -414,11 +414,11 @@ Now you'll modify the VetResource in your web app. Instead of communicating with
 
 . Click the link for *Vets*.
 +
-image::images/microservices/vets-navigation-link.png[]
+image::microservices/vets-navigation-link.png[]
 
 . You should see the following output.
 +
-image::images/microservices/vets-list.png[]
+image::microservices/vets-list.png[]
 
 === Monolith Cleanup Work
 
