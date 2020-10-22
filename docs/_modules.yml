@@ -41,8 +41,8 @@ modules:
     name: Spring DI to Quarkus CDI
   springdata:
     name: Spring Data JPA to Quarkus Hibernate ORM with Panache
-  springconfig:
-    name: Spring Config to Quarkus Config
+  springstrangle:
+    name: Strangling the Spring Monolith with Quarkus
   springcloud:
     name: Spring Cloud to Quarkus on OpenShift
   springmessaging:
