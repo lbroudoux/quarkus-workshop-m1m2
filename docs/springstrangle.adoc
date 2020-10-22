@@ -105,6 +105,7 @@ import org.acme.service.VetsService;
 ----
 
 . Add the method to retrieve the vets
++
 [source,java,role="copypaste"]
 ----
     @GET
