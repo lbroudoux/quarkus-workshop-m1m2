@@ -40,11 +40,9 @@ You will first develop the service and then refactor the web application to use 
 === Review code for vets-service
 To help with development, there is a basic starter project for the vets-service.
 
-. Checkout code from the following branch: @TODO-DARBY
+. Open the project for `quarkus-petclinic-vets-service`
 
-. Open the project for `vets-service`
-
-. Review the starter code for vets service View the following packages
+. Review the starter code for `quarkus-petclinic-vets-service`. View the following packages
 .. Model: `org.acme.model`
 .. Service: `org.acme.service`
 .. Resource: `org.acme.rest`
@@ -130,9 +128,9 @@ $ cd quarkus-petclinic-vets-service
 $ mvn clean quarkus:dev -Ddebug=7005
 ----
 
-* The vets-service is configured to listen port 7070 (based on configs in `application.properties`). We also specify the debug port manually to avoid a port conflict with services that we will run later.
+* The `vets-service` is configured to listen port 7070 (based on configs in `application.properties`). We also specify the debug port manually to avoid a port conflict with services that we will run later.
 +
-. Once the vets-service is running, you should see the following output.
+. Once the `vets-service` is running, you should see the following output.
 +
 ----
 Listening for transport dt_socket at address: 7005
