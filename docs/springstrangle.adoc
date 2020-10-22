@@ -78,29 +78,34 @@ Here's a list of common annotations used for REST development.
 . Open the file: `VetsResource.java`
 ** Make note of the base path for the resource. The resource endpoint is :`/vets` 
 +
+[source,java,role="copypaste"]
 ----
 @Path("/vets")
 ---- 
 
 ** Make note of the @Produces annotation. The endpoints for this resource will produce JSON content.
 +
+[source,java,role="copypaste"]
 ----
 @Produces(MediaType.APPLICATION_JSON)
 ----
 
 . Add the following code to inject the VetsService
 +
+[source,java,role="copypaste"]
 ----
     @Inject
     VetsService service;
 ---- 
 * Be sure add the following imports: 
 +
+[source,java,role="copypaste"]
 ----
 import org.acme.service.VetsService;
 ----
 
 . Add the method to retrieve the vets
+[source,java,role="copypaste"]
 ----
     @GET
     public List<Vet> get() {
@@ -110,6 +115,7 @@ import org.acme.service.VetsService;
 ----
 * Be sure add the following imports: 
 +
+[source,java,role="copypaste"]
 ----
 import java.util.List;
 import javax.ws.rs.GET;
@@ -122,6 +128,7 @@ import org.acme.model.Vet;
 
 . Run the service with the following command:
 +
+[source,sh,role="copypaste"]
 ----
 $ cd quarkus-petclinic-vets-service
 
@@ -148,6 +155,8 @@ __  ____  __  _____   ___  __ ____  ______
 
 . Call the service using the curl command
 +
+[source,sh,role="copypaste"]
+
 ----
 curl http://localhost:7070/vets
 ----
@@ -175,6 +184,7 @@ Quarkus provides a smallrye-openapi extension compliant with the Eclipse MicroPr
 
 . Add the following dependency:
 +
+[source,xml,role="copypaste"]
 ----
 <dependency>
     <groupId>io.quarkus</groupId>
@@ -203,6 +213,7 @@ This is a build time property, it cannot be changed at runtime after your applic
 
 . Add the following configuration:
 +
+[source,sh,role="copypaste"]
 ----
 quarkus.swagger-ui.always-include=true
 ----
@@ -238,6 +249,7 @@ In this section, we will add this configuration to the application.properties fi
 
 . Add the following configuration:
 +
+[source,role="copypaste"]
 ----
 %dev.mp.openapi.extensions.smallrye.info.title=Vets API (development)
 %test.mp.openapi.extensions.smallrye.info.title=Vets API (test)
@@ -271,10 +283,11 @@ Regarding Spring Cloud migration, *MicroProfile Rest Client* is similar to *Spri
 
 . Move to `quarkus-petclinic` project
 
-. Open the file: pom.xml
+. Open the file: `pom.xml`
 
 . Add the following dependencies:
 +
+[source,xml,role="copypaste"]
 ----
 <dependency>
     <groupId>io.quarkus</groupId>
@@ -300,6 +313,7 @@ Using the MicroProfile REST Client is as simple as creating an interface using t
 
 3. Add the following code:
 +
+[source,java,role="copypaste"]
 ----
 package org.acme.rest.client;
 
@@ -351,6 +365,7 @@ In order to determine the base URL to which REST calls will be made, the REST Cl
 
 . Add the following configuration:
 +
+[source,role="copypaste"]
 ----
 %dev.org.acme.rest.client.VetsRestClient/mp-rest/url=http://localhost:7070
 %dev.org.acme.rest.client.VetsRestClient/mp-rest/scope=javax.inject.Singleton
@@ -377,6 +392,7 @@ Now you'll modify the VetResource in your web app. Instead of communicating with
 
 . Add the following code:
 +
+[source,java,role="copypaste"]
 ----
     @Inject
     @RestClient
@@ -385,6 +401,7 @@ Now you'll modify the VetResource in your web app. Instead of communicating with
 
 . Update the get() method with the following code:
 +
+[source,java,role="copypaste"]
 ----
     @GET
     @Produces(MediaType.TEXT_HTML)
@@ -435,6 +452,7 @@ Now that the `vets-service` is running as a separate Microservice, we can clean 
 
 . Delete the following lines:
 +
+[source,sql,role="copypaste"]
 ----
 INSERT INTO vets VALUES (1, 'James', 'Carter');
 INSERT INTO vets VALUES (2, 'Helen', 'Leary');
@@ -470,6 +488,7 @@ You can remove the Panache support from the Vet models objects.
 
 . Replace the content with following code:
 +
+[source,java,role="copypaste"]
 ----
 package org.acme.model;
 
@@ -492,6 +511,7 @@ public class Vet {
 
 . Replace the content with following code:
 +
+[source,java,role="copypaste"]
 ----
 package org.acme.model;
 
