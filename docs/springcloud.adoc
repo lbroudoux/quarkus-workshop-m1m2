@@ -54,7 +54,11 @@ You have access to the following projects and can switch between them with 'oc p
 
 === Deploying vets-service
 
-. In your terminal window move to the directory for the vets-service:
+. View the files for the `vet-service` application.
++
+image::microservices/vets-service-files.png[]
+
+. In your terminal window move to the directory for the `vets-service`:
 +
 [source,sh,role="copypaste"]
 ----
@@ -63,7 +67,7 @@ $ cd /projects/quarkus-workshop-labs/quarkus-petclinic-vets-service
 
 ==== Deploy Postgres Database
 
-. Deploy a Postgres database in OpenShift for the vets-service:
+. Deploy a Postgres database in OpenShift for the `vets-service`:
 +
 [source,sh,role="copypaste"]
 ----
@@ -134,7 +138,7 @@ By default Quarkus has three profiles, although it is possible to use as many as
 ** `test` - Activated when running tests
 ** `prod` - The default profile when not running in development or test mode
 
-. Open the file: application.properties
+. Open the file: `src/main/resources/application.properties`
 
 . Make note of the following entries.
 +
@@ -154,12 +158,11 @@ By default Quarkus has three profiles, although it is possible to use as many as
 
 * When the application is running is OpenShift, it will use the production profile. The production profile is the default when not running in development or test mode.
 
-
 ==== Deploy Quarkus app
 
 Quarkus offers the ability to automatically generate OpenShift resources based on sane default and user supplied configuration. The OpenShift extension provides sensible defaults so that it’s easier for the user to get started with Quarkus on OpenShift.
 
-. Open the pom.xml file. 
+. In the `vets-service` project, open the `pom.xml` file. 
 
 . Make note of this existing entry:
 +
@@ -172,7 +175,7 @@ Quarkus offers the ability to automatically generate OpenShift resources based o
 
 * By adding this dependency, we now have the ability to configure the OpenShift resource generation and application using the usual `application.properties` approach that Quarkus provides. 
 
-. Open the file: application.properties
+. Open the file: `src/main/resources/application.properties`
 
 . Make note of the following entries:
 +
@@ -191,7 +194,7 @@ quarkus.kubernetes-client.trust-certs=true
 * These properties allow you customize deployment of the application. See the documentation for https://quarkus.io/guides/deploying-to-kubernetes#openshift[additional configuration options].
 
 
-. Deploy the application
+. Deploy the application with the following command.
 +
 [source,sh,role="copypaste"]
 ----
@@ -199,12 +202,12 @@ $ mvn clean package -Dquarkus.kubernetes.deploy=true
 ----
 
 . This command accomplishes the following tasks:
-.. Build a jar file locally
-.. Trigger a container image build 
-.. Apply the generated OpenShift resources. 
+* Build a jar file locally
+* Trigger a container image build 
+* Apply the generated OpenShift resources. 
 
-* The generated resources are using OpenShift’s DeploymentConfig that is configured to automatically trigger a redeployment when a change in the ImageStream is noticed. 
-* In other words, any container image build after the initial deployment will automatically trigger redeployment, without the need to delete, update or re-apply the generated resources
+** The generated resources are using OpenShift’s DeploymentConfig that is configured to automatically trigger a redeployment when a change in the ImageStream is noticed. 
+** In other words, any container image build after the initial deployment will automatically trigger redeployment, without the need to delete, update or re-apply the generated resources
 
 . You will see the following output.
 +
@@ -239,30 +242,32 @@ INFO] [io.quarkus.kubernetes.deployment.KubernetesDeployer] Applied: ServiceAcco
 
 The Quarkus OpenShift extension generates the appropriate OpenShift resources. Let's view these resources.
 
-. View the generated OpenShift resources for imagestreans, buildconfigs and deploymentconfigs.
+. View the generated OpenShift resources for imagestreams, buildconfigs and deploymentconfigs.
 +
 [source,sh,role="copypaste"]
 ----
 $ oc get imagestream vets-service
+
 $ oc get buildconfig vets-service
+
 $ oc get deploymentconfig vets-service
 ----
 
-. View the running pod for the vets-service
+. View the running pod for the `vets-service`
 +
 [source,sh,role="copypaste"]
 ----
 $ oc get pods | grep vets-service
 ----
 
-. You should see the following output
+. You should see the following output.
 +
 ----
 vets-service-1-build             0/1     Completed   0          21m
 vets-service-1-deploy            0/1     Completed   0          20m
 vets-service-1-mlxnz             1/1     Running     0          20m
 ----
-* Based on this you can see that the vets-service is up and running.
+* Based on this you can see that the `vets-service` is up and running.
 
 
 === Deploying visits-service
@@ -274,8 +279,11 @@ The visits-service has the following architecture.
 
 The visits-service exposes the following endpoints.
 
+. View the files for the `visits-service` application.
++
+image::microservices/visits-service-files.png[]
 
-. In your terminal window move to the directory for the visits-service:
+. In your terminal window move to the directory for the `visits-service`:
 +
 [source,sh,role="copypaste"]
 ----
@@ -284,7 +292,7 @@ $ cd /projects/quarkus-workshop-labs/quarkus-petclinic-visits-service
 
 ==== Deploy Postgres Database
 
-. Deploy a Postgres database in OpenShift for the visits-service:
+. Deploy a Postgres database in OpenShift for the `visits-service`:
 +
 [source,sh,role="copypaste"]
 ----
@@ -303,7 +311,7 @@ $ oc new-app -e POSTGRESQL_USER=visits \
 $ oc get pods | grep visits
 ----
 
-. You will the following output.
+. You will see the following output.
 +
 ----
 NAME                            READY   STATUS    RESTARTS   AGE
@@ -401,6 +409,9 @@ The customers-service has the following architecture.
 
 The customers-service exposes the following endpoints.
 
+. View the files for the `customers-service` application.
++
+image::microservices/customers-service-files.png[]
 
 . In your terminal window move to the directory for the customers-service:
 +
