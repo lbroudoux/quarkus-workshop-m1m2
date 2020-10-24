@@ -565,4 +565,8 @@ public class Specialty {
 
 . Test your app and verify that it works as desired.
 
+=== Clean Up
+
+. Move into your terminal windows and stop the running applications for `vets-service` and `pet-clinic`.
+
 Congratulations! You successfully retrieved a list of vets from the vets-service microservice. You also took the first major step of strangling the monolith application.
