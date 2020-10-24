@@ -41,6 +41,8 @@ You will first develop the service and then refactor the web application to use 
 To help with development, there is a basic starter project for the vets-service.
 
 . Open the project for `quarkus-petclinic-vets-service`
++
+image::microservices/vets-service-files.png[width="600"]
 
 . Review the starter code for `quarkus-petclinic-vets-service`. View the following packages
 .. Model: `org.acme.model`
@@ -143,9 +145,9 @@ The first time you build the app, new dependencies may be downloaded via maven. 
 
 * The `vets-service` is configured to listen port 7070 (based on configs in `application.properties`). We also specify the debug port manually to avoid a port conflict with services that we will run later.
 
-. CodeReady will also detect that the Quarkus app opens port `8081` for web requests. When prompted, *open the port `7070`*, which opens a small web browser in CodeReady.
+. CodeReady will also detect that the Quarkus app opens port `7070` for web requests. When prompted, *open the port `7070`*, which opens a small web browser in CodeReady.
 
-. When prompted, click on `Open Link` to redirect to the external URL of the Spring Boot application.
+. When prompted, click on `Open Link` to redirect to the external URL of the the application.
 
 . You will initially see an error page in the web browser. However, append: `/vets` to the end of the web URL. Then you will see a list of vets as JSON.
 +
@@ -265,7 +267,7 @@ There are some MicroProfile OpenAPI annotations which describe global API inform
 
 All of this information (and more) can be configured in the application.properties. You also have the option to embed this in your Java code by using appropriate OpenAPI annotations.
 
-In this section, we will add this configuration to the application.properties file.
+In this section, we will add this configuration to the `application.properties` file.
 
 . Open the file: src/main/resources/application.properties
 
@@ -286,7 +288,7 @@ mp.openapi.extensions.smallrye.info.license.url=http://www.apache.org/licenses/L
 ----
 
 . Reload your web browser. You should see the need updates.
-
++
 image::microservices/swagger-global-api-info.png[width="600"]
 
 == Refactor Web App to use vets-service
@@ -304,6 +306,8 @@ Regarding Spring Cloud migration, *MicroProfile Rest Client* is similar to *Spri
 === Add Maven Dependencies
 
 . Move to `quarkus-petclinic` project
++
+image::microservices/petclinic-service-files.png[width="600"]
 
 . Open the file: `pom.xml`
 
@@ -447,7 +451,16 @@ Now you'll modify the VetResource in your web app. Instead of communicating with
 
 === View the Pet Clinic web app
 
-. Open a web browser and view http://localhost:8080
+. Run the Pet Clinic web app with the following command:
++
+[source,sh,role="copypaste"]
+----
+$ mvn clean quarkus:dev -Ddebug=8005
+----
+
+. CodeReady will also detect that the Quarkus app opens on a port. When prompted, accept the prompts to open a small web browser in CodeReady.
+
+. When prompted, click on `Open Link` to redirect to the external URL of the application.
 
 . Click the link for *Vets*.
 +
