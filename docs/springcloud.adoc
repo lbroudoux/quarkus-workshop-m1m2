@@ -246,7 +246,7 @@ INFO] [io.quarkus.kubernetes.deployment.KubernetesDeployer] Applied: ServiceAcco
 
 The Quarkus OpenShift extension generates the appropriate OpenShift resources. Let's view these resources.
 
-. View the generated OpenShift resources for imagestreams.
+. View the generated OpenShift resource for imagestreams.
 +
 [source,sh,role="copypaste"]
 ----
