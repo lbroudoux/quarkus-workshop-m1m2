@@ -564,7 +564,7 @@ echo http://$(oc get route customers-service -o=go-template --template='{{ .spec
 
 . Open a web browser and visit the web URL from above.
 +
-<< customers-service-swagger-ui >>
+image::microservices/customers-service-swagger-ui.png[]
 
 
 === Deploying petclinic-web-v2
