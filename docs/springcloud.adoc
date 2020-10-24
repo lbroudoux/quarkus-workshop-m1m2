@@ -661,7 +661,7 @@ image::microservices/vets-list.png[]
 . You should see the following output.
 +
 image::microservices/petclinic-web-owners-list.png[]
-* This list of owners is retrieved from the `customers-service`.
+* The list of owners is retrieved from the `customers-service`.
 
 . Select the owner *Jean Coleman* from the list
 
