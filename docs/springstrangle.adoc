@@ -118,7 +118,9 @@ import org.acme.model.Vet;
 
 === Run the vets-service
 
-. Open a new Terminal window.
+. Open a new Terminal window. You can use the **>_ New Terminal** command on the right:
++
+image::cmd-terminal.png[codeready-workspace-terminal, 700]
 
 . Run the service with the following command:
 +
