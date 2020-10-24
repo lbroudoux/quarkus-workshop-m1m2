@@ -9,9 +9,12 @@
 === Log in to OpenShift
 
 . Select the icon: `Login to OpenShift`
-* You should see a screen similar to the one below
++
+image::microservices/login-to-openshift-select.png[]
 
-<< insert image >>
+. You should see a screen similar to the one below
++
+image::microservices/login-to-openshift-prompt.png[]
 
 . In the new terminal windows enter the your credentials:
 .. Username: <your-opentlc-username>
@@ -23,17 +26,18 @@ It is important that you use your OpenTLC password. This is the same password th
 ====
 
 . Once you are successfully logged in, you should see a screen similar to below:
-
-<< insert image >>
++
+image::microservices/login-to-openshift-success.png[]
 
 . You can safely close this terminal window. Click the "X" in the corner.
-
-<< insert image >>
++
+image::microservices/login-to-openshift-close.png[]
 
 . Back in your original terminal, confirm that you are logged in. Type the following command:
 
 . View the list of projects
 +
+[source,sh,role="copypaste"]
 ----
 $ oc projects
 ----
@@ -52,6 +56,7 @@ You have access to the following projects and can switch between them with 'oc p
 
 . In your terminal window move to the directory for the vets-service:
 +
+[source,sh,role="copypaste"]
 ----
 $ cd /projects/quarkus-workshop-labs/quarkus-petclinic-vets-service
 ----
@@ -60,6 +65,7 @@ $ cd /projects/quarkus-workshop-labs/quarkus-petclinic-vets-service
 
 . Deploy a Postgres database in OpenShift for the vets-service:
 +
+[source,sh,role="copypaste"]
 ----
 oc new-app openshift/postgresql:latest \
             --name=vets-database \
@@ -103,6 +109,8 @@ oc new-app openshift/postgresql:latest \
 ----
 
 .  You can monitor the creation of the PostgreSQL pod.
++
+[source,sh,role="copypaste"]
 ----
 $ oc get pods 
 ----
@@ -148,10 +156,12 @@ quarkus.openshift.expose=true
 # Trust a self signed certificate if so presented by the API server
 quarkus.kubernetes-client.trust-certs=true
 ----
+
 * These properties allow you customize deployment of the application. See the documentation for https://quarkus.io/guides/deploying-to-kubernetes#openshift[additional configuration options].
 
 . Deploy the application
 +
+[source,sh,role="copypaste"]
 ----
 $ mvn clean package -Dquarkus.kubernetes.deploy=true
 ----
@@ -197,8 +207,9 @@ INFO] [io.quarkus.kubernetes.deployment.KubernetesDeployer] Applied: ServiceAcco
 
 The Quarkus OpenShift extension generates the appropriate OpenShift resources. Let's view these resources.
 
-. View the generated OpenShift resources.
+. View the generated OpenShift resources for imagestreans, buildconfigs and deploymentconfigs.
 +
+[source,sh,role="copypaste"]
 ----
 $ oc get imagestream vets-service
 $ oc get buildconfig vets-service
@@ -207,6 +218,7 @@ $ oc get deploymentconfig vets-service
 
 . View the running pod for the vets-service
 +
+[source,sh,role="copypaste"]
 ----
 $ oc get pods | grep vets-service
 ----
@@ -233,6 +245,7 @@ The visits-service exposes the following endpoints.
 
 . In your terminal window move to the directory for the visits-service:
 +
+[source,sh,role="copypaste"]
 ----
 $ cd /projects/quarkus-workshop-labs/quarkus-petclinic-visits-service
 ----
@@ -241,6 +254,7 @@ $ cd /projects/quarkus-workshop-labs/quarkus-petclinic-visits-service
 
 . Deploy a Postgres database in OpenShift for the visits-service:
 +
+[source,sh,role="copypaste"]
 ----
 $ oc new-app -e POSTGRESQL_USER=visits \
   -e POSTGRESQL_PASSWORD=mysecretpassword \
@@ -251,6 +265,8 @@ $ oc new-app -e POSTGRESQL_USER=visits \
 . This creates a Postgres DB based on the image: `openshift/postgresql:latest`. The application has the name `visits-database`.
 
 .  You can monitor the creation of the PostgreSQL pod.
++
+[source,sh,role="copypaste"]
 ----
 $ oc get pods | grep visits
 ----
@@ -270,6 +286,7 @@ We will follow a similar process for deploying the visits service. Again, we'll 
 
 . Deploy the Quarkus application.
 +
+[source,sh,role="copypaste"]
 ----
 $ mvn clean package -Dquarkus.kubernetes.deploy=true
 ----
@@ -306,6 +323,7 @@ $ mvn clean package -Dquarkus.kubernetes.deploy=true
 
 . View the pod
 +
+[source,sh,role="copypaste"]
 ----
 $ oc get pods -w | grep visits-service
 ----
@@ -320,6 +338,7 @@ visits-service-1-mlxnz             1/1     Running     0          45s
 
 . Run the curl command to view a list of visits (json):
 +
+[source,sh,role="copypaste"]
 ----
 $ curl http://$(oc get route visits-service -o=go-template --template='{{ .spec.host }}')/pets/visits?petIds=8
 ----
@@ -332,13 +351,14 @@ $ curl http://$(oc get route visits-service -o=go-template --template='{{ .spec.
 
 . Display the web URL for the Swagger UI
 +
+[source,sh,role="copypaste"]
 ----
 $ echo http://$(oc get route visits-service -o=go-template --template='{{ .spec.host }}')/swagger-ui
 ----
 
 . Open a web browser and visit the web URL from above.
 +
-<< visits-service-swagger-ui >>
+image::microservices/visits-service-swagger-ui.png[]
 
 === Deploying customers-service
 
@@ -352,6 +372,7 @@ The customers-service exposes the following endpoints.
 
 . In your terminal window move to the directory for the customers-service:
 +
+[source,sh,role="copypaste"]
 ----
 $ cd /projects/quarkus-workshop-labs/quarkus-petclinic-customers-service
 ----
@@ -360,6 +381,7 @@ $ cd /projects/quarkus-workshop-labs/quarkus-petclinic-customers-service
 
 . Deploy a Postgres database in OpenShift for the customers-service:
 +
+[source,sh,role="copypaste"]
 ----
 $ oc new-app -e POSTGRESQL_USER=visits \
   -e POSTGRESQL_PASSWORD=mysecretpassword \
@@ -370,6 +392,8 @@ $ oc new-app -e POSTGRESQL_USER=visits \
 . This creates a Postgres DB based on the image: `openshift/postgresql:latest`. The application has the name `customers-database`.
 
 .  You can monitor the creation of the PostgreSQL pod.
++
+[source,sh,role="copypaste"]
 ----
 $ oc get pods | grep visits
 ----
@@ -389,6 +413,7 @@ We will follow a similar process for deploying the visits service. Again, we'll 
 
 . Deploy the Quarkus application.
 +
+[source,sh,role="copypaste"]
 ----
 $ mvn clean package -Dquarkus.kubernetes.deploy=true
 ----
@@ -423,8 +448,9 @@ $ mvn clean package -Dquarkus.kubernetes.deploy=true
 
 ==== Verify Deployment
 
-. View the pod
+. View the pod for the customers-service
 +
+[source,sh,role="copypaste"]
 ----
 $ oc get pods -w | grep customers-service
 ----
@@ -439,6 +465,7 @@ customers-service-1-mlxnz             1/1     Running     0          45s
 
 . Run the curl command to view a list of visits (json):
 +
+[source,sh,role="copypaste"]
 ----
 $ curl http://$(oc get route customers-service -o=go-template --template='{{ .spec.host }}')/pets/visits?petIds=8
 ----
@@ -451,6 +478,7 @@ $ curl http://$(oc get route customers-service -o=go-template --template='{{ .sp
 
 . Display the web URL for the Swagger UI
 +
+[source,sh,role="copypaste"]
 ----
 $ echo http://$(oc get route customers-service -o=go-template --template='{{ .spec.host }}')/swagger-ui
 ----
