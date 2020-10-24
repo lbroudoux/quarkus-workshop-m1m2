@@ -303,7 +303,7 @@ curl http://$(oc get route vets-service -o=go-template --template='{{ .spec.host
 echo http://$(oc get route vets-service -o=go-template --template='{{ .spec.host }}')/swagger-ui
 ----
 
-. Open a web browser and visit the web URL from above.
+. Open a new web browser window and visit the web URL from above.
 +
 image::microservices/vets-service-swagger-ui.png[]
 
@@ -449,7 +449,7 @@ The `customers-service` exposes the following endpoints.
 +
 image::microservices/customers-service-files.png[]
 
-. In your terminal window move to the directory for the `customers-service`:
+. In your terminal window, move to the directory for the `customers-service`:
 +
 [source,sh,role="copypaste"]
 ----
@@ -462,7 +462,7 @@ cd /projects/quarkus-workshop-labs/quarkus-petclinic-customers-service
 +
 [source,sh,role="copypaste"]
 ----
-oc new-app -e POSTGRESQL_USER=visits \
+oc new-app -e POSTGRESQL_USER=customers \
   -e POSTGRESQL_PASSWORD=mysecretpassword \
   -e POSTGRESQL_DATABASE=visits openshift/postgresql:latest \
   --name=customers-database
