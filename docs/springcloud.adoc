@@ -64,7 +64,7 @@ image::microservices/vets-service-files.png[]
 +
 [source,sh,role="copypaste"]
 ----
-cd /projects/quarkus-workshop-labs/quarkus-petclinic-vets-service
+cd $CHE_PROJECTS_ROOT/quarkus-workshop-labs/quarkus-petclinic-vets-service
 ----
 
 ==== Deploy Postgres Database
@@ -324,7 +324,7 @@ image::microservices/visits-service-files.png[]
 +
 [source,sh,role="copypaste"]
 ----
-cd /projects/quarkus-workshop-labs/quarkus-petclinic-visits-service
+cd $CHE_PROJECTS_ROOT/quarkus-workshop-labs/quarkus-petclinic-visits-service
 ----
 
 ==== Deploy Postgres Database
@@ -453,7 +453,7 @@ image::microservices/customers-service-files.png[]
 +
 [source,sh,role="copypaste"]
 ----
-cd /projects/quarkus-workshop-labs/quarkus-petclinic-customers-service
+cd $CHE_PROJECTS_ROOT/quarkus-workshop-labs/quarkus-petclinic-customers-service
 ----
 
 ==== Deploy Postgres Database
@@ -577,7 +577,7 @@ image::microservices/petclinic-web-v2-files.png[]
 +
 [source,sh,role="copypaste"]
 ----
-cd /projects/quarkus-workshop-labs/quarkus-petclinic-web-v2
+cd $CHE_PROJECTS_ROOT/quarkus-workshop-labs/quarkus-petclinic-web-v2
 ----
 
 ==== Deploy Quarkus app
