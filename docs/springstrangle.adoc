@@ -135,8 +135,22 @@ $ cd /projects/quarkus-workshop-labs/quarkus-petclinic-vets-service
 ----
 $ mvn clean quarkus:dev -Ddebug=7005
 ----
++
+[NOTE]
+====
+The first time you build the app, new dependencies may be downloaded via maven. This should only happen once, after that things will go even faster.
+====
 
 * The `vets-service` is configured to listen port 7070 (based on configs in `application.properties`). We also specify the debug port manually to avoid a port conflict with services that we will run later.
+
+. CodeReady will also detect that the Quarkus app opens port `8081` for web requests. When prompted, *open the port `7070`*, which opens a small web browser in CodeReady.
+
+. When prompted, click on `Open Link` to redirect to the external URL of the Spring Boot application.
+
+. You will initially see an error page in the web browser. However, append: `/vets` to the end of the web URL. Then you will see a list of vets as JSON.
++
+image::microservices/run-local-vets-preview.png[]
+
 +
 . Once the `vets-service` is running, you should see the following output.
 +
@@ -159,7 +173,7 @@ __  ____  __  _____   ___  __ ____  ______
 [source,sh,role="copypaste"]
 
 ----
-curl http://localhost:7070/vets
+$ curl http://localhost:7070/vets
 ----
 
 . You should see the following output
