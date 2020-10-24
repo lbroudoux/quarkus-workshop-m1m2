@@ -90,19 +90,12 @@ Here's a list of common annotations used for REST development.
 @Produces(MediaType.APPLICATION_JSON)
 ----
 
-. Add the following code to inject the VetsService
+. Make note of the code that injects the VetsService
 +
-[source,java,role="copypaste"]
 ----
     @Inject
     VetsService service;
 ---- 
-* Be sure add the following imports: 
-+
-[source,java,role="copypaste"]
-----
-import org.acme.service.VetsService;
-----
 
 . Add the method to retrieve the vets
 +
