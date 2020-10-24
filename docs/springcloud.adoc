@@ -1,3 +1,44 @@
 == Spring Cloud
 
-To be filled
+=== Comparing Spring Cloud to Quarkus/OpenShift
+
+
+=== Reviewing Updated Petclinic Microservices Architecture
+
+
+
+=== Deploying vets-service
+
+==== Deploy Postgres Database
+
+==== Deploy Quarkus app
+
+==== Verify Deployment
+
+
+=== Deploying visits-service
+
+==== Deploy Postgres Database
+
+==== Deploy Quarkus app
+
+==== Verify Deployment
+
+
+=== Deploying customers-service
+
+==== Deploy Postgres Database
+
+==== Deploy Quarkus app
+
+==== Verify Deployment
+
+
+=== Deploying petclinic-web-v2
+
+==== Deploy Postgres Database
+
+==== Deploy Quarkus app
+
+==== Verify Deployment
+
