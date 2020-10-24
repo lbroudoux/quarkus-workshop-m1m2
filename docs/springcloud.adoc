@@ -41,7 +41,7 @@ image::microservices/login-to-openshift-close.png[]
 +
 [source,sh,role="copypaste"]
 ----
-$ oc projects
+oc projects
 ----
 
 . You will see the following output:
@@ -118,7 +118,7 @@ oc new-app openshift/postgresql:latest \
 +
 [source,sh,role="copypaste"]
 ----
-$ oc get pods 
+oc get pods 
 ----
 
 . You will the following output.
@@ -201,7 +201,7 @@ quarkus.kubernetes-client.trust-certs=true
 +
 [source,sh,role="copypaste"]
 ----
-$ mvn clean package -Dquarkus.kubernetes.deploy=true
+mvn clean package -Dquarkus.kubernetes.deploy=true
 ----
 
 . This command accomplishes the following tasks:
@@ -250,28 +250,28 @@ The Quarkus OpenShift extension generates the appropriate OpenShift resources. L
 +
 [source,sh,role="copypaste"]
 ----
-$ oc get imagestream vets-service
+oc get imagestream vets-service
 ----
 
 . View the buildconfig
 +
 [source,sh,role="copypaste"]
 ----
-$ oc get buildconfig vets-service
+oc get buildconfig vets-service
 ----
 
 . View the deploymentconfig
 +
 [source,sh,role="copypaste"]
 ----
-$ oc get deploymentconfig vets-service
+oc get deploymentconfig vets-service
 ----
 
 . View the pod for the `vets-service`
 +
 [source,sh,role="copypaste"]
 ----
-$ oc get pods | grep vets-service
+oc get pods | grep vets-service
 ----
 
 . You should see the following output.
@@ -333,7 +333,7 @@ $ cd /projects/quarkus-workshop-labs/quarkus-petclinic-visits-service
 +
 [source,sh,role="copypaste"]
 ----
-$ oc new-app -e POSTGRESQL_USER=visits \
+oc new-app -e POSTGRESQL_USER=visits \
   -e POSTGRESQL_PASSWORD=mysecretpassword \
   -e POSTGRESQL_DATABASE=visits openshift/postgresql:latest \
   --name=visits-database
@@ -345,7 +345,7 @@ $ oc new-app -e POSTGRESQL_USER=visits \
 +
 [source,sh,role="copypaste"]
 ----
-$ oc get pods | grep visits
+oc get pods | grep visits
 ----
 
 . You will see the following output.
@@ -365,7 +365,7 @@ We will follow a similar process for deploying the visits service. Again, we'll 
 +
 [source,sh,role="copypaste"]
 ----
-$ mvn clean package -Dquarkus.kubernetes.deploy=true
+mvn clean package -Dquarkus.kubernetes.deploy=true
 ----
 
 . You will see the following output.
@@ -402,7 +402,7 @@ $ mvn clean package -Dquarkus.kubernetes.deploy=true
 +
 [source,sh,role="copypaste"]
 ----
-$ oc get pods -w | grep visits-service
+oc get pods -w | grep visits-service
 ----
 
 . Sample output
@@ -462,7 +462,7 @@ $ cd /projects/quarkus-workshop-labs/quarkus-petclinic-customers-service
 +
 [source,sh,role="copypaste"]
 ----
-$ oc new-app -e POSTGRESQL_USER=visits \
+oc new-app -e POSTGRESQL_USER=visits \
   -e POSTGRESQL_PASSWORD=mysecretpassword \
   -e POSTGRESQL_DATABASE=visits openshift/postgresql:latest \
   --name=customers-database
@@ -474,7 +474,7 @@ $ oc new-app -e POSTGRESQL_USER=visits \
 +
 [source,sh,role="copypaste"]
 ----
-$ oc get pods | grep customers
+oc get pods | grep customers
 ----
 
 . You will the following output.
@@ -494,7 +494,7 @@ We will follow a similar process for deploying the `customers-service`. Again, w
 +
 [source,sh,role="copypaste"]
 ----
-$ mvn clean package -Dquarkus.kubernetes.deploy=true
+mvn clean package -Dquarkus.kubernetes.deploy=true
 ----
 
 . You will see the following output.
@@ -531,7 +531,7 @@ $ mvn clean package -Dquarkus.kubernetes.deploy=true
 +
 [source,sh,role="copypaste"]
 ----
-$ oc get pods -w | grep customers-service
+oc get pods -w | grep customers-service
 ----
 
 . Sample output
