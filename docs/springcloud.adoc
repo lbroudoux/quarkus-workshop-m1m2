@@ -542,17 +542,17 @@ customers-service-1-deploy            0/1     Completed   0          47s
 customers-service-1-mlxnz             1/1     Running     0          45s
 ----
 
-. Run the curl command to view a list of visits (json):
+. Run the curl command to view a list of owners (json):
 +
 [source,sh,role="copypaste"]
 ----
-$ curl http://$(oc get route customers-service -o=go-template --template='{{ .spec.host }}')/pets/visits?petIds=8
+$ curl http://$(oc get route customers-service -o=go-template --template='{{ .spec.host }}')/owners
 ----
 
 . You will see the following output:
 +
 ----
-[{"id":2,"petId":8,"date":[2013,1,2],"description":"rabies shot"},{"id":3,"petId":8,"date":[2013,1,3],"description":"neutered"}]
+
 ----
 
 . Display the web URL for the Swagger UI
@@ -565,6 +565,7 @@ $ echo http://$(oc get route customers-service -o=go-template --template='{{ .sp
 . Open a web browser and visit the web URL from above.
 +
 << customers-service-swagger-ui >>
+
 
 === Deploying petclinic-web-v2
 
