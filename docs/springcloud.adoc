@@ -287,7 +287,7 @@ vets-service-1-mlxnz             1/1     Running     0          20m
 +
 [source,sh,role="copypaste"]
 ----
-curl http://$(oc get route vets-service -o=go-template --template='{{ .spec.host }}')/vets
+curl http://$(oc get route vets-service -o=go-template --template='&lbrace;&lbrace; .spec.host &rbrace;&rbrace;')/vets
 ----
 
 . You will see the following output:
@@ -300,7 +300,7 @@ curl http://$(oc get route vets-service -o=go-template --template='{{ .spec.host
 +
 [source,sh,role="copypaste"]
 ----
-echo http://$(oc get route vets-service -o=go-template --template='{{ .spec.host }}')/swagger-ui
+echo http://$(oc get route vets-service -o=go-template --template='&lbrace;&lbrace; .spec.host &rbrace;&rbrace;')/swagger-ui
 ----
 
 . Open a new web browser window and visit the web URL from above.
@@ -417,7 +417,7 @@ visits-service-1-mlxnz             1/1     Running     0          45s
 +
 [source,sh,role="copypaste"]
 ----
-curl http://$(oc get route visits-service -o=go-template --template='{{ .spec.host }}')/pets/visits?petIds=8
+curl http://$(oc get route visits-service -o=go-template --template='&lbrace;&lbrace; .spec.host &rbrace;&rbrace;')/pets/visits?petIds=8
 ----
 
 . You will see the following output:
@@ -430,7 +430,7 @@ curl http://$(oc get route visits-service -o=go-template --template='{{ .spec.ho
 +
 [source,sh,role="copypaste"]
 ----
-echo http://$(oc get route visits-service -o=go-template --template='{{ .spec.host }}')/swagger-ui
+echo http://$(oc get route visits-service -o=go-template --template='&lbrace;&lbrace; .spec.host &rbrace;&rbrace;')/swagger-ui
 ----
 
 . Open a web browser and visit the web URL from above.
@@ -546,7 +546,7 @@ customers-service-1-mlxnz             1/1     Running     0          45s
 +
 [source,sh,role="copypaste"]
 ----
-curl http://$(oc get route customers-service -o=go-template --template='{{ .spec.host }}')/owners
+curl http://$(oc get route customers-service -o=go-template --template='&lbrace;&lbrace; .spec.host &rbrace;&rbrace;')/owners
 ----
 
 . You will see the following output:
@@ -559,7 +559,7 @@ curl http://$(oc get route customers-service -o=go-template --template='{{ .spec
 +
 [source,sh,role="copypaste"]
 ----
-echo http://$(oc get route customers-service -o=go-template --template='{{ .spec.host }}')/swagger-ui
+echo http://$(oc get route customers-service -o=go-template --template='&lbrace;&lbrace; .spec.host &rbrace;&rbrace;')/swagger-ui
 ----
 
 . Open a web browser and visit the web URL from above.
@@ -639,7 +639,7 @@ petclinic-web-v2-1-deploy     0/1     Completed   0          2m29s
 +
 [source,sh,role="copypaste"]
 ----
-echo http://$(oc get route petclinic-web-v2 -o=go-template --template='{{ .spec.host }}')
+echo http://$(oc get route petclinic-web-v2 -o=go-template --template='&lbrace;&lbrace; .spec.host &rbrace;&rbrace;')
 ----
 
 . Open a web browser and visit the web URL from above.
