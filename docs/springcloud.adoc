@@ -287,7 +287,7 @@ vets-service-1-mlxnz             1/1     Running     0          20m
 +
 [source,sh,role="copypaste"]
 ----
-curl http://$(oc get route vets-service -o=go-template --template='&lbrace;&lbrace; .spec.host &rbrace;&rbrace;')/vets
+curl http://$(oc get route vets-service -o json | jq -r '.spec.host')/vets
 ----
 
 . You will see the following output:
@@ -300,12 +300,46 @@ curl http://$(oc get route vets-service -o=go-template --template='&lbrace;&lbra
 +
 [source,sh,role="copypaste"]
 ----
-echo http://$(oc get route vets-service -o=go-template --template='&lbrace;&lbrace; .spec.host &rbrace;&rbrace;')/swagger-ui
+echo http://$(oc get route vets-service -o json | jq -r '.spec.host')/swagger-ui
 ----
 
 . Open a new web browser window and visit the web URL from above.
 +
 image::microservices/vets-service-swagger-ui.png[]
+
+==== Viewing the database
+
+When the application was deployed, the `import.sql` file was executed to load the database with initial data. Let's view the Postgres database.
+
+. You can log into the running Postgres container using the following command:
++
+----
+oc rsh dc/vets-database
+----
+
+. Once logged in, use the following command to execute an SQL statement to show some content from the database and then exit:
++
+----
+psql -U $POSTGRESQL_USER $POSTGRESQL_DATABASE -c 'select * from vets;'
+----
+
+. You should see the following:
++
+----
+
+----
+
+. View the specialties for the vets
++
+----
+select * from specialties'
+----
+
+. You should see the following:
++
+----
+
+----
 
 === Deploying visits-service
 
@@ -417,7 +451,7 @@ visits-service-1-mlxnz             1/1     Running     0          45s
 +
 [source,sh,role="copypaste"]
 ----
-curl http://$(oc get route visits-service -o=go-template --template='&lbrace;&lbrace; .spec.host &rbrace;&rbrace;')/pets/visits?petIds=8
+curl http://$(oc get route visits-service -o json | jq -r '.spec.host')/pets/visits?petIds=8
 ----
 
 . You will see the following output:
@@ -430,7 +464,7 @@ curl http://$(oc get route visits-service -o=go-template --template='&lbrace;&lb
 +
 [source,sh,role="copypaste"]
 ----
-echo http://$(oc get route visits-service -o=go-template --template='&lbrace;&lbrace; .spec.host &rbrace;&rbrace;')/swagger-ui
+echo http://$(oc get route visits-service -o json | jq -r '.spec.host')/swagger-ui
 ----
 
 . Open a web browser and visit the web URL from above.
@@ -546,7 +580,7 @@ customers-service-1-mlxnz             1/1     Running     0          45s
 +
 [source,sh,role="copypaste"]
 ----
-curl http://$(oc get route customers-service -o=go-template --template='&lbrace;&lbrace; .spec.host &rbrace;&rbrace;')/owners
+curl http://$(oc get route customers-service -o json | jq -r '.spec.host')/owners
 ----
 
 . You will see the following output:
@@ -559,7 +593,7 @@ curl http://$(oc get route customers-service -o=go-template --template='&lbrace;
 +
 [source,sh,role="copypaste"]
 ----
-echo http://$(oc get route customers-service -o=go-template --template='&lbrace;&lbrace; .spec.host &rbrace;&rbrace;')/swagger-ui
+echo http://$(oc get route customers-service -o json | jq -r '.spec.host')/swagger-ui
 ----
 
 . Open a web browser and visit the web URL from above.
@@ -639,7 +673,7 @@ petclinic-web-v2-1-deploy     0/1     Completed   0          2m29s
 +
 [source,sh,role="copypaste"]
 ----
-echo http://$(oc get route petclinic-web-v2 -o=go-template --template='&lbrace;&lbrace; .spec.host &rbrace;&rbrace;')
+echo http://$(oc get route petclinic-web-v2 -o json | jq -r '.spec.host')
 ----
 
 . Open a web browser and visit the web URL from above.
