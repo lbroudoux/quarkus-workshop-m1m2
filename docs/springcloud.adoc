@@ -668,7 +668,5 @@ image::microservices/petclinic-web-owners-list.png[]
 . You should see the following output
 +
 image::microservices/owners-detail-view.png[]
-* This list of pets is retrieved from the `customers-service`.
-* This list of visits is retrieved from the `visits-service`.
 
 
