@@ -64,7 +64,7 @@ image::microservices/vets-service-files.png[]
 +
 [source,sh,role="copypaste"]
 ----
-$ cd /projects/quarkus-workshop-labs/quarkus-petclinic-vets-service
+cd /projects/quarkus-workshop-labs/quarkus-petclinic-vets-service
 ----
 
 ==== Deploy Postgres Database
@@ -287,7 +287,7 @@ vets-service-1-mlxnz             1/1     Running     0          20m
 +
 [source,sh,role="copypaste"]
 ----
-$ curl http://$(oc get route vets-service -o=go-template --template='{{ .spec.host }}')/vets
+curl http://$(oc get route vets-service -o=go-template --template='{{ .spec.host }}')/vets
 ----
 
 . You will see the following output:
@@ -324,7 +324,7 @@ image::microservices/visits-service-files.png[]
 +
 [source,sh,role="copypaste"]
 ----
-$ cd /projects/quarkus-workshop-labs/quarkus-petclinic-visits-service
+cd /projects/quarkus-workshop-labs/quarkus-petclinic-visits-service
 ----
 
 ==== Deploy Postgres Database
@@ -417,7 +417,7 @@ visits-service-1-mlxnz             1/1     Running     0          45s
 +
 [source,sh,role="copypaste"]
 ----
-$ curl http://$(oc get route visits-service -o=go-template --template='{{ .spec.host }}')/pets/visits?petIds=8
+curl http://$(oc get route visits-service -o=go-template --template='{{ .spec.host }}')/pets/visits?petIds=8
 ----
 
 . You will see the following output:
@@ -453,7 +453,7 @@ image::microservices/customers-service-files.png[]
 +
 [source,sh,role="copypaste"]
 ----
-$ cd /projects/quarkus-workshop-labs/quarkus-petclinic-customers-service
+cd /projects/quarkus-workshop-labs/quarkus-petclinic-customers-service
 ----
 
 ==== Deploy Postgres Database
@@ -546,7 +546,7 @@ customers-service-1-mlxnz             1/1     Running     0          45s
 +
 [source,sh,role="copypaste"]
 ----
-$ curl http://$(oc get route customers-service -o=go-template --template='{{ .spec.host }}')/owners
+curl http://$(oc get route customers-service -o=go-template --template='{{ .spec.host }}')/owners
 ----
 
 . You will see the following output:
