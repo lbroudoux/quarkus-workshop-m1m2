@@ -283,6 +283,30 @@ vets-service-1-mlxnz             1/1     Running     0          20m
 ----
 * Based on this you can see that the `vets-service` is up and running.
 
+. Run the curl command to view a list of vets (json):
++
+[source,sh,role="copypaste"]
+----
+$ curl http://$(oc get route vets-service -o=go-template --template='{{ .spec.host }}')/vets
+----
+
+. You will see the following output:
++
+----
+
+----
+
+. Display the web URL for the Swagger UI
++
+[source,sh,role="copypaste"]
+----
+$ echo http://$(oc get route vets-service -o=go-template --template='{{ .spec.host }}')/swagger-ui
+----
+
+. Open a web browser and visit the web URL from above.
++
+image::microservices/vets-service-swagger-ui.png[]
+
 === Deploying visits-service
 
 The `visits-service` is responsible for ....
