@@ -464,7 +464,7 @@ cd /projects/quarkus-workshop-labs/quarkus-petclinic-customers-service
 ----
 oc new-app -e POSTGRESQL_USER=customers \
   -e POSTGRESQL_PASSWORD=mysecretpassword \
-  -e POSTGRESQL_DATABASE=visits openshift/postgresql:latest \
+  -e POSTGRESQL_DATABASE=customers openshift/postgresql:latest \
   --name=customers-database
 ----
 
