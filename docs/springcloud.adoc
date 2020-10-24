@@ -104,7 +104,7 @@ oc new-app openshift/postgresql:latest \
 
 .  You can monitor the creation of the PostgreSQL pod.
 ----
-$ oc get pods
+$ oc get pods 
 ----
 
 . You will the following output.
@@ -118,25 +118,42 @@ vets-database-cf8d6895b-rtwhd   1/1     Running   0          14m
 
 ==== Deploy Quarkus app
 
-. View the file: application.properties
+Quarkus offers the ability to automatically generate OpenShift resources based on sane default and user supplied configuration. The OpenShift extension provides sensible defaults so that it’s easier for the user to get started with Quarkus on OpenShift.
+
+. Open the pom.xml file. 
+
+. Make note of this existing entry:
++
+----
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-openshift</artifactId>
+    </dependency>
+----
+
+* By adding this dependency, we now have the ability to configure the OpenShift resource generation and application using the usual `application.properties` approach that Quarkus provides. 
+
+. Open the file: application.properties
+
+. Make note of the following entries:
 +
 ----
 #
 # Quarkus OpenShift Extension - configuration settings 
 #
 
-# Application name
-quarkus.openshift.name=vets-service
-
 # Automatically expose the route
 quarkus.openshift.expose=true
+
+# Trust a self signed certificate if so presented by the API server
+quarkus.kubernetes-client.trust-certs=true
 ----
+* These properties allow you customize deployment of the application. See the documentation for https://quarkus.io/guides/deploying-to-kubernetes#openshift[additional configuration options].
 
 . Deploy the application
 +
 ----
-$ mvn clean package \
-    -Dquarkus.kubernetes.deploy=true
+$ mvn clean package -Dquarkus.kubernetes.deploy=true
 ----
 
 . This command accomplishes the following tasks:
@@ -178,46 +195,44 @@ INFO] [io.quarkus.kubernetes.deployment.KubernetesDeployer] Applied: ServiceAcco
  
 ==== Verify Deployment
 
-. View the image stream
+The Quarkus OpenShift extension generates the appropriate OpenShift resources. Let's view these resources.
+
+. View the generated OpenShift resources.
 +
 ----
 $ oc get imagestream vets-service
-----
-
-. You will see the following output.
-+
-----
-NAME           IMAGE REPOSITORY                                                                      TAGS             UPDATED
-vets-service   image-registry.openshift-image-registry.svc:5000/quarkus-lmhzb-project/vets-service   1.0.0-SNAPSHOT   11 minutes ago
-----
-
-. View the build config
-+
-----
 $ oc get buildconfig vets-service
+$ oc get deploymentconfig vets-service
 ----
 
-. Sample output
+. View the running pod for the vets-service
 +
 ----
-NAME           TYPE     FROM     LATEST
-vets-service   Source   Binary   1
+$ oc get pods | grep vets-service
 ----
 
-. View the pod
+. You should see the following output
 +
 ----
-$ oc get pods | greps vets-service
+vets-service-1-build             0/1     Completed   0          21m
+vets-service-1-deploy            0/1     Completed   0          20m
+vets-service-1-mlxnz             1/1     Running     0          20m
 ----
+* Based on this you can see that the vets-service is up and running.
 
-. Sample output
-+
-----
-NAME           TYPE     FROM     LATEST
-vets-service   Source   Binary   1
-----
 
 === Deploying visits-service
+
+The visits-service is responsible for ....
+
+The visits-service has the following architecture.
+
+
+The visits-service exposes the following endpoints.
+
+
+
+We will follow a similar process for deploying the visits service.
 
 . In your terminal window move to the directory for the visits-service:
 +
