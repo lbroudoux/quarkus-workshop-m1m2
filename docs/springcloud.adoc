@@ -35,7 +35,7 @@ image::microservices/login-to-openshift-success.png[]
 +
 image::microservices/login-to-openshift-close.png[]
 
-. Back in your original terminal, confirm that you are logged in. Type the following command:
+. Move back in your original terminal.
 
 . View the list of projects
 +
@@ -83,7 +83,7 @@ oc new-app openshift/postgresql:latest \
 . This creates a Postgres DB based on the image: `openshift/postgresql:latest`. The application has the name `vets-database`.
 
 . The database also has the following configurations.
-
++
 [options="header"]
 |===
 | Configuration | Description
@@ -136,10 +136,11 @@ Quarkus supports the notion of configuration profiles. These allow you to have m
 
 By default Quarkus has three profiles, although it is possible to use as many as you like. The default profiles are:
 
-** `dev` - Activated when in development mode (i.e. quarkus:dev)
-** `test` - Activated when running tests
-** `prod` - The default profile when not running in development or test mode
+* `dev` - Activated when in development mode (i.e. quarkus:dev)
+* `test` - Activated when running tests
+* `prod` - The default profile when not running in development or test mode
 
+===== View Quarkus Profile configuration
 . Open the file: `src/main/resources/application.properties`
 
 . Make note of the following entries.
