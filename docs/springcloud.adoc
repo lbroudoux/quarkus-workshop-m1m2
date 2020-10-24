@@ -231,9 +231,6 @@ The visits-service has the following architecture.
 The visits-service exposes the following endpoints.
 
 
-
-We will follow a similar process for deploying the visits service.
-
 . In your terminal window move to the directory for the visits-service:
 +
 ----
@@ -269,7 +266,9 @@ visits-database-7df7dbb97b-szkql   1/1     Running   0          6s
 
 ==== Deploy Quarkus app
 
-. Deploy the Quarkus application
+We will follow a similar process for deploying the visits service. Again, we'll use the Quarkus OpenShift extension.
+
+. Deploy the Quarkus application.
 +
 ----
 $ mvn clean package -Dquarkus.kubernetes.deploy=true
@@ -331,18 +330,6 @@ $ curl http://$(oc get route visits-service -o=go-template --template='{{ .spec.
 [{"id":2,"petId":8,"date":[2013,1,2],"description":"rabies shot"},{"id":3,"petId":8,"date":[2013,1,3],"description":"neutered"}]
 ----
 
-. Display the web URL for the service
-+
-----
-echo http://$(oc get route visits-service -o=go-template --template='{{ .spec.host }}')/pets/visits?petIds=8
-----
-
-. Open a web browser and visit the web URL from above.
-+
-----
-[{"id":2,"petId":8,"date":[2013,1,2],"description":"rabies shot"},{"id":3,"petId":8,"date":[2013,1,3],"description":"neutered"}]
-----
-
 . Display the web URL for the Swagger UI
 +
 ----
@@ -353,15 +340,124 @@ $ echo http://$(oc get route visits-service -o=go-template --template='{{ .spec.
 +
 << visits-service-swagger-ui >>
 
-
 === Deploying customers-service
+
+The customers-service is responsible for ....
+
+The customers-service has the following architecture.
+
+
+The customers-service exposes the following endpoints.
+
+
+. In your terminal window move to the directory for the customers-service:
++
+----
+$ cd /projects/quarkus-workshop-labs/quarkus-petclinic-customers-service
+----
 
 ==== Deploy Postgres Database
 
+. Deploy a Postgres database in OpenShift for the customers-service:
++
+----
+$ oc new-app -e POSTGRESQL_USER=visits \
+  -e POSTGRESQL_PASSWORD=mysecretpassword \
+  -e POSTGRESQL_DATABASE=visits openshift/postgresql:latest \
+  --name=customers-database
+----
+
+. This creates a Postgres DB based on the image: `openshift/postgresql:latest`. The application has the name `customers-database`.
+
+.  You can monitor the creation of the PostgreSQL pod.
+----
+$ oc get pods | grep visits
+----
+
+. You will the following output.
++
+----
+NAME                            READY   STATUS    RESTARTS   AGE
+customers-database-7df7dbb97b-szkql   1/1     Running   0          6s
+----
+
+* Once the Postgres database pod is running and ready, we have a running database. 
+
 ==== Deploy Quarkus app
+
+We will follow a similar process for deploying the visits service. Again, we'll use the Quarkus OpenShift extension.
+
+. Deploy the Quarkus application.
++
+----
+$ mvn clean package -Dquarkus.kubernetes.deploy=true
+----
+
+. You will see the following output.
++
+----
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ----------------------< org.acme:customers-service >-----------------------
+[INFO] Building customers-service 1.0.0-SNAPSHOT
+[INFO] --------------------------------[ jar ]---------------------------------
+...
+...
+[INFO] [io.quarkus.kubernetes.deployment.KubernetesDeployer] Deploying to openshift server: https://172.30.0.1:443/ in namespace: quarkus-lmhzb-project.
+[INFO] [io.quarkus.kubernetes.deployment.KubernetesDeployer] Applied: ServiceAccount customers-service.
+[INFO] [io.quarkus.kubernetes.deployment.KubernetesDeployer] Applied: Service customers-service.
+[INFO] [io.quarkus.kubernetes.deployment.KubernetesDeployer] Applied: ImageStream openjdk-11.
+[INFO] [io.quarkus.kubernetes.deployment.KubernetesDeployer] Applied: ImageStream customers-service.
+[INFO] [io.quarkus.kubernetes.deployment.KubernetesDeployer] Applied: BuildConfig customers-service.
+[INFO] [io.quarkus.kubernetes.deployment.KubernetesDeployer] Applied: DeploymentConfig customers-service.
+[INFO] [io.quarkus.kubernetes.deployment.KubernetesDeployer] Applied: Route customers-service.
+[INFO] [io.quarkus.kubernetes.deployment.KubernetesDeployer] The deployed application can be accessed at: http://customers-service-quarkus-lmhzb-project.apps.cluster-twbr9.twbr9.sandbox1759.opentlc.com
+[INFO] [io.quarkus.deployment.QuarkusAugmentor] Quarkus augmentation completed in 62653ms
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  01:09 min
+[INFO] Finished at: 2020-10-24T17:01:10Z
+[INFO] ------------------------------------------------------------------------
+----
 
 ==== Verify Deployment
 
+. View the pod
++
+----
+$ oc get pods -w | grep customers-service
+----
+
+. Sample output
++
+----
+customers-service-1-build             0/1     Completed   0          89s
+customers-service-1-deploy            0/1     Completed   0          47s
+customers-service-1-mlxnz             1/1     Running     0          45s
+----
+
+. Run the curl command to view a list of visits (json):
++
+----
+$ curl http://$(oc get route customers-service -o=go-template --template='{{ .spec.host }}')/pets/visits?petIds=8
+----
+
+. You will see the following output:
++
+----
+[{"id":2,"petId":8,"date":[2013,1,2],"description":"rabies shot"},{"id":3,"petId":8,"date":[2013,1,3],"description":"neutered"}]
+----
+
+. Display the web URL for the Swagger UI
++
+----
+$ echo http://$(oc get route customers-service -o=go-template --template='{{ .spec.host }}')/swagger-ui
+----
+
+. Open a web browser and visit the web URL from above.
++
+<< customers-service-swagger-ui >>
 
 === Deploying petclinic-web-v2
 
