@@ -220,8 +220,8 @@ mvn clean package -Dquarkus.kubernetes.deploy=true
 ----
 [INFO] Scanning for projects...
 [INFO] 
-[INFO] --------------< org.acme:quarkus-petclinic-vets-service >---------------
-[INFO] Building quarkus-petclinic-vets-service 1.0.0-SNAPSHOT
+[INFO] --------------< org.acme:vets-service >---------------
+[INFO] Building vets-service 1.0.0-SNAPSHOT
 [INFO] --------------------------------[ jar ]---------------------------------
 ...
 ...
@@ -573,7 +573,7 @@ echo http://$(oc get route customers-service -o=go-template --template='{{ .spec
 +
 image::microservices/petclinic-web-v2-files.png[]
 
-. In your terminal window, move to the directory for the `cpetclinic-web-v2`:
+. In your terminal window, move to the directory for the `petclinic-web-v2`:
 +
 [source,sh,role="copypaste"]
 ----
@@ -596,19 +596,19 @@ mvn clean package -Dquarkus.kubernetes.deploy=true
 ----
 [INFO] Scanning for projects...
 [INFO] 
-[INFO] -----------------< org.acme:quarkus-petclinic-web-v2 >------------------
-[INFO] Building quarkus-petclinic-web-v2 1.0.0-SNAPSHOT
+[INFO] -----------------< org.acme:petclinic-web-v2 >------------------
+[INFO] Building petclinic-web-v2 1.0.0-SNAPSHOT
 [INFO] --------------------------------[ jar ]---------------------------------
 ...
 ...
-INFO] [io.quarkus.kubernetes.deployment.KubernetesDeployer] Applied: ServiceAccount quarkus-petclinic-web-v2.
-[INFO] [io.quarkus.kubernetes.deployment.KubernetesDeployer] Applied: Service quarkus-petclinic-web-v2.
+INFO] [io.quarkus.kubernetes.deployment.KubernetesDeployer] Applied: ServiceAccount petclinic-web-v2.
+[INFO] [io.quarkus.kubernetes.deployment.KubernetesDeployer] Applied: Service petclinic-web-v2.
 [INFO] [io.quarkus.kubernetes.deployment.KubernetesDeployer] Applied: ImageStream openjdk-11.
-[INFO] [io.quarkus.kubernetes.deployment.KubernetesDeployer] Applied: ImageStream quarkus-petclinic-web-v2.
-[INFO] [io.quarkus.kubernetes.deployment.KubernetesDeployer] Applied: BuildConfig quarkus-petclinic-web-v2.
-[INFO] [io.quarkus.kubernetes.deployment.KubernetesDeployer] Applied: DeploymentConfig quarkus-petclinic-web-v2.
-[INFO] [io.quarkus.kubernetes.deployment.KubernetesDeployer] Applied: Route quarkus-petclinic-web-v2.
-[INFO] [io.quarkus.kubernetes.deployment.KubernetesDeployer] The deployed application can be accessed at: http://quarkus-petclinic-web-v2-quarkus-lmhzb-project.apps.cluster-twbr9.twbr9.sandbox1759.opentlc.com
+[INFO] [io.quarkus.kubernetes.deployment.KubernetesDeployer] Applied: ImageStream petclinic-web-v2.
+[INFO] [io.quarkus.kubernetes.deployment.KubernetesDeployer] Applied: BuildConfig petclinic-web-v2.
+[INFO] [io.quarkus.kubernetes.deployment.KubernetesDeployer] Applied: DeploymentConfig petclinic-web-v2.
+[INFO] [io.quarkus.kubernetes.deployment.KubernetesDeployer] Applied: Route petclinic-web-v2.
+[INFO] [io.quarkus.kubernetes.deployment.KubernetesDeployer] The deployed application can be accessed at: http://petclinic-web-v2-quarkus-lmhzb-project.apps.cluster-twbr9.twbr9.sandbox1759.opentlc.com
 [INFO] [io.quarkus.deployment.QuarkusAugmentor] Quarkus augmentation completed in 65530ms
 [INFO] ------------------------------------------------------------------------
 [INFO] BUILD SUCCESS
