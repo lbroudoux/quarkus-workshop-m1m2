@@ -234,7 +234,14 @@ quarkus.swagger-ui.always-include=true
 ----
 
 . Access the Swagger UI
-.. In a web browser, open http://localhost:7070/swagger-ui
+.. In a CodeReady Workspaces web browser (preview)
+.. Replace `/vets` with `swagger-ui` at the end of the URL.
+
+. Click the button to open the URL in a new web browser window
++
+image::microservices/open-in-new-window.png[width="600"]
+
+. You should now see the Swagger UI
 +
 image::microservices/swagger-start.png[width="600"]
 
