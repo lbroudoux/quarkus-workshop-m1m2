@@ -157,9 +157,9 @@ By default Quarkus has three profiles, although it is possible to use as many as
 %prod.quarkus.hibernate-orm.log.sql=true
 ----
 
-* The application will use Quarkus Profiles to make use of Production database configurations. Notice that the entries refere to the Postgres database that we deployed to OpenShift.
+* The application will use Quarkus Profiles to make use of Production database configurations. Notice that the entries refer to the Postgres database that we deployed to OpenShift.
 
-* When the application is running is OpenShift, it will use the production profile. The production profile is the default when not running in development or test mode.
+* The deployed application is executed using `java -jar <final-jar-filename>`. When the app is run in this fashion, the app will use the production profile. The production profile is the default when not running in development or test mode.
 
 ==== Deploy Quarkus app
 
