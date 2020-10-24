@@ -8,13 +8,15 @@
 
 === Log in to OpenShift
 
-. Select the icon: `Login to OpenShift`
+In order to deploy the microservices into OpenShift, you have to login first.
+
+. On the right-hand side of the screen, select the item: *Login to OpenShift*
 +
 image::microservices/login-to-openshift-select.png[]
 
 . You should see a screen similar to the one below
 +
-image::microservices/login-to-openshift-prompt.png[]
+image::microservices/login-to-openshift-prompts.png[]
 
 . In the new terminal windows enter the your credentials:
 .. Username: <your-opentlc-username>
