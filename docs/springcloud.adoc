@@ -35,7 +35,7 @@ image::microservices/login-to-openshift-success.png[]
 +
 image::microservices/login-to-openshift-close.png[]
 
-. Move back in your original terminal.
+. Move back to your original terminal window.
 
 . View the list of projects
 +
