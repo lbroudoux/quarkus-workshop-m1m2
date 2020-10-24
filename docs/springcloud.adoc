@@ -22,9 +22,9 @@ image::microservices/login-to-openshift-prompts.png[]
 .. Username: <your-opentlc-username>
 .. Password: <your-opentlc-password>
 +
-[NOTE]
+[WARNING]
 ====
-It is important that you use your OpenTLC password. This is the same password that you used to log into OpenTLC. Do NOT use password `openshift`.
+It is important that you use your OpenTLC password. This is the password that you used to log into OpenTLC. Do NOT use password `openshift`, instead use your OpenTLC password.
 ====
 
 . Once you are successfully logged in, you should see a screen similar to below:
