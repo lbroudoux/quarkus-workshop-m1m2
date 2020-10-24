@@ -22,11 +22,32 @@
 It is important that you use your OpenTLC password. This is the same password that you used to log into OpenTLC. Do NOT use password `openshift`.
 ====
 
-. Once you are successfully logged, you should see a screen similar to below:
+. Once you are successfully logged in, you should see a screen similar to below:
 
 << insert image >>
 
-. 
+. You can safely close this terminal window. Click the "X" in the corner.
+
+<< insert image >>
+
+. Back in your original terminal, confirm that you are logged in. Type the following command:
+
+. View the list of projects
++
+----
+$ oc projects
+----
+
+. You will see the following output:
++
+----
+You have access to the following projects and can switch between them with 'oc project <projectname>':
+
+  * quarkus-abcabc-project - User project for johndoe-redhat.com
+    quarkus-rstrst-project - User project for johndoe-redhat.com
+    quarkus-xyzxyz-project - User project for johndoe-redhat.com
+----
+
 === Deploying vets-service
 
 . In your terminal window move to the directory for the vets-service:
@@ -37,7 +58,7 @@ $ cd /projects/quarkus-workshop-labs/quarkus-petclinic-vets-service
 
 ==== Deploy Postgres Database
 
-. Deploy a Postgres database for the vets-service:
+. Deploy a Postgres database in OpenShift for the vets-service:
 +
 ----
 oc new-app openshift/postgresql:latest \
@@ -47,19 +68,218 @@ oc new-app openshift/postgresql:latest \
             -e POSTGRESQL_DATABASE=vets 
 ----
 
+. This creates a Postgres DB based on the image: `openshift/postgresql:latest`. The application has the name `vets-database`.
+
+. The database also has the following configurations.
+
+[options="header"]
+|===
+| Configuration | Description
+| POSTGRESQL_USER| User name for the PostgreSQL account to be created.
+| POSTGRESQL_PASSWORD | Password for the user account.
+| POSTGRESQL_DATABASE | Database name.
+|===
+
+. You will see the following output from this command.
++
+----
+--> Found image 4ed79d1 (4 weeks old) in image stream "openshift/postgresql" under tag "latest" for "openshift/postgresql:latest"
+
+    PostgreSQL 12 
+    ------------- 
+    PostgreSQL is an advanced Object-Relational database management system (DBMS). The image contains the client and server programs that you'll need to create, run, maintain and access a PostgreSQL DBMS server.
+
+    Tags: database, postgresql, postgresql12, rh-postgresql12
+
+
+--> Creating resources ...
+    imagestreamtag.image.openshift.io "vets-database:latest" created
+    deployment.apps "vets-database" created
+    service "vets-database" created
+--> Success
+    Application is not exposed. You can expose services to the outside world by executing one or more of the commands below:
+     'oc expose svc/vets-database' 
+    Run 'oc status' to view your app.
+----
+
+.  You can monitor the creation of the PostgreSQL pod.
+----
+$ oc get pods
+----
+
+. You will the following output.
++
+----
+NAME                            READY   STATUS    RESTARTS   AGE
+vets-database-cf8d6895b-rtwhd   1/1     Running   0          14m
+----
+
+* Once the Postgres database pod is running and ready, we have a running database. We will access the Postgres database in later steps.
+
 ==== Deploy Quarkus app
 
+. View the file: application.properties
++
+----
+#
+# Quarkus OpenShift Extension - configuration settings 
+#
+
+# Application name
+quarkus.openshift.name=vets-service
+
+# Automatically expose the route
+quarkus.openshift.expose=true
+----
+
+. Deploy the application
++
+----
+$ mvn clean package \
+    -Dquarkus.kubernetes.deploy=true
+----
+
+. This command accomplishes the following tasks:
+.. Build a jar file locally
+.. Trigger a container image build 
+.. Apply the generated OpenShift resources. 
+
+* The generated resources are using OpenShift’s DeploymentConfig that is configured to automatically trigger a redeployment when a change in the ImageStream is noticed. 
+* In other words, any container image build after the initial deployment will automatically trigger redeployment, without the need to delete, update or re-apply the generated resources
+
+. You will see the following output.
++
+----
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] --------------< org.acme:quarkus-petclinic-vets-service >---------------
+[INFO] Building quarkus-petclinic-vets-service 1.0.0-SNAPSHOT
+[INFO] --------------------------------[ jar ]---------------------------------
+[
+...
+...
+
+INFO] [io.quarkus.kubernetes.deployment.KubernetesDeployer] Applied: ServiceAccount vets-service.
+[INFO] [io.quarkus.kubernetes.deployment.KubernetesDeployer] Applied: Service vets-service.
+[INFO] [io.quarkus.kubernetes.deployment.KubernetesDeployer] Applied: ImageStream openjdk-11.
+[INFO] [io.quarkus.kubernetes.deployment.KubernetesDeployer] Applied: ImageStream vets-service.
+[INFO] [io.quarkus.kubernetes.deployment.KubernetesDeployer] Applied: BuildConfig vets-service.
+[INFO] [io.quarkus.kubernetes.deployment.KubernetesDeployer] Applied: DeploymentConfig vets-service.
+[INFO] [io.quarkus.kubernetes.deployment.KubernetesDeployer] Applied: Route vets-service.
+[INFO] [io.quarkus.kubernetes.deployment.KubernetesDeployer] The deployed application can be accessed at: http://vets-service-quarkus-lmhzb-project.apps.cluster-twbr9.twbr9.sandbox1759.opentlc.com
+[INFO] [io.quarkus.deployment.QuarkusAugmentor] Quarkus augmentation completed in 68487ms
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  01:13 min
+[INFO] Finished at: 2020-10-24T15:17:55Z
+[INFO] ------------------------------------------------------------------------
+----
+ 
 ==== Verify Deployment
 
+. View the image stream
++
+----
+$ oc get imagestream vets-service
+----
+
+. You will see the following output.
++
+----
+NAME           IMAGE REPOSITORY                                                                      TAGS             UPDATED
+vets-service   image-registry.openshift-image-registry.svc:5000/quarkus-lmhzb-project/vets-service   1.0.0-SNAPSHOT   11 minutes ago
+----
+
+. View the build config
++
+----
+$ oc get buildconfig vets-service
+----
+
+. Sample output
++
+----
+NAME           TYPE     FROM     LATEST
+vets-service   Source   Binary   1
+----
+
+. View the pod
++
+----
+$ oc get pods | greps vets-service
+----
+
+. Sample output
++
+----
+NAME           TYPE     FROM     LATEST
+vets-service   Source   Binary   1
+----
 
 === Deploying visits-service
 
+. In your terminal window move to the directory for the visits-service:
++
+----
+$ cd /projects/quarkus-workshop-labs/quarkus-petclinic-visits-service
+----
+
 ==== Deploy Postgres Database
+
+. Deploy a Postgres database in OpenShift for the visits-service:
++
+----
+oc new-app -e POSTGRESQL_USER=visits \
+  -e POSTGRESQL_PASSWORD=mysecretpassword \
+  -e POSTGRESQL_DATABASE=visits openshift/postgresql:latest \
+  --name=visits-database
+----
+
+. This creates a Postgres DB based on the image: `openshift/postgresql:latest`. The application has the name `visits-database`.
+
+.  You can monitor the creation of the PostgreSQL pod.
+----
+$ oc get pods
+----
+
+. You will the following output.
++
+----
+NAME                            READY   STATUS    RESTARTS   AGE
+visits-database-cf8d6895b-rtwhd   1/1     Running   0          14m
+----
+
+* Once the Postgres database pod is running and ready, we have a running database. 
 
 ==== Deploy Quarkus app
 
+. Deploy the application
++
+----
+$ mvn clean package \
+    -Dquarkus.kubernetes.deploy=true
+----
+
+. You will see the following output.
++
+----
+
+----
+
 ==== Verify Deployment
 
+. View the pod
++
+----
+$ oc get pods | greps visits-service
+----
+
+. Sample output
++
+----
+
+----
 
 === Deploying customers-service
 
