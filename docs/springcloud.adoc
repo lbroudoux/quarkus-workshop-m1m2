@@ -202,11 +202,14 @@ $ mvn clean package -Dquarkus.kubernetes.deploy=true
 ----
 
 . This command accomplishes the following tasks:
-* Build a jar file locally
-* Trigger a container image build 
-* Apply the generated OpenShift resources. 
+* Builds a jar file locally
+* Creates a build configuration, which itself creates a new application image from your source code. 
+* Creates a deployment configuration to deploy the new image
+* Creates a service to provide load-balanced access to the deployment running your image.
+* Applies the generated resources.
 
-** The generated resources are using OpenShift’s DeploymentConfig that is configured to automatically trigger a redeployment when a change in the ImageStream is noticed. 
+** The deployment config is conigured to automatically trigger a redeployment when a change in the ImageStream is noticed.
+
 ** In other words, any container image build after the initial deployment will automatically trigger redeployment, without the need to delete, update or re-apply the generated resources
 
 . You will see the following output.
@@ -217,10 +220,8 @@ $ mvn clean package -Dquarkus.kubernetes.deploy=true
 [INFO] --------------< org.acme:quarkus-petclinic-vets-service >---------------
 [INFO] Building quarkus-petclinic-vets-service 1.0.0-SNAPSHOT
 [INFO] --------------------------------[ jar ]---------------------------------
-[
 ...
 ...
-
 INFO] [io.quarkus.kubernetes.deployment.KubernetesDeployer] Applied: ServiceAccount vets-service.
 [INFO] [io.quarkus.kubernetes.deployment.KubernetesDeployer] Applied: Service vets-service.
 [INFO] [io.quarkus.kubernetes.deployment.KubernetesDeployer] Applied: ImageStream openjdk-11.
