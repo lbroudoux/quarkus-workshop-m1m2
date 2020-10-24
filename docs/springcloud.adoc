@@ -569,9 +569,52 @@ echo http://$(oc get route customers-service -o=go-template --template='{{ .spec
 
 === Deploying petclinic-web-v2
 
-==== Deploy Postgres Database
+. View the files for the `petclinic-web-v2` application.
++
+image::microservices/petclinic-web-v2-files.png[]
+
+. In your terminal window, move to the directory for the `cpetclinic-web-v2`:
++
+[source,sh,role="copypaste"]
+----
+cd /projects/quarkus-workshop-labs/quarkus-petclinic-web-v2
+----
 
 ==== Deploy Quarkus app
 
+We will follow a similar process for deploying the `petclinic-web-v2`. Again, we'll use the Quarkus OpenShift extension.
+
+. Deploy the Quarkus application.
++
+[source,sh,role="copypaste"]
+----
+mvn clean package -Dquarkus.kubernetes.deploy=true
+----
+
 ==== Verify Deployment
+
+. View the pod for the `petclinic-web-v2`
++
+[source,sh,role="copypaste"]
+----
+oc get pods -w | grep petclinic-web-v2
+----
+
+. Sample output
++
+----
+
+----
+
+. Display the web URL for the Pet Clinic v2 web application
++
+[source,sh,role="copypaste"]
+----
+echo http://$(oc get route petclinic-web-v2 -o=go-template --template='{{ .spec.host }}')
+----
+
+. Open a web browser and visit the web URL from above.
++
+<< pet-clinic-v2-ui >>
+
 
