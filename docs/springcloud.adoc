@@ -272,12 +272,12 @@ vets-service-1-mlxnz             1/1     Running     0          20m
 
 === Deploying visits-service
 
-The visits-service is responsible for ....
+The `visits-service` is responsible for ....
 
-The visits-service has the following architecture.
+The `visits-service` has the following architecture.
 
 
-The visits-service exposes the following endpoints.
+The `visits-service` exposes the following endpoints.
 
 . View the files for the `visits-service` application.
 +
@@ -361,7 +361,7 @@ $ mvn clean package -Dquarkus.kubernetes.deploy=true
 
 ==== Verify Deployment
 
-. View the pod
+. View the pod for the `visits-service`.
 +
 [source,sh,role="copypaste"]
 ----
@@ -402,18 +402,17 @@ image::microservices/visits-service-swagger-ui.png[]
 
 === Deploying customers-service
 
-The customers-service is responsible for ....
+The `customers-service` is responsible for ....
 
-The customers-service has the following architecture.
+The `customers-service` has the following architecture.
 
-
-The customers-service exposes the following endpoints.
+The `customers-service` exposes the following endpoints.
 
 . View the files for the `customers-service` application.
 +
 image::microservices/customers-service-files.png[]
 
-. In your terminal window move to the directory for the customers-service:
+. In your terminal window move to the directory for the `customers-service`:
 +
 [source,sh,role="copypaste"]
 ----
@@ -422,7 +421,7 @@ $ cd /projects/quarkus-workshop-labs/quarkus-petclinic-customers-service
 
 ==== Deploy Postgres Database
 
-. Deploy a Postgres database in OpenShift for the customers-service:
+. Deploy a Postgres database in OpenShift for the `customers-service`:
 +
 [source,sh,role="copypaste"]
 ----
@@ -438,7 +437,7 @@ $ oc new-app -e POSTGRESQL_USER=visits \
 +
 [source,sh,role="copypaste"]
 ----
-$ oc get pods | grep visits
+$ oc get pods | grep customers
 ----
 
 . You will the following output.
@@ -452,7 +451,7 @@ customers-database-7df7dbb97b-szkql   1/1     Running   0          6s
 
 ==== Deploy Quarkus app
 
-We will follow a similar process for deploying the visits service. Again, we'll use the Quarkus OpenShift extension.
+We will follow a similar process for deploying the `customers-service`. Again, we'll use the Quarkus OpenShift extension.
 
 . Deploy the Quarkus application.
 +
@@ -491,7 +490,7 @@ $ mvn clean package -Dquarkus.kubernetes.deploy=true
 
 ==== Verify Deployment
 
-. View the pod for the customers-service
+. View the pod for the `customers-service`
 +
 [source,sh,role="copypaste"]
 ----
