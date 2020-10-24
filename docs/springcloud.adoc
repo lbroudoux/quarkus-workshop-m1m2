@@ -6,10 +6,46 @@
 === Reviewing Updated Petclinic Microservices Architecture
 
 
+=== Log in to OpenShift
 
+. Select the icon: `Login to OpenShift`
+* You should see a screen similar to the one below
+
+<< insert image >>
+
+. In the new terminal windows enter the your credentials:
+.. Username: <your-opentlc-username>
+.. Password: <your-opentlc-password>
++
+[NOTE]
+====
+It is important that you use your OpenTLC password. This is the same password that you used to log into OpenTLC. Do NOT use password `openshift`.
+====
+
+. Once you are successfully logged, you should see a screen similar to below:
+
+<< insert image >>
+
+. 
 === Deploying vets-service
 
+. In your terminal window move to the directory for the vets-service:
++
+----
+$ cd /projects/quarkus-workshop-labs/quarkus-petclinic-vets-service
+----
+
 ==== Deploy Postgres Database
+
+. Deploy a Postgres database for the vets-service:
++
+----
+oc new-app openshift/postgresql:latest \
+            --name=vets-database \
+            -e POSTGRESQL_USER=vets \
+            -e POSTGRESQL_PASSWORD=mysecretpassword \
+            -e POSTGRESQL_DATABASE=vets 
+----
 
 ==== Deploy Quarkus app
 
