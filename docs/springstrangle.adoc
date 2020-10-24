@@ -99,7 +99,7 @@ Here's a list of common annotations used for REST development.
     VetsService service;
 ---- 
 
-. Add the method to retrieve the vets
+. Make the following modification to the code. Add the method to retrieve the vets.
 +
 [source,java,role="copypaste"]
 ----
