@@ -243,18 +243,28 @@ INFO] [io.quarkus.kubernetes.deployment.KubernetesDeployer] Applied: ServiceAcco
 
 The Quarkus OpenShift extension generates the appropriate OpenShift resources. Let's view these resources.
 
-. View the generated OpenShift resources for imagestreams, buildconfigs and deploymentconfigs.
+. View the generated OpenShift resources for imagestreams.
 +
 [source,sh,role="copypaste"]
 ----
 $ oc get imagestream vets-service
+----
 
+. View the buildconfig
++
+[source,sh,role="copypaste"]
+----
 $ oc get buildconfig vets-service
+----
 
+. View the deploymentconfig
++
+[source,sh,role="copypaste"]
+----
 $ oc get deploymentconfig vets-service
 ----
 
-. View the running pod for the `vets-service`
+. View the pod for the `vets-service`
 +
 [source,sh,role="copypaste"]
 ----
@@ -269,7 +279,6 @@ vets-service-1-deploy            0/1     Completed   0          20m
 vets-service-1-mlxnz             1/1     Running     0          20m
 ----
 * Based on this you can see that the `vets-service` is up and running.
-
 
 === Deploying visits-service
 
