@@ -126,7 +126,7 @@ image::cmd-terminal.png[codeready-workspace-terminal, 700]
 +
 [source,sh,role="copypaste"]
 ----
-$ cd quarkus-petclinic-vets-service
+$ cd /projects/quarkus-workshop-labs/quarkus-petclinic-vets-service
 ----
 
 . Run the service with the following command:
