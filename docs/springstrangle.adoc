@@ -163,7 +163,7 @@ __  ____  __  _____   ___  __ ____  ______
  -/ /_/ / /_/ / __ |/ , _/ ,< / /_/ /\ \
 --\___\_\____/_/ |_/_/|_/_/|_|\____/___/
 2020-10-21 12:16:45,173 INFO  [io.agr.pool] (Quarkus Main Thread) Datasource '<default>': Initial size smaller than min. Connections will be created when necessary
-2020-10-21 12:16:45,648 INFO  [io.quarkus] (Quarkus Main Thread) quarkus-petclinic-vets-service 1.0.0-SNAPSHOT on JVM (powered by Quarkus 1.8.1.Final) started in 2.367s. Listening on: http://0.0.0.0:7070
+2020-10-21 12:16:45,648 INFO  [io.quarkus] (Quarkus Main Thread) vets-service 1.0.0-SNAPSHOT on JVM (powered by Quarkus 1.8.1.Final) started in 2.367s. Listening on: http://0.0.0.0:7070
 2020-10-21 12:16:45,650 INFO  [io.quarkus] (Quarkus Main Thread) Profile dev activated. Live Coding activated.
 2020-10-21 12:16:45,650 INFO  [io.quarkus] (Quarkus Main Thread) Installed features: [agroal, cdi, hibernate-orm, hibernate-orm-panache, jdbc-h2, mutiny, narayana-jta, resteasy, resteasy-jackson, smallrye-context-propagation]
 ----
