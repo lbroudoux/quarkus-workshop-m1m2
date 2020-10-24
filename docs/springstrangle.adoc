@@ -128,14 +128,14 @@ image::cmd-terminal.png[codeready-workspace-terminal, 700]
 +
 [source,sh,role="copypaste"]
 ----
-$ cd /projects/quarkus-workshop-labs/quarkus-petclinic-vets-service
+cd /projects/quarkus-workshop-labs/quarkus-petclinic-vets-service
 ----
 
 . Run the service with the following command:
 +
 [source,sh,role="copypaste"]
 ----
-$ mvn clean quarkus:dev -Ddebug=7005
+mvn clean quarkus:dev -Ddebug=7005
 ----
 +
 [NOTE]
@@ -175,7 +175,7 @@ __  ____  __  _____   ___  __ ____  ______
 [source,sh,role="copypaste"]
 
 ----
-$ curl http://localhost:7070/vets
+curl http://localhost:7070/vets
 ----
 
 . You should see the following output
@@ -455,7 +455,7 @@ Now you'll modify the VetResource in your web app. Instead of communicating with
 +
 [source,sh,role="copypaste"]
 ----
-$ mvn clean quarkus:dev -Ddebug=8005
+mvn clean quarkus:dev -Ddebug=8005
 ----
 
 . CodeReady will also detect that the Quarkus app opens on a port. When prompted, accept the prompts to open a small web browser in CodeReady.
