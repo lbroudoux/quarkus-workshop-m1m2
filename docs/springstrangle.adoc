@@ -2,7 +2,7 @@
 
 In this section of the lab, you will strangle the monolith with Quarkus. 
 
-Currently the Pet Clinic application is developed as a monolith. All of the application functionality is in a single app. Here is a high-level architecture diagram of the application.
+Currently the Pet Clinic application is developed as a monolith. All of the application functionality is in a single app. This fine for the initial version. However, we will migrate this to a microservices architecture. Here is a high-level architecture diagram of the application.
 
 image::microservices/monolith-architecture.png[]
 
@@ -31,7 +31,7 @@ The vets-service exposes the following endpoint:
 | GET | /vets | Retrieves a list of vets and their associated specialties
 |===
 
-The vets-service has the following architecture:
+The `vets-service` has the following architecture:
 
 image::microservices/vets-service-architecture.png[width="300"]
 
@@ -124,7 +124,7 @@ import org.acme.model.Vet;
 +
 image::cmd-terminal.png[codeready-workspace-terminal, 700]
 
-. Move to the project directory for the vets-service:
+. Move to the project directory for the `vets-service`:
 +
 [source,sh,role="copypaste"]
 ----
@@ -184,12 +184,12 @@ curl http://localhost:7070/vets
 {"id":1,"firstName":"James","lastName":"Carter","specialties":[]},{"id":2,"firstName":"Helen","lastName":"Leary","specialties":[{"id":1,"name":"radiology"}]},{"id":3,"firstName":"Linda","lastName":"Douglas","specialties":[{"id":2,"name":"surgery"},{"id":3,"name":"dentistry"}]},{"id":4,"firstName":"Rafael","lastName":"Ortega","specialties":[{"id":2,"name":"surgery"}]},{"id":5,"firstName":"Henry","lastName":"Stevens","specialties":[{"id":1,"name":"radiology"}]},{"id":6,"firstName":"Sharon","lastName":"Jenkins","specialties":[]}]
 ----
 
-You have successfully created the REST endpoint for the vets-service :-)
+You have successfully created the REST endpoint for the `vets-service` :-)
 
 == OpenAPI and Swagger UI
 Quarkus provides support for OpenAPI and Swagger UI. You can easily expose your API specification and allow the users to test it with the Swagger UI.
 
-In this section, you'll add OpenAPI support for the vets-service.
+In this section, you'll add OpenAPI support for the `vets-service`.
 
 image::microservices/swagger-start.png[width="400"]
 
