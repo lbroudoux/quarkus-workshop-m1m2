@@ -122,12 +122,17 @@ import org.acme.model.Vet;
 +
 image::cmd-terminal.png[codeready-workspace-terminal, 700]
 
-. Run the service with the following command:
+. Move to the project directory for the vets-service:
 +
 [source,sh,role="copypaste"]
 ----
 $ cd quarkus-petclinic-vets-service
+----
 
+. Run the service with the following command:
++
+[source,sh,role="copypaste"]
+----
 $ mvn clean quarkus:dev -Ddebug=7005
 ----
 
