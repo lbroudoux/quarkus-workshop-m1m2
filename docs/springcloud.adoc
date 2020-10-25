@@ -427,7 +427,7 @@ exit
 
 The `visits-service` is responsible for the management of pet visits. The `visits-service` has the following architecture.
 
-image::microservices/visits-service-architecture.png[]
+image::microservices/visits-service-architecture.png[width="300"]
 
 . View the files for the `visits-service` application.
 +
@@ -554,7 +554,7 @@ image::microservices/visits-service-swagger-ui.png[]
 
 The `customers-service` is responsible for the management of owners and pets. The `customers-service` has the following architecture.
 
-image::microservices/customers-service-architecture.png[]
+image::microservices/customers-service-architecture.png[width="300"]
 
 . View the files for the `customers-service` application.
 +
@@ -680,9 +680,9 @@ image::microservices/customers-service-swagger-ui.png[]
 
 === Deploying petclinic-web-v2
 
-We are providing a refactored version of the web application. The code for this is in the directory petclinic-web-v2. This version of the web application will communicate with the microservices for vets-service, visits-service and customers-service. The application leverages the Microprofile REST client. This is similar to the coding that you developed in the previous lab. We are providing this code to accelerate the development process.
+We are providing a refactored version of the web application. The code for this is in the directory `petclinic-web-v2`. This version of the web application will communicate with the microservices for `vets-service`, `visits-service` and `customers-service`. The application leverages the Microprofile REST client. This is similar to the coding that you developed in the previous lab. We are providing this code to accelerate the development process.
 
-This is architecture of the petclinic-web-v2 application.
+This is the architecture of the `petclinic-web-v2` application.
 
 image::microservices/microservices-architecture.png[]
 
