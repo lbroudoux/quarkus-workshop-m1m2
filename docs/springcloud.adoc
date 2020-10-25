@@ -825,11 +825,11 @@ oc whoami --show-console
 
 . Select the *Developer* perspective
 +
-image::microservice/navigate-to-developer-console.png[]
+image::microservices/navigate-to-developer-console.png[]
 
 . Select the *Topology* view 
 +
-image::microservice/topology-view.png[]
+image::microservices/topology-view.png[]
 
 . Make note of how the application components are grouped together. This grouping is configured with the OpenShift label: `app.kubernetes.io/part-of=<appname>`
 
