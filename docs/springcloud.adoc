@@ -385,7 +385,7 @@ select * from vets;
 (6 rows)
 ----
 
-. View the specialties for the vets
+. View the specialties
 +
 [source,sh,role="copypaste"]
 ----
@@ -402,7 +402,20 @@ select * from specialties;
   3 | dentistry
 ----
 
-. Exit out the database with the following commands.
+. View the join table for vet_specialties
++
+[source,sh,role="copypaste"]
+----
+select * from vet_specialties;
+----
+
+. You should see the following:
++
+----
+@TODO
+----
+
+. Exit out of the database with the following commands.
 +
 [source,sh,role="copypaste"]
 ----
@@ -412,12 +425,9 @@ exit
 
 === Deploying visits-service
 
-The `visits-service` is responsible for ....
+The `visits-service` is responsible for the management of pet visits. The `visits-service` has the following architecture.
 
-The `visits-service` has the following architecture.
-
-
-The `visits-service` exposes the following endpoints.
+image::microservices/visits-service-architecture.png[]
 
 . View the files for the `visits-service` application.
 +
@@ -542,11 +552,9 @@ image::microservices/visits-service-swagger-ui.png[]
 
 === Deploying customers-service
 
-The `customers-service` is responsible for ....
+The `customers-service` is responsible for the management of owners and pets. The `customers-service` has the following architecture.
 
-The `customers-service` has the following architecture.
-
-The `customers-service` exposes the following endpoints.
+image::microservices/customers-service-architecture.png[]
 
 . View the files for the `customers-service` application.
 +
