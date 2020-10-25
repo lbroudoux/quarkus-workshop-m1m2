@@ -107,10 +107,11 @@ cd $CHE_PROJECTS_ROOT/quarkus-workshop-labs/quarkus-petclinic-vets-service
 [source,sh,role="copypaste"]
 ----
 oc new-app openshift/postgresql:latest \
-            --name=vets-database \
+            --name=vets-database  \
             -e POSTGRESQL_USER=vets \
             -e POSTGRESQL_PASSWORD=mysecretpassword \
-            -e POSTGRESQL_DATABASE=vets 
+            -e POSTGRESQL_DATABASE=vets \
+            --labels='app.kubernetes.io/part-of=vets-app,app.kubernetes.io/instance=vets-database'
 ----
 
 . This creates a Postgres DB based on the image: `openshift/postgresql:latest`. The application has the name `vets-database`.
@@ -121,8 +122,8 @@ oc new-app openshift/postgresql:latest \
 |===
 | Configuration | Description
 | POSTGRESQL_USER| User name for the PostgreSQL account to be created.
-| POSTGRESQL_PASSWORD | Password for the user account.
-| POSTGRESQL_DATABASE | Database name.
+| POSTGRESQL_PASSWORD | Password for the user account
+| POSTGRESQL_DATABASE | Database name
 |===
 
 . You will see the following output from this command.
@@ -794,6 +795,46 @@ image::microservices/petclinic-web-owners-list.png[]
 . You should see the following output
 +
 image::microservices/owners-detail-view.png[]
+
+=== Viewing Application Topology in OpenShift Developer Perspective.
+
+The Topology view in the Developer perspective of the web console provides a visual representation of all the applications within a project, their build status, and the components and services associated with them.
+
+. Display the current OpenShift project
++
+----
+oc project
+----
+* Make note of the project name.
+
+. Display the URL for the OpenShift web console.
++
+----
+oc whoami --show-console
+----
+
+. Open a web browser and visit the URL from the step above.
+
+. At the OpenShift login screen, enter your OpenTLC credentials
+.. Username: *{{ USER_ID }}*
+.. Password: <your-opentlc-password>
+
+. Select the OpenShift project that you listed in the previous project.
+
+. Select the *Developer* perspective
++
+image::microservice/navigate-to-developer-console.png[]
+
+. Select the *Topology* view 
++
+image::microservice/topology-view.png[]
+
+. Make note of how the application components are grouped together. This grouping is configured with the OpenShift label: `app.kubernetes.io/part-of=<appname>`
+
+. Make note of how the applications components are connected. This connection is configured with the OpenShift annotation: `app.openshift.io/connects-to`
+
+. These configurations are defined in the `application.properties` file for the respective microservices.
+
 
 Congratulations. You have successfully deployed a Quarkus Microservices application to OpenShift!
 
