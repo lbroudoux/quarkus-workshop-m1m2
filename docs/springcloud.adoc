@@ -2,6 +2,27 @@
 
 === Comparing Spring Cloud to Quarkus/OpenShift
 
+Spring Cloud is a framework for building microservces application with Spring. Spring Cloud includes support for configuration management, service discovery, resiliency, load balancing and other features. The main goal of Spring Cloud is to allow developers to quickly build microservices based on common cloud development patterns. Spring Cloud accomplishes this by providing a rich collection of Java APIs and services for microservices development.
+
+A frequently asked question is how does Spring Cloud relate to Quarkus & OpenShift? Quarkus and OpenShift aim to make developing microservices easy. However, OpenShift addresses the problem from a slightly different perspective. OpenShift provides the infrastructure for configuration management, service discovery and load balancing as part of the core platform. The application doesn’t need any library or agents for client side logic and it can be written in any language. OpenShift addresses the challenges of building microservices in a generic manner that is agnostic of the language.
+
+Microservices Requirements
+
+[options="header"]
+|===
+| Feature | Spring Cloud | OpenShift & Quarkus
+| Configuration Management | Config Server, Consul | OpenShift ConfigMap and Secrets
+| Service Discovery | Netflix Eureka, Consul | OpenShift Services and Routes
+| Load Balancing | Netflix Ribbon | OpenShift Services
+| API Gateway | Netflix Zuul | OpenShift Services and Routes
+| Distributed Tracing | Spring Cloud Sleuth, Zipkin | OpenTracing, Jaeger
+| Metrics | Netflix Spectator | Microprofile Metrics
+| Centralized Logging | ELK Stack (LogStash) | EFK Stack (Fluentd)
+| Resilience & Faul Tolerance | Spring Cloud Circuit Breaker | Microprofile Fault Tolerance 
+| Auto Scaling & Self Healing | - | OpenShift Auto Scaling & Self Healing
+| Packaging & Deployment | Spring Boot | Quarkus, OpenShift Deployment Strategies
+| Job Management | Spring Batch | OpenShift Jobs and Scheduled Jobs
+|===
 
 === Reviewing Updated Petclinic Microservices Architecture
 
