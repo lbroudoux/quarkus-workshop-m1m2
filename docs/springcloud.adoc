@@ -46,7 +46,7 @@ image::microservices/login-to-openshift-select.png[]
 image::microservices/login-to-openshift-prompts.png[]
 
 . In the new terminal windows enter the your credentials:
-.. Username: <your-opentlc-username>
+.. Username: *{{ USER_ID }}*
 .. Password: <your-opentlc-password>
 +
 [WARNING]
