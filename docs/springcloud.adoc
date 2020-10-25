@@ -795,8 +795,6 @@ image::microservices/petclinic-web-owners-list.png[]
 +
 image::microservices/owners-detail-view.png[]
 
-Congratulations. You have successfully deployed a Quarkus Microservices application to OpenShift. 
-
-image::microservices/microservices-architecture.png[]
+Congratulations. You have successfully deployed a Quarkus Microservices application to OpenShift!
 
 
