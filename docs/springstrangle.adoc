@@ -269,7 +269,7 @@ All of this information (and more) can be configured in the application.properti
 
 In this section, we will add this configuration to the `application.properties` file.
 
-. Open the file: src/main/resources/application.properties
+. Open the file: `src/main/resources/application.properties`
 
 . Add the following configuration:
 +
