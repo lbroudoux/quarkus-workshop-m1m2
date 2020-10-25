@@ -804,6 +804,7 @@ The Topology view in the Developer perspective of the web console provides a vis
 
 . Display the current OpenShift project
 +
+[source,sh,role="copypaste"]
 ----
 oc project
 ----
@@ -811,6 +812,7 @@ oc project
 
 . Display the URL for the OpenShift web console.
 +
+[source,sh,role="copypaste"]
 ----
 oc whoami --show-console
 ----
@@ -821,7 +823,7 @@ oc whoami --show-console
 .. Username: *{{ USER_ID }}*
 .. Password: <your-opentlc-password>
 
-. Select the OpenShift project that you listed in the previous project.
+. Select the OpenShift project that you listed in the previous step above.
 
 . Select the *Developer* perspective
 +
