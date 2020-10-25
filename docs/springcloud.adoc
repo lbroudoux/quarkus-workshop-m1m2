@@ -196,7 +196,7 @@ By default Quarkus has three profiles, although it is possible to use as many as
 
 ==== Deploy Quarkus app
 
-Quarkus offers the ability to automatically generate OpenShift resources based on sane default and user supplied configuration. The OpenShift extension provides sensible defaults so that it’s easier for the user to get started with Quarkus on OpenShift.
+Quarkus offers the ability to automatically generate OpenShift resources based on default and user supplied configuration. The OpenShift extension provides sensible defaults so that it’s easier for the user to get started with Quarkus on OpenShift.
 
 . In the `vets-service` project, open the `pom.xml` file. 
 
