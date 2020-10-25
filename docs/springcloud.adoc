@@ -311,34 +311,70 @@ image::microservices/vets-service-swagger-ui.png[]
 
 When the application was deployed, the `import.sql` file was executed to load the database with initial data. Let's view the Postgres database.
 
+. Retrieve the name of the database pod.
++
+[source,sh,role="copypaste"]
+----
+VETS_DATABASE_POD=$(oc get pods | grep "vets-database" | grep "Running" | awk '{print $1}')
+----
 . You can log into the running Postgres container using the following command:
 +
+[source,sh,role="copypaste"]
 ----
-oc rsh dc/vets-database
+oc rsh $VETS_DATABASE_POD
 ----
 
-. Once logged in, use the following command to execute an SQL statement to show some content from the database and then exit:
+. Once logged in, connect to the Postgres database.
 +
+[source,sh,role="copypaste"]
 ----
-psql -U $POSTGRESQL_USER $POSTGRESQL_DATABASE -c 'select * from vets;'
+psql -U $POSTGRESQL_USER $POSTGRESQL_DATABASE
+----
+
+. Use the following command to execute an SQL statement to show some content from the database:
++
+[source,sh,role="copypaste"]
+----
+select * from vets;
 ----
 
 . You should see the following:
 +
 ----
-
+ id | first_name | last_name 
+----+------------+-----------
+  1 | James      | Carter
+  2 | Helen      | Leary
+  3 | Linda      | Douglas
+  4 | Rafael     | Ortega
+  5 | Henry      | Stevens
+  6 | Sharon     | Jenkins
+(6 rows)
 ----
 
 . View the specialties for the vets
 +
+[source,sh,role="copypaste"]
 ----
-select * from specialties'
+select * from specialties;
 ----
 
 . You should see the following:
 +
 ----
+ id |   name    
+----+-----------
+  1 | radiology
+  2 | surgery
+  3 | dentistry
+----
 
+. Exit out the database with the following commands.
++
+[source,sh,role="copypaste"]
+----
+\q
+exit
 ----
 
 === Deploying visits-service
