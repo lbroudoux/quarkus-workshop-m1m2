@@ -111,7 +111,7 @@ oc new-app openshift/postgresql:latest \
             -e POSTGRESQL_USER=vets \
             -e POSTGRESQL_PASSWORD=mysecretpassword \
             -e POSTGRESQL_DATABASE=vets \
-            --labels='app.kubernetes.io/part-of=vets-app,app.kubernetes.io/instance=vets-database'
+            --labels='app.kubernetes.io/part-of=vets-app,app.kubernetes.io/instance=vets-database,app.openshift.io/runtime=postgresql'
 ----
 
 . This creates a Postgres DB based on the image: `openshift/postgresql:latest`. The application has the name `vets-database`.
@@ -458,7 +458,7 @@ oc new-app -e POSTGRESQL_USER=visits \
     -e POSTGRESQL_PASSWORD=mysecretpassword \
     -e POSTGRESQL_DATABASE=visits openshift/postgresql:latest \
     --name=visits-database \
-    --labels='app.kubernetes.io/part-of=visits-app,app.kubernetes.io/instance=visits-database'
+    --labels='app.kubernetes.io/part-of=visits-app,app.kubernetes.io/instance=visits-database,app.openshift.io/runtime=postgresql'
 ----
 
 . This creates a Postgres DB based on the image: `openshift/postgresql:latest`. The application has the name `visits-database`.
@@ -586,7 +586,7 @@ oc new-app -e POSTGRESQL_USER=customers \
     -e POSTGRESQL_PASSWORD=mysecretpassword \
     -e POSTGRESQL_DATABASE=customers openshift/postgresql:latest \
     --name=customers-database \
-    --labels='app.kubernetes.io/part-of=customers-app,app.kubernetes.io/instance=customers-database'
+    --labels='app.kubernetes.io/part-of=customers-app,app.kubernetes.io/instance=customers-database,app.openshift.io/runtime=postgresql'
 ----
 
 . This creates a Postgres DB based on the image: `openshift/postgresql:latest`. The application has the name `customers-database`.
