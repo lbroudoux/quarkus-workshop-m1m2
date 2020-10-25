@@ -26,6 +26,12 @@ Microservices Requirements
 
 === Reviewing Updated Petclinic Microservices Architecture
 
+In the essense of time, we will provide the remaining microservices for `visits-service` and `customers-service`.
+
+image::microservices/microservices-architecture.png[]
+
+In this lab, you will deploy the microservices to OpenShift.
+
 
 === Log in to OpenShift
 
@@ -76,6 +82,12 @@ You have access to the following projects and can switch between them with 'oc p
 ----
 
 === Deploying vets-service
+
+In this section, you will deploy the `vets-service` to OpenShift. The service will make use of a Postgres database. Here is the application architecture.
+
+image::microservices/vets-service-architecture.png[width="300"]
+
+==== View source code
 
 . View the files for the `vet-service` application.
 +
