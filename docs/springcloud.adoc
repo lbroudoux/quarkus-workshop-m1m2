@@ -422,7 +422,7 @@ select * from vet_specialties;
 (5 rows)
 ----
 
-. Exit out of the database with the following commands.
+. Exit the database with the following commands.
 +
 [source,sh,role="copypaste"]
 ----
