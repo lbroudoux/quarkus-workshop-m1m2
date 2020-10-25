@@ -455,9 +455,10 @@ cd $CHE_PROJECTS_ROOT/quarkus-workshop-labs/quarkus-petclinic-visits-service
 [source,sh,role="copypaste"]
 ----
 oc new-app -e POSTGRESQL_USER=visits \
-  -e POSTGRESQL_PASSWORD=mysecretpassword \
-  -e POSTGRESQL_DATABASE=visits openshift/postgresql:latest \
-  --name=visits-database
+    -e POSTGRESQL_PASSWORD=mysecretpassword \
+    -e POSTGRESQL_DATABASE=visits openshift/postgresql:latest \
+    --name=visits-database \
+    --labels='app.kubernetes.io/part-of=visits-app,app.kubernetes.io/instance=visits-database'
 ----
 
 . This creates a Postgres DB based on the image: `openshift/postgresql:latest`. The application has the name `visits-database`.
@@ -582,9 +583,10 @@ cd $CHE_PROJECTS_ROOT/quarkus-workshop-labs/quarkus-petclinic-customers-service
 [source,sh,role="copypaste"]
 ----
 oc new-app -e POSTGRESQL_USER=customers \
-  -e POSTGRESQL_PASSWORD=mysecretpassword \
-  -e POSTGRESQL_DATABASE=customers openshift/postgresql:latest \
-  --name=customers-database
+    -e POSTGRESQL_PASSWORD=mysecretpassword \
+    -e POSTGRESQL_DATABASE=customers openshift/postgresql:latest \
+    --name=customers-database \
+    --labels='app.kubernetes.io/part-of=customers-app,app.kubernetes.io/instance=customers-database'
 ----
 
 . This creates a Postgres DB based on the image: `openshift/postgresql:latest`. The application has the name `customers-database`.
