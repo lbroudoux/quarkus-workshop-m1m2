@@ -412,7 +412,14 @@ select * from vet_specialties;
 . You should see the following:
 +
 ----
-@TODO
+ id | specialty_id | vet_id 
+----+--------------+--------
+  1 |            1 |      2
+  2 |            2 |      3
+  3 |            3 |      3
+  4 |            2 |      4
+  5 |            1 |      5
+(5 rows)
 ----
 
 . Exit out of the database with the following commands.
