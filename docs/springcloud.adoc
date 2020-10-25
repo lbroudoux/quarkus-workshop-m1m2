@@ -196,7 +196,7 @@ By default Quarkus has three profiles, although it is possible to use as many as
 
 ==== Deploy Quarkus app
 
-Quarkus offers the ability to automatically generate OpenShift resources based on default and user supplied configuration. The OpenShift extension provides sensible defaults so that it’s easier for the user to get started with Quarkus on OpenShift.
+Quarkus offers the ability to automatically generate OpenShift resources based on default and user supplied configuration. The Quarkus OpenShift extension provides sensible defaults so that it’s easier for the user to get started with Quarkus on OpenShift.
 
 . In the `vets-service` project, open the `pom.xml` file. 
 
@@ -320,7 +320,7 @@ vets-service-1-mlxnz             1/1     Running     0          20m
 +
 [source,sh,role="copypaste"]
 ----
-curl http://$(oc get route vets-service -o json | jq -r '.spec.host')/vets
+curl http://$(oc get route vets-service -o jsonpath='{.spec.host}')/vets
 ----
 
 . You will see the following output:
@@ -333,7 +333,7 @@ curl http://$(oc get route vets-service -o json | jq -r '.spec.host')/vets
 +
 [source,sh,role="copypaste"]
 ----
-echo http://$(oc get route vets-service -o json | jq -r '.spec.host')/swagger-ui
+echo http://$(oc get route vets-service -o jsonpath='{.spec.host}')/swagger-ui
 ----
 
 . Open a new web browser window and visit the web URL from above.
@@ -530,7 +530,7 @@ visits-service-1-mlxnz             1/1     Running     0          45s
 +
 [source,sh,role="copypaste"]
 ----
-curl http://$(oc get route visits-service -o json | jq -r '.spec.host')/pets/visits?petIds=8
+curl http://$(oc get route visits-service -o jsonpath='{.spec.host}')/pets/visits?petIds=8
 ----
 
 . You will see the following output:
@@ -543,7 +543,7 @@ curl http://$(oc get route visits-service -o json | jq -r '.spec.host')/pets/vis
 +
 [source,sh,role="copypaste"]
 ----
-echo http://$(oc get route visits-service -o json | jq -r '.spec.host')/swagger-ui
+echo http://$(oc get route visits-service -o jsonpath='{.spec.host}')/swagger-ui
 ----
 
 . Open a web browser and visit the web URL from above.
@@ -657,7 +657,7 @@ customers-service-1-mlxnz             1/1     Running     0          45s
 +
 [source,sh,role="copypaste"]
 ----
-curl http://$(oc get route customers-service -o json | jq -r '.spec.host')/owners
+curl http://$(oc get route customers-service -o jsonpath='{.spec.host}')/owners
 ----
 
 . You will see the following output:
@@ -670,7 +670,7 @@ curl http://$(oc get route customers-service -o json | jq -r '.spec.host')/owner
 +
 [source,sh,role="copypaste"]
 ----
-echo http://$(oc get route customers-service -o json | jq -r '.spec.host')/swagger-ui
+echo http://$(oc get route customers-service -o jsonpath='{.spec.host}')/swagger-ui
 ----
 
 . Open a web browser and visit the web URL from above.
@@ -758,7 +758,7 @@ petclinic-web-v2-1-deploy     0/1     Completed   0          2m29s
 +
 [source,sh,role="copypaste"]
 ----
-echo http://$(oc get route petclinic-web-v2 -o json | jq -r '.spec.host')
+echo http://$(oc get route petclinic-web-v2 -o jsonpath='{.spec.host}')
 ----
 
 . Open a web browser and visit the web URL from above.
@@ -789,4 +789,7 @@ image::microservices/petclinic-web-owners-list.png[]
 image::microservices/owners-detail-view.png[]
 
 Congratulations. You have successfully deployed a Quarkus Microservices application to OpenShift. 
+
+image::microservices/microservices-architecture.png[]
+
 
