@@ -680,6 +680,14 @@ image::microservices/customers-service-swagger-ui.png[]
 
 === Deploying petclinic-web-v2
 
+We are providing a refactored version of the web application. The code for this is in the directory petclinic-web-v2. This version of the web application will communicate with the microservices for vets-service, visits-service and customers-service. The application leverages the Microprofile REST client. This is similar to the coding that you developed in the previous lab. We are providing this code to accelerate the development process.
+
+This is architecture of the petclinic-web-v2 application.
+
+image::microservices/microservices-architecture.png[]
+
+==== View source files
+
 . View the files for the `petclinic-web-v2` application.
 +
 image::microservices/petclinic-web-v2-files.png[]
@@ -780,4 +788,5 @@ image::microservices/petclinic-web-owners-list.png[]
 +
 image::microservices/owners-detail-view.png[]
 
+Congratulations. You have successfully deployed a Quarkus Microservices application to OpenShift. 
 
