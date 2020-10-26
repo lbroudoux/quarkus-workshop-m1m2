@@ -79,8 +79,6 @@ oc projects
 You have access to the following projects and can switch between them with 'oc project <projectname>':
 
   * quarkus-abcabc-project - User project for {{ USER_ID }}
-    quarkus-rstrst-project - User project for {{ USER_ID }}
-    quarkus-xyzxyz-project - User project for {{ USER_ID }}
 ----
 
 === Deploying vets-service
