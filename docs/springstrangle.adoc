@@ -423,6 +423,16 @@ Now you'll modify the VetResource in your web app. Instead of communicating with
     @Inject
     @RestClient
     VetsRestClient vetsRestClient;
+
+    static Logger LOG = Logger.getLogger(VetsResource.class);   
+----
+* Be sure add the following imports: 
++
+[source,java,role="copypaste"]
+----
+import javax.inject.Inject;
+import org.eclipse.microprofile.rest.client.inject.RestClient;
+import org.jboss.logging.Logger;
 ----
 
 . Update the get() method with the following code:
@@ -441,6 +451,13 @@ Now you'll modify the VetResource in your web app. Instead of communicating with
                 .data("vets", data);
     }
 ----
+* Be sure add the following imports: 
++
+[source,java,role="copypaste"]
+----
+import java.util.List;
+----
+
 * Notice that we retrieve the list of vets from the `vetsRestClient`. This data is then placed into the Qute template for later display. 
 
 . In `VetsResource.java`, you can delete all references to the `VetsService` class since we are no longer using it.
