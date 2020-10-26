@@ -593,7 +593,7 @@ Inject a new template(editOwner) to render the Owner detail information. Add the
     Template editOwner;
 ----
 
-Update the `findOwners.java` class to invoke *findById(id)* service. `Replace` the entire following `findOwners` method with the following code:
+Update the `OwnersResource.java` class to invoke *findById(id)* service. `Replace` the entire following `findOwners` method with the following code:
 
 [source,java,role="copypaste"]
 ----
