@@ -109,7 +109,7 @@ Here's a list of common annotations used for REST development.
         return service.getAll();
     }
 ----
-* Be sure add the following imports: 
+* Be sure to add the following imports: 
 +
 [source,java,role="copypaste"]
 ----
@@ -426,7 +426,7 @@ Now you'll modify the VetResource in your web app. Instead of communicating with
 
     static Logger LOG = Logger.getLogger(VetsResource.class);   
 ----
-* Be sure add the following imports: 
+* Be sure to add the following imports: 
 +
 [source,java,role="copypaste"]
 ----
@@ -452,7 +452,7 @@ import org.jboss.logging.Logger;
                 .data("vets", data);
     }
 ----
-* Be sure add the following imports: 
+* Be sure to add the following imports: 
 +
 [source,java,role="copypaste"]
 ----
