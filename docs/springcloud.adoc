@@ -794,14 +794,6 @@ image::microservices/owners-detail-view.png[]
 
 The Topology view in the Developer perspective of the web console provides a visual representation of all the applications within a project, their build status, and the components and services associated with them.
 
-. Display the current OpenShift project
-+
-[source,sh,role="copypaste"]
-----
-oc project
-----
-* Make note of the project name.
-
 . Display the URL for the OpenShift web console.
 +
 [source,sh,role="copypaste"]
@@ -815,7 +807,7 @@ oc whoami --show-console
 .. Username: *{{ USER_ID }}*
 .. Password: <your-opentlc-password>
 
-. Select the OpenShift project that you listed in the previous step above.
+. Select your OpenShift project.
 
 . Select the *Developer* perspective
 +
