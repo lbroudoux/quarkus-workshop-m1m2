@@ -451,16 +451,7 @@ Now you'll modify the VetResource in your web app. Instead of communicating with
 
 === View the Pet Clinic web app
 
-. Run the Pet Clinic web app with the following command:
-+
-[source,sh,role="copypaste"]
-----
-mvn clean quarkus:dev -Ddebug=8005
-----
-
-. CodeReady will also detect that the Quarkus app opens on a port. When prompted, accept the prompts to open a small web browser in CodeReady.
-
-. When prompted, click on `Open Link` to redirect to the external URL of the application.
+. Move back to your web browser where the Pet Clinic web app is running.
 
 . Click the link for *Vets*.
 +
