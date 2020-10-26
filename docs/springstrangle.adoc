@@ -430,7 +430,6 @@ Now you'll modify the VetResource in your web app. Instead of communicating with
 +
 [source,java,role="copypaste"]
 ----
-import org.acme.model.Vet;
 import org.acme.rest.client.VetsRestClient;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.jboss.logging.Logger;
@@ -457,6 +456,7 @@ import org.jboss.logging.Logger;
 [source,java,role="copypaste"]
 ----
 import java.util.List;
+import org.acme.model.Vet;
 ----
 
 * Notice that we retrieve the list of vets from the `vetsRestClient`. This data is then placed into the Qute template for later display. 
