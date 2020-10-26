@@ -542,31 +542,23 @@ Create a CDI bean to retrieve the _Owner_ object. Open an empty `OwnersService.j
 package org.acme.service;
 
 import java.util.List;
-
 import javax.enterprise.context.ApplicationScoped;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-
 import org.acme.model.Owner;
-
 import io.quarkus.panache.common.Sort;
 
 @ApplicationScoped
-@Produces(MediaType.APPLICATION_JSON)
-@Consumes(MediaType.APPLICATION_JSON)
 public class OwnersService {
-   
+
     public List<Owner> findByLastName(String lastName) {
         if (lastName != null && !lastName.isEmpty()) {
-            return Owner.find("LOWER(lastName) LIKE LOWER(?1) ", // <1>
+            return Owner.find("LOWER(lastName) LIKE LOWER(?1) ", 
                 Sort.by("firstName"), "%" + lastName + "%").list();
         } else {
-            return Owner.listAll(); // <2>
-        }        
-    } 
+            return Owner.listAll(); 
+        }
+    }
 
-    public Owner findById(Long id) { // <3>
+    public Owner findById(Long id) { 
         return Owner.findById(id.longValue());
     }
 
@@ -1036,15 +1028,9 @@ Good job! We'll now refactor the Pet and Visit persistence layer from Spring Pet
 package org.acme.service;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-
 import org.acme.model.Pet;
 
 @ApplicationScoped
-@Produces(MediaType.APPLICATION_JSON)
-@Consumes(MediaType.APPLICATION_JSON)
 public class PetsService {
    
     public Pet findById(Long id) {
@@ -1217,17 +1203,11 @@ Lastly, We'll refactor the Visit persistence layer from Spring Petclinic applica
 package org.acme.service;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-
 import org.acme.model.Pet;
 
 @ApplicationScoped
-@Produces(MediaType.APPLICATION_JSON)
-@Consumes(MediaType.APPLICATION_JSON)
 public class VisitsService {
-   
+
     public Pet findById(Long id) {
         return Pet.findById(id.longValue());
     }
