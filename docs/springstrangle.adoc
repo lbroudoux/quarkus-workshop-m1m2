@@ -430,7 +430,7 @@ Now you'll modify the VetResource in your web app. Instead of communicating with
 +
 [source,java,role="copypaste"]
 ----
-import javax.inject.Inject;
+import org.acme.rest.client.VetsRestClient;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.jboss.logging.Logger;
 ----
