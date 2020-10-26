@@ -23,6 +23,8 @@ Microservices Requirements
 | Packaging & Deployment | Spring Boot | Quarkus, OpenShift Deployment Strategies
 | Job Management | Spring Batch | OpenShift Jobs and Scheduled Jobs
 |===
+Source: https://developers.redhat.com/blog/2016/12/09/spring-cloud-for-microservices-compared-to-kubernetes/[_Spring Cloud for Microservices Compared to Kubernetes_] by Bilgin Ibryam
+
 
 === Reviewing Updated Petclinic Microservices Architecture
 
@@ -163,16 +165,6 @@ vets-database-cf8d6895b-rtwhd   1/1     Running   0          14m
 ----
 
 * Once the Postgres database pod is running and ready, we have a running database. We will access the Postgres database in later steps.
-
-==== Quarkus Profiles
-
-Quarkus supports the notion of configuration profiles. These allow you to have multiple configuration in the same file and select between them via a profile name.
-
-By default Quarkus has three profiles, although it is possible to use as many as you like. The default profiles are:
-
-* `dev` - Activated when in development mode (i.e. quarkus:dev)
-* `test` - Activated when running tests
-* `prod` - The default profile when not running in development or test mode
 
 ===== View Quarkus Profile configuration
 . Open the file: `src/main/resources/application.properties`

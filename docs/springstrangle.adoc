@@ -423,6 +423,16 @@ Now you'll modify the VetResource in your web app. Instead of communicating with
     @Inject
     @RestClient
     VetsRestClient vetsRestClient;
+
+    static Logger LOG = Logger.getLogger(VetsResource.class);   
+----
+* Be sure add the following imports: 
++
+[source,java,role="copypaste"]
+----
+import javax.inject.Inject;
+import org.eclipse.microprofile.rest.client.inject.RestClient;
+import org.jboss.logging.Logger;
 ----
 
 . Update the get() method with the following code:
@@ -441,6 +451,13 @@ Now you'll modify the VetResource in your web app. Instead of communicating with
                 .data("vets", data);
     }
 ----
+* Be sure add the following imports: 
++
+[source,java,role="copypaste"]
+----
+import java.util.List;
+----
+
 * Notice that we retrieve the list of vets from the `vetsRestClient`. This data is then placed into the Qute template for later display. 
 
 . In `VetsResource.java`, you can delete all references to the `VetsService` class since we are no longer using it.
@@ -451,16 +468,7 @@ Now you'll modify the VetResource in your web app. Instead of communicating with
 
 === View the Pet Clinic web app
 
-. Run the Pet Clinic web app with the following command:
-+
-[source,sh,role="copypaste"]
-----
-mvn clean quarkus:dev -Ddebug=8005
-----
-
-. CodeReady will also detect that the Quarkus app opens on a port. When prompted, accept the prompts to open a small web browser in CodeReady.
-
-. When prompted, click on `Open Link` to redirect to the external URL of the application.
+. Move back to your web browser where the Pet Clinic web app is running.
 
 . Click the link for *Vets*.
 +
